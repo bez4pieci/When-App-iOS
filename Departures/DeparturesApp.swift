@@ -23,10 +23,26 @@ struct DeparturesApp: App {
         }
     }()
 
+    let departureMonoFont = Font.custom("DepartureMono-Regular", size: 16)
+
     var body: some Scene {
         WindowGroup {
             MainView()
+                .environment(\.font, departureMonoFont)
         }
         .modelContainer(sharedModelContainer)
     }
+}
+
+#Preview {
+    let config = ModelConfiguration(isStoredInMemoryOnly: true)
+    let container = try! ModelContainer(for: Station.self, configurations: config)
+    
+    // Add some sample data
+    // let sampleStation = Station(id: "900000100001", name: "Alexanderplatz")
+    // container.mainContext.insert(sampleStation)
+    
+    return MainView()
+        .modelContainer(container)
+        .environment(\.font, Font.custom("DepartureMono-Regular", size: 20))
 }

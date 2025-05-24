@@ -1,9 +1,10 @@
 //
-//  MainView.swift
+//  MainView 2.swift
 //  Departures
 //
-//  Created on 24.05.25.
+//  Created by Ernests Karlsons on 24.05.25.
 //
+
 
 import SwiftUI
 import SwiftData
@@ -32,20 +33,24 @@ struct MainView: View {
                     .ignoresSafeArea()
                 
                 VStack(spacing: 0) {
-                    // Header
                     headerView
                     
-                    if let station = selectedStation {
-                        // Departure board
+                    if selectedStation != nil {
                         departureBoard
                     } else {
-                        // No station selected
-                        noStationView
+                        NoStationView(onSelectStation: { showStationSelection = true })
                     }
                 }
             }
             .task {
                 await loadDepartures()
+            }
+            .onChange(of: selectedStation) { _, newStation in
+                if newStation != nil {
+                    Task {
+                        await loadDepartures()
+                    }
+                }
             }
             .onReceive(timer) { _ in
                 Task {
@@ -63,12 +68,12 @@ struct MainView: View {
             HStack {
                 VStack(alignment: .leading, spacing: 4) {
                     Text("DEPARTURES")
-                        .font(.system(size: 28, weight: .bold, design: .monospaced))
+                        .fontWeight(.bold)
                         .foregroundColor(.yellow)
                     
                     if let station = selectedStation {
                         Text(station.name.uppercased())
-                            .font(.system(size: 20, weight: .medium, design: .monospaced))
+                            .fontWeight(.medium)
                             .foregroundColor(.white)
                     }
                 }
@@ -90,7 +95,7 @@ struct MainView: View {
             // Last update time
             HStack {
                 Text("Last updated: \(lastUpdate, formatter: timeFormatter)")
-                    .font(.system(size: 12, design: .monospaced))
+                    .font(.caption)
                     .foregroundColor(.green)
                 Spacer()
                 if isLoading {
@@ -119,7 +124,7 @@ struct MainView: View {
                     Text("PLATFORM")
                         .frame(width: 80, alignment: .trailing)
                 }
-                .font(.system(size: 14, weight: .bold, design: .monospaced))
+                .fontWeight(.bold)
                 .foregroundColor(.yellow)
                 .padding(.horizontal, 20)
                 .padding(.vertical, 12)
@@ -131,41 +136,12 @@ struct MainView: View {
                 // Departures
                 ForEach(Array(departures.enumerated()), id: \.offset) { index, departure in
                     DepartureRow(departure: departure)
-                        .background(index % 2 == 0 ? Color.white.opacity(0.02) : Color.clear)
                     
                     Divider()
                         .background(Color.white.opacity(0.1))
                 }
             }
         }
-    }
-    
-    private var noStationView: some View {
-        VStack(spacing: 20) {
-            Image(systemName: "tram.fill")
-                .font(.system(size: 60))
-                .foregroundColor(.yellow)
-            
-            Text("No Station Selected")
-                .font(.system(size: 24, weight: .bold, design: .monospaced))
-                .foregroundColor(.white)
-            
-            Text("Tap the location button to select a station")
-                .font(.system(size: 16, design: .monospaced))
-                .foregroundColor(.gray)
-            
-            Button(action: { showStationSelection = true }) {
-                Text("SELECT STATION")
-                    .font(.system(size: 16, weight: .bold, design: .monospaced))
-                    .foregroundColor(.black)
-                    .padding(.horizontal, 30)
-                    .padding(.vertical, 15)
-                    .background(Color.yellow)
-                    .cornerRadius(8)
-            }
-            .padding(.top, 20)
-        }
-        .frame(maxHeight: .infinity)
     }
     
     private func loadDepartures() async {
@@ -203,84 +179,3 @@ struct MainView: View {
         return formatter
     }
 }
-
-struct DepartureRow: View {
-    let departure: Departure
-    
-    var body: some View {
-        HStack {
-            // Time
-            Text(timeString)
-                .frame(width: 80, alignment: .leading)
-                .foregroundColor(departureColor)
-            
-            // Line
-            HStack(spacing: 4) {
-                Text(departure.line.label ?? "")
-                    .padding(.horizontal, 8)
-                    .padding(.vertical, 2)
-                    .background(lineBackgroundColor(for: departure.line.product))
-                    .foregroundColor(.black)
-                    .cornerRadius(4)
-            }
-            .frame(width: 80, alignment: .leading)
-            
-            // Destination
-            Text(departure.destination?.name ?? "Unknown")
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .foregroundColor(.white)
-                .lineLimit(1)
-            
-            // Platform
-            Text(departure.platform ?? "-")
-                .frame(width: 80, alignment: .trailing)
-                .foregroundColor(.white)
-        }
-        .font(.system(size: 16, design: .monospaced))
-        .padding(.horizontal, 20)
-        .padding(.vertical, 12)
-    }
-    
-    private var timeString: String {
-        if let predictedTime = departure.predictedTime {
-            return formatTime(predictedTime)
-        }
-        return formatTime(departure.plannedTime)
-    }
-    
-    private var departureColor: Color {
-        if departure.cancelled {
-            return .red.opacity(0.5)
-        } else if let predictedTime = departure.predictedTime,
-                  predictedTime > departure.plannedTime {
-            return .red
-        }
-        return .green
-    }
-    
-    private func lineBackgroundColor(for product: Product?) -> Color {
-        guard let product = product else { return .gray }
-        
-        switch product {
-        case .suburbanTrain:
-            return Color(red: 0.0, green: 0.5, blue: 0.0) // S-Bahn green
-        case .subway:
-            return Color.blue // U-Bahn blue
-        case .tram:
-            return Color.red // Tram red
-        case .bus:
-            return Color.purple // Bus purple
-        case .regionalTrain:
-            return Color.orange // Regional trains
-        default:
-            return Color.gray
-        }
-    }
-    
-    private func formatTime(_ date: Date) -> String {
-        let formatter = DateFormatter()
-        formatter.timeStyle = .short
-        formatter.dateStyle = .none
-        return formatter.string(from: date)
-    }
-} 

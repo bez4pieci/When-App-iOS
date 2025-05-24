@@ -33,9 +33,22 @@
 		1307F7912DE1F377009F0C4C /* DeparturesUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DeparturesUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		130E60D02DE238870033F2BA /* Exceptions for "Departures" folder in "Departures" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 1307F7772DE1F376009F0C4C /* Departures */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		1307F77A2DE1F376009F0C4C /* Departures */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				130E60D02DE238870033F2BA /* Exceptions for "Departures" folder in "Departures" target */,
+			);
 			path = Departures;
 			sourceTree = "<group>";
 		};
@@ -47,6 +60,11 @@
 		1307F7942DE1F377009F0C4C /* DeparturesUITests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = DeparturesUITests;
+			sourceTree = "<group>";
+		};
+		130E60C72DE232FB0033F2BA /* Fonts */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Fonts;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -80,6 +98,7 @@
 		1307F76F2DE1F376009F0C4C = {
 			isa = PBXGroup;
 			children = (
+				130E60C72DE232FB0033F2BA /* Fonts */,
 				1307F77A2DE1F376009F0C4C /* Departures */,
 				1307F78A2DE1F377009F0C4C /* DeparturesTests */,
 				1307F7942DE1F377009F0C4C /* DeparturesUITests */,
@@ -114,6 +133,7 @@
 			);
 			fileSystemSynchronizedGroups = (
 				1307F77A2DE1F376009F0C4C /* Departures */,
+				130E60C72DE232FB0033F2BA /* Fonts */,
 			);
 			name = Departures;
 			packageProductDependencies = (
@@ -409,6 +429,7 @@
 				DEVELOPMENT_TEAM = 9EPXPY3668;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Departures/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -440,6 +461,7 @@
 				DEVELOPMENT_TEAM = 9EPXPY3668;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Departures/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

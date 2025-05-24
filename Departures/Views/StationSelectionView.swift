@@ -40,8 +40,8 @@ struct StationSelectionView: View {
                     }
                 }
             }
-            .navigationTitle("Select Station")
-            .navigationBarTitleDisplayMode(.inline)
+            // .navigationTitle("Select Station")
+            // .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button("Cancel") {
@@ -65,7 +65,6 @@ struct StationSelectionView: View {
             TextField("Search for station...", text: $searchText)
                 .textFieldStyle(PlainTextFieldStyle())
                 .foregroundColor(.white)
-                .font(.system(size: 16, design: .monospaced))
                 .autocapitalization(.none)
                 .disableAutocorrection(true)
                 .onChange(of: searchText) { _, newValue in
@@ -109,7 +108,7 @@ struct StationSelectionView: View {
             HStack {
                 VStack(alignment: .leading, spacing: 4) {
                     Text(location.getUniqueShortName())
-                        .font(.system(size: 18, weight: .medium, design: .monospaced))
+                        .fontWeight(.medium)
                         .foregroundColor(.white)
                     
                     if let products = location.products, !products.isEmpty {
@@ -134,7 +133,8 @@ struct StationSelectionView: View {
     
     private func productBadge(for product: Product) -> some View {
         Text(productLabel(for: product))
-            .font(.system(size: 12, weight: .bold, design: .monospaced))
+            .font(.caption2)
+            .fontWeight(.bold)
             .padding(.horizontal, 6)
             .padding(.vertical, 2)
             .background(productColor(for: product))
@@ -181,7 +181,6 @@ struct StationSelectionView: View {
                 .padding()
             
             Text("Searching...")
-                .font(.system(size: 16, design: .monospaced))
                 .foregroundColor(.gray)
         }
         .frame(maxHeight: .infinity)
@@ -194,11 +193,11 @@ struct StationSelectionView: View {
                 .foregroundColor(.gray)
             
             Text("No stations found")
-                .font(.system(size: 20, weight: .medium, design: .monospaced))
+                .font(.title3)
+                .fontWeight(.medium)
                 .foregroundColor(.white)
             
             Text("Try a different search term")
-                .font(.system(size: 16, design: .monospaced))
                 .foregroundColor(.gray)
         }
         .frame(maxHeight: .infinity)
@@ -211,11 +210,11 @@ struct StationSelectionView: View {
                 .foregroundColor(.yellow)
             
             Text("Search for a station")
-                .font(.system(size: 20, weight: .medium, design: .monospaced))
+                .font(.title3)
+                .fontWeight(.medium)
                 .foregroundColor(.white)
             
             Text("Type the name of a station in Berlin")
-                .font(.system(size: 16, design: .monospaced))
                 .foregroundColor(.gray)
         }
         .frame(maxHeight: .infinity)
