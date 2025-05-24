@@ -23,24 +23,32 @@ struct MainView: View {
         stations.first
     }
     
-    let timer = Timer.publish(every: 30, on: .main, in: .common).autoconnect()
-    
+    init() {
+        UINavigationBar.appearance().largeTitleTextAttributes = [.foregroundColor: UIColor.white]
+        UINavigationBar.appearance().titleTextAttributes = [.foregroundColor: UIColor.white]
+    }
+
     var body: some View {
         NavigationStack {
             ZStack {
-                // Dark background like a departure board
-                Color.black
-                    .ignoresSafeArea()
+               Color.black.ignoresSafeArea()
+                .foregroundColor(.white)
                 
                 VStack(spacing: 0) {
-                    headerView
-                    
                     if selectedStation != nil {
                         departureBoard
                     } else {
                         NoStationView(onSelectStation: { showStationSelection = true })
                     }
                 }
+                .navigationTitle(selectedStation?.name ?? "Departures")
+                .navigationBarItems(trailing: Button(action: {
+                    showStationSelection = true
+                }) {
+                    Image(systemName: "gearshape")
+                        .foregroundColor(.yellow)
+                        .padding()
+                })
             }
             .task {
                 await loadDepartures()
@@ -52,62 +60,10 @@ struct MainView: View {
                     }
                 }
             }
-            .onReceive(timer) { _ in
-                Task {
-                    await loadDepartures()
-                }
-            }
             .sheet(isPresented: $showStationSelection) {
                 StationSelectionView()
             }
         }
-    }
-    
-    private var headerView: some View {
-        VStack(spacing: 8) {
-            HStack {
-                VStack(alignment: .leading, spacing: 4) {
-                    Text("DEPARTURES")
-                        .fontWeight(.bold)
-                        .foregroundColor(.yellow)
-                    
-                    if let station = selectedStation {
-                        Text(station.name.uppercased())
-                            .fontWeight(.medium)
-                            .foregroundColor(.white)
-                    }
-                }
-                
-                Spacer()
-                
-                Button(action: { showStationSelection = true }) {
-                    Image(systemName: "location.fill")
-                        .font(.title2)
-                        .foregroundColor(.yellow)
-                        .padding()
-                        .background(Color.white.opacity(0.1))
-                        .clipShape(Circle())
-                }
-            }
-            .padding(.horizontal, 20)
-            .padding(.vertical, 16)
-            
-            // Last update time
-            HStack {
-                Text("Last updated: \(lastUpdate, formatter: timeFormatter)")
-                    .font(.caption)
-                    .foregroundColor(.green)
-                Spacer()
-                if isLoading {
-                    ProgressView()
-                        .progressViewStyle(CircularProgressViewStyle(tint: .green))
-                        .scaleEffect(0.7)
-                }
-            }
-            .padding(.horizontal, 20)
-            .padding(.bottom, 8)
-        }
-        .background(Color.black.opacity(0.95))
     }
     
     private var departureBoard: some View {
@@ -142,6 +98,9 @@ struct MainView: View {
                 }
             }
         }
+        .refreshable {
+            await loadDepartures()
+        }
     }
     
     private func loadDepartures() async {
@@ -150,11 +109,19 @@ struct MainView: View {
         isLoading = true
         defer { isLoading = false }
         
+        // Create a task to ensure minimum loading time
+        async let minimumLoadingTime = Task {
+            try? await Task.sleep(nanoseconds: 3_000_000_000) // 1 second
+        }
+        
         do {
             let provider = BvgProvider(apiAuthorization: ["type":"AID", "aid": "dVg4TZbW8anjx9ztPwe2uk4LVRi9wO"])
             let tripKitStation = Station(id: station.id, name: station.name)
             
             let (_, result) = await provider.queryDepartures(stationId: tripKitStation.id)
+            
+            // Wait for both the API call and minimum loading time to complete
+            _ = await (minimumLoadingTime, result)
             
             switch result {
             case .success(let stationDepartures):
