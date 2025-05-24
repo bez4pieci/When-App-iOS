@@ -69,27 +69,6 @@ struct MainView: View {
     private var departureBoard: some View {
         ScrollView {
             LazyVStack(spacing: 0) {
-                // Header row
-                HStack {
-                    Text("TIME")
-                        .frame(width: 80, alignment: .leading)
-                    Text("LINE")
-                        .frame(width: 80, alignment: .leading)
-                    Text("DESTINATION")
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                    Text("PLATFORM")
-                        .frame(width: 80, alignment: .trailing)
-                }
-                .fontWeight(.bold)
-                .foregroundColor(.yellow)
-                .padding(.horizontal, 20)
-                .padding(.vertical, 12)
-                .background(Color.white.opacity(0.05))
-                
-                Divider()
-                    .background(Color.yellow.opacity(0.5))
-                
-                // Departures
                 ForEach(Array(departures.enumerated()), id: \.offset) { index, departure in
                     DepartureRow(departure: departure)
                     

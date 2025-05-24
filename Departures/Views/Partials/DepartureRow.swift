@@ -17,34 +17,33 @@ struct DepartureRow: View {
     let departure: Departure
     
     var body: some View {
-        HStack {
-            // Time
-            Text(timeString)
-                .frame(width: 80, alignment: .leading)
-                .foregroundColor(departureColor)
-            
+        HStack(spacing: 10) {
             // Line
-            HStack(spacing: 4) {
+            HStack() {
                 Text(departure.line.label ?? "")
-                    .padding(.horizontal, 8)
+                    .padding(.horizontal, 6)
                     .padding(.vertical, 2)
-                    .font(Font.custom("DepartureMono-Regular", size: 14))
+                    .font(Font.custom("DepartureMono-Regular", size: 16))
                     .background(Color(hex: departure.line.style?.backgroundColor ?? 0x808080))
                     .foregroundColor(Color(hex: departure.line.style?.foregroundColor ?? 0x000000))
                     .cornerRadius(departure.line.style?.shape == .rounded ? 4 : departure.line.style?.shape == .circle ? 100 : 0)
+                Spacer()
             }
-            .frame(width: 80, alignment: .leading)
+            .frame(width: 50)
             
             // Destination
-            Text(departure.destination?.name ?? "Unknown")
-                .frame(maxWidth: .infinity, alignment: .leading)
+            Text(departure.destination?.name ?? "")
+                .font(.system(size: 20))
                 .foregroundColor(.white)
+                .strikethrough(departure.cancelled)
                 .lineLimit(1)
-            
-            // Platform
-            Text(departure.platform ?? "-")
-                .frame(width: 80, alignment: .trailing)
-                .foregroundColor(.white)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                        
+            // Time
+            Text(timeString)
+                .font(.system(size: 20))
+                .foregroundColor(departureColor)
+                .strikethrough(departure.cancelled)
         }
         .padding(.horizontal, 20)
         .padding(.vertical, 12)
@@ -65,25 +64,6 @@ struct DepartureRow: View {
             return .red
         }
         return .green
-    }
-    
-    private func lineBackgroundColor(for product: Product?) -> Color {
-        guard let product = product else { return .gray }
-        
-        switch product {
-        case .suburbanTrain:
-            return Color(red: 0.0, green: 0.5, blue: 0.0) // S-Bahn green
-        case .subway:
-            return Color.blue // U-Bahn blue
-        case .tram:
-            return Color.red // Tram red
-        case .bus:
-            return Color.purple // Bus purple
-        case .regionalTrain:
-            return Color.orange // Regional trains
-        default:
-            return Color.gray
-        }
     }
     
     private func formatTime(_ date: Date) -> String {
