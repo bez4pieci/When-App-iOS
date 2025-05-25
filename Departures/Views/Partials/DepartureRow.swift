@@ -2,51 +2,51 @@ import SwiftUI
 import SwiftData
 import TripKit
 
-extension Color {
-    init(hex: UInt32) {
-        self.init(
-            .sRGB,
-            red: Double((hex >> 16) & 0xff) / 255,
-            green: Double((hex >> 8) & 0xff) / 255,
-            blue: Double(hex & 0xff) / 255
-        )
-    }
-}
-
 struct DepartureRow: View {
     let departure: Departure
     
     var body: some View {
-        HStack(spacing: 10) {
+        VStack(alignment: .leading, spacing: 4) {
             // Line
+//            HStack() {
+//                Text(departure.line.label ?? "")
+//                    .padding(.horizontal, 6)
+//                    .padding(.vertical, 2)
+//                    .font(Font.custom("DepartureMono-Regular", size: 16))
+//                    .background(Color(hex: departure.line.style?.backgroundColor ?? 0x808080))
+//                    .foregroundColor(Color(hex: departure.line.style?.foregroundColor ?? 0x000000))
+//                    .cornerRadius(departure.line.style?.shape == .rounded ? 4 : departure.line.style?.shape == .circle ? 100 : 0)
+//                Spacer()
+//            }
+//            .frame(width: 50)
+            
             HStack() {
                 Text(departure.line.label ?? "")
-                    .padding(.horizontal, 6)
-                    .padding(.vertical, 2)
-                    .font(Font.custom("DepartureMono-Regular", size: 16))
-                    .background(Color(hex: departure.line.style?.backgroundColor ?? 0x808080))
-                    .foregroundColor(Color(hex: departure.line.style?.foregroundColor ?? 0x000000))
-                    .cornerRadius(departure.line.style?.shape == .rounded ? 4 : departure.line.style?.shape == .circle ? 100 : 0)
                 Spacer()
+                Text(timeString)
+                    .foregroundColor(departureColor)
             }
-            .frame(width: 50)
+            .font(Font.dLarge)
+            .strikethrough(departure.cancelled)
             
-            // Destination
-            Text(departure.destination?.name ?? "")
-                .font(.system(size: 20))
-                .foregroundColor(.white)
-                .strikethrough(departure.cancelled)
-                .lineLimit(1)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                        
-            // Time
-            Text(timeString)
-                .font(.system(size: 20))
-                .foregroundColor(departureColor)
-                .strikethrough(departure.cancelled)
+            HStack(spacing: 8) {
+                Text(departure.destination?.name ?? "")
+                    .lineLimit(1)
+                Spacer()
+                if let predictedTime = departure.predictedTime,
+                          predictedTime > departure.plannedTime {
+                    Text(formatTime(departure.plannedTime))
+                        .strikethrough()
+                        .foregroundColor(Color.dLight)
+                }
+                
+            }
+            .font(Font.dSmall)
+                
+                
         }
         .padding(.horizontal, 20)
-        .padding(.vertical, 12)
+        .padding(.vertical, 16)
     }
     
     private var timeString: String {
@@ -57,13 +57,11 @@ struct DepartureRow: View {
     }
     
     private var departureColor: Color {
-        if departure.cancelled {
-            return .red.opacity(0.5)
-        } else if let predictedTime = departure.predictedTime,
+        if let predictedTime = departure.predictedTime,
                   predictedTime > departure.plannedTime {
             return .red
         }
-        return .green
+        return Color.dDefault
     }
     
     private func formatTime(_ date: Date) -> String {

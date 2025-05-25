@@ -5,50 +5,45 @@
 //  Created by Ernests Karlsons on 24.05.25.
 //
 
-
-import SwiftUI
 import SwiftData
+import SwiftUI
 import TripKit
 
 struct MainView: View {
     @Environment(\.modelContext) private var modelContext
     @Query(sort: \Station.selectedAt, order: .reverse) private var stations: [Station]
-    
+
     @State private var departures: [Departure] = []
     @State private var isLoading = false
     @State private var showStationSelection = false
     @State private var lastUpdate = Date()
-    
+
     private var selectedStation: Station? {
         stations.first
-    }
-    
-    init() {
-        UINavigationBar.appearance().largeTitleTextAttributes = [.foregroundColor: UIColor.white]
-        UINavigationBar.appearance().titleTextAttributes = [.foregroundColor: UIColor.white]
     }
 
     var body: some View {
         NavigationStack {
             ZStack {
-               Color.black.ignoresSafeArea()
-                .foregroundColor(.white)
-                
+                Color.yellow.ignoresSafeArea()
+
                 VStack(spacing: 0) {
                     if selectedStation != nil {
-                        departureBoard
+                        DepartureBoardView(
+                            departures: departures,
+                            onRefresh: loadDepartures
+                        )
                     } else {
                         NoStationView(onSelectStation: { showStationSelection = true })
                     }
                 }
                 .navigationTitle(selectedStation?.name ?? "Departures")
-                .navigationBarItems(trailing: Button(action: {
-                    showStationSelection = true
-                }) {
-                    Image(systemName: "gearshape")
-                        .foregroundColor(.yellow)
-                        .padding()
-                })
+                .toolbar {
+                    Button(placement: .trailing, action: { showStationSelection = true }) {
+                        Image(systemName: "gearshape")
+                            .foregroundColor(Color.dDefault)
+                    }
+                }
             }
             .task {
                 await loadDepartures()
@@ -65,43 +60,29 @@ struct MainView: View {
             }
         }
     }
-    
-    private var departureBoard: some View {
-        ScrollView {
-            LazyVStack(spacing: 0) {
-                ForEach(Array(departures.enumerated()), id: \.offset) { index, departure in
-                    DepartureRow(departure: departure)
-                    
-                    Divider()
-                        .background(Color.white.opacity(0.1))
-                }
-            }
-        }
-        .refreshable {
-            await loadDepartures()
-        }
-    }
-    
+
     private func loadDepartures() async {
         guard let station = selectedStation else { return }
-        
+
         isLoading = true
         defer { isLoading = false }
-        
+
         // Create a task to ensure minimum loading time
         async let minimumLoadingTime = Task {
-            try? await Task.sleep(nanoseconds: 3_000_000_000) // 1 second
+            try? await Task.sleep(nanoseconds: 3_000_000_000)  // 1 second
         }
-        
+
         do {
-            let provider = BvgProvider(apiAuthorization: ["type":"AID", "aid": "dVg4TZbW8anjx9ztPwe2uk4LVRi9wO"])
+            let provider = BvgProvider(apiAuthorization: [
+                "type": "AID", "aid": "dVg4TZbW8anjx9ztPwe2uk4LVRi9wO",
+            ])
             let tripKitStation = Station(id: station.id, name: station.name)
-            
+
             let (_, result) = await provider.queryDepartures(stationId: tripKitStation.id)
-            
+
             // Wait for both the API call and minimum loading time to complete
             _ = await (minimumLoadingTime, result)
-            
+
             switch result {
             case .success(let stationDepartures):
                 await MainActor.run {
@@ -117,7 +98,7 @@ struct MainView: View {
             print("Error loading departures: \(error)")
         }
     }
-    
+
     private var timeFormatter: DateFormatter {
         let formatter = DateFormatter()
         formatter.timeStyle = .medium

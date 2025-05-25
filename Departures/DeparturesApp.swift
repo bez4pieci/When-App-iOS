@@ -8,6 +8,26 @@
 import SwiftUI
 import SwiftData
 
+extension Font {
+    static let dSmall = Font.custom("DepartureMono-Regular", size: 16)
+    static let dNormal = Font.custom("DepartureMono-Regular", size: 20)
+    static let dLarge = Font.custom("DepartureMono-Regular", size: 24)
+}
+
+extension Color {
+    init(hex: UInt, alpha: Double = 1) {
+        self.init(
+            .sRGB,
+            red: Double((hex >> 16) & 0xff) / 255,
+            green: Double((hex >> 08) & 0xff) / 255,
+            blue: Double((hex >> 00) & 0xff) / 255,
+            opacity: alpha
+        )
+    }
+    static let dDefault = Color(hex: 0x000000)
+    static let dLight = Color(hex: 0x000000, alpha: 0.8)
+}
+
 @main
 struct DeparturesApp: App {
     var sharedModelContainer: ModelContainer = {
@@ -28,7 +48,7 @@ struct DeparturesApp: App {
     var body: some Scene {
         WindowGroup {
             MainView()
-                .environment(\.font, departureMonoFont)
+                .environment(\.font, Font.dNormal)
         }
         .modelContainer(sharedModelContainer)
     }
@@ -39,10 +59,11 @@ struct DeparturesApp: App {
     let container = try! ModelContainer(for: Station.self, configurations: config)
     
     // Add some sample data
-    // let sampleStation = Station(id: "900000100001", name: "Alexanderplatz")
-    // container.mainContext.insert(sampleStation)
+    let sampleStation = Station(id: "900058101", name: "S Südkreuz Bhf (Berlin)")
+    container.mainContext.insert(sampleStation)
     
     return MainView()
         .modelContainer(container)
-        .environment(\.font, Font.custom("DepartureMono-Regular", size: 20))
+        .environment(\.font, Font.dNormal)
+//        .environment(\.colorScheme, .dark)
 }

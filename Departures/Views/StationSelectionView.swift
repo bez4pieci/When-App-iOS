@@ -36,12 +36,12 @@ struct StationSelectionView: View {
                     } else if !searchResults.isEmpty {
                         resultsView
                     } else {
-                        instructionsView
+                        Spacer()
                     }
                 }
             }
-            // .navigationTitle("Select Station")
-            // .navigationBarTitleDisplayMode(.inline)
+            .navigationTitle("Select Station")
+            .navigationBarTitleDisplayMode(.automatic)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button("Cancel") {
@@ -63,9 +63,9 @@ struct StationSelectionView: View {
                 .foregroundColor(.yellow)
             
             TextField("Search for station...", text: $searchText)
-                .textFieldStyle(PlainTextFieldStyle())
+                .textFieldStyle(DefaultTextFieldStyle())
                 .foregroundColor(.white)
-                .autocapitalization(.none)
+//                .autocapitalization(.none)
                 .disableAutocorrection(true)
                 .onChange(of: searchText) { _, newValue in
                     searchTask?.cancel()
@@ -198,23 +198,6 @@ struct StationSelectionView: View {
                 .foregroundColor(.white)
             
             Text("Try a different search term")
-                .foregroundColor(.gray)
-        }
-        .frame(maxHeight: .infinity)
-    }
-    
-    private var instructionsView: some View {
-        VStack(spacing: 20) {
-            Image(systemName: "tram.fill")
-                .font(.system(size: 50))
-                .foregroundColor(.yellow)
-            
-            Text("Search for a station")
-                .font(.title3)
-                .fontWeight(.medium)
-                .foregroundColor(.white)
-            
-            Text("Type the name of a station in Berlin")
                 .foregroundColor(.gray)
         }
         .frame(maxHeight: .infinity)
