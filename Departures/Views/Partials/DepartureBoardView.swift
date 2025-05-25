@@ -8,17 +8,10 @@ struct DepartureBoardView: View {
 
     var body: some View {
         ScrollView {
-            Divider()
-                .frame(height: 1)
-                .overlay(.black.opacity(0.5))
-
             LazyVStack(spacing: 0) {
                 ForEach(Array(departures.enumerated()), id: \.offset) { index, departure in
                     DepartureRow(departure: departure)
-
-                    Divider()
-                        .frame(height: 1)
-                        .overlay(.black.opacity(0.5))
+                    DefaultDivider()
                 }
             }
         }

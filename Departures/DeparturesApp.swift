@@ -5,8 +5,8 @@
 //  Created by Ernests Karlsons on 24.05.25.
 //
 
-import SwiftUI
 import SwiftData
+import SwiftUI
 
 extension Font {
     static let dSmall = Font.custom("DepartureMono-Regular", size: 16)
@@ -25,7 +25,8 @@ extension Color {
         )
     }
     static let dDefault = Color(hex: 0x000000)
-    static let dLight = Color(hex: 0x000000, alpha: 0.8)
+    static let dMedium = Color(hex: 0x000000, alpha: 0.8)
+    static let dLight = Color(hex: 0x000000, alpha: 0.6)
 }
 
 @main
@@ -49,6 +50,7 @@ struct DeparturesApp: App {
         WindowGroup {
             MainView()
                 .environment(\.font, Font.dNormal)
+                .environment(\.colorScheme, .light)
         }
         .modelContainer(sharedModelContainer)
     }
@@ -57,13 +59,16 @@ struct DeparturesApp: App {
 #Preview {
     let config = ModelConfiguration(isStoredInMemoryOnly: true)
     let container = try! ModelContainer(for: Station.self, configurations: config)
-    
+
     // Add some sample data
-    let sampleStation = Station(id: "900058101", name: "S Südkreuz Bhf (Berlin)")
+    let sampleStation = Station(
+        id: "900058101", name: "S Südkreuz Bhf (Berlin)",
+        latitude: 52.475501,
+        longitude: 13.365548)
     container.mainContext.insert(sampleStation)
-    
+
     return MainView()
         .modelContainer(container)
         .environment(\.font, Font.dNormal)
-//        .environment(\.colorScheme, .dark)
+        .environment(\.colorScheme, .light)
 }
