@@ -36,7 +36,7 @@ struct DepartureRow: View {
                 if let predictedTime = departure.predictedTime,
                     predictedTime > departure.plannedTime
                 {
-                    Text(formatTime(departure.plannedTime))
+                    Text(departure.plannedTime.formatTime())
                         .strikethrough()
                         .foregroundColor(Color.dMedium)
                 }
@@ -51,9 +51,9 @@ struct DepartureRow: View {
 
     private var timeString: String {
         if let predictedTime = departure.predictedTime {
-            return formatTime(predictedTime)
+            return predictedTime.formatTime()
         }
-        return formatTime(departure.plannedTime)
+        return departure.plannedTime.formatTime()
     }
 
     private var departureColor: Color {
@@ -63,12 +63,5 @@ struct DepartureRow: View {
             return .red
         }
         return Color.dDefault
-    }
-
-    private func formatTime(_ date: Date) -> String {
-        let formatter = DateFormatter()
-        formatter.timeStyle = .short
-        formatter.dateStyle = .none
-        return formatter.string(from: date)
     }
 }

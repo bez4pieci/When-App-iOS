@@ -11,6 +11,7 @@ struct MainView: View {
     @State private var isLoading = false
     @State private var showStationSelection = false
     @State private var lastUpdate = Date()
+    @StateObject private var liveActivityManager = LiveActivityManager()
 
     private var selectedStation: Station? {
         stations.first
@@ -28,6 +29,24 @@ struct MainView: View {
                     )
 
                     if selectedStation != nil {
+                        // Live Activity Toggle
+                        HStack {
+                            Text("Show Live")
+                                .font(Font.dNormal)
+                                .foregroundColor(.black)
+                            Spacer()
+                            Toggle("", isOn: $liveActivityManager.isLiveActivityActive)
+                                .labelsHidden()
+                                .onChange(of: liveActivityManager.isLiveActivityActive) {
+                                    _, isActive in
+                                    handleLiveActivityToggle(isActive: isActive)
+                                }
+                        }
+                        .padding(.horizontal, 20)
+                        .padding(.vertical, 12)
+
+                        DefaultDivider()
+
                         DepartureBoardView(
                             departures: departures,
                             onRefresh: loadDepartures
@@ -51,6 +70,11 @@ struct MainView: View {
             }
             .sheet(isPresented: $showStationSelection) {
                 StationSelectionView()
+            }
+            .onReceive(NotificationCenter.default.publisher(for: .liveActivityNeedsUpdate)) { _ in
+                Task {
+                    await loadDepartures()
+                }
             }
         }
     }
@@ -79,6 +103,11 @@ struct MainView: View {
                 await MainActor.run {
                     self.departures = stationDepartures.flatMap { $0.departures }
                     self.lastUpdate = Date()
+
+                    // Update live activity if active
+                    if liveActivityManager.isLiveActivityActive {
+                        liveActivityManager.updateLiveActivity(departures: self.departures)
+                    }
                 }
             case .invalidStation:
                 print("Invalid station id")
@@ -87,6 +116,16 @@ struct MainView: View {
             }
         } catch {
             print("Error loading departures: \(error)")
+        }
+    }
+
+    private func handleLiveActivityToggle(isActive: Bool) {
+        guard let station = selectedStation else { return }
+
+        if isActive {
+            liveActivityManager.startLiveActivity(station: station, departures: departures)
+        } else {
+            liveActivityManager.stopLiveActivity()
         }
     }
 

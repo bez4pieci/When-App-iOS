@@ -5,13 +5,13 @@
 //  Created by Ernests Karlsons on 25.05.25.
 //
 
-import SwiftUI
 import SwiftData
+import SwiftUI
 import TripKit
 
 //struct DepartureRowOld: View {
 //    let departure: Departure
-//    
+//
 //    var body: some View {
 //        HStack(spacing: 10) {
 //            // Line
@@ -26,7 +26,7 @@ import TripKit
 //                Spacer()
 //            }
 //            .frame(width: 50)
-//            
+//
 //            // Destination
 //            Text(departure.destination?.name ?? "")
 //                .font(.system(size: 20))
@@ -34,7 +34,7 @@ import TripKit
 //                .strikethrough(departure.cancelled)
 //                .lineLimit(1)
 //                .frame(maxWidth: .infinity, alignment: .leading)
-//                        
+//
 //            // Time
 //            Text(timeString)
 //                .font(.system(size: 20))
@@ -44,14 +44,14 @@ import TripKit
 //        .padding(.horizontal, 20)
 //        .padding(.vertical, 12)
 //    }
-//    
+//
 //    private var timeString: String {
 //        if let predictedTime = departure.predictedTime {
 //            return formatTime(predictedTime)
 //        }
 //        return formatTime(departure.plannedTime)
 //    }
-//    
+//
 //    private var departureColor: Color {
 //        if departure.cancelled {
 //            return .red.opacity(0.5)
@@ -61,11 +61,5 @@ import TripKit
 //        }
 //        return .green
 //    }
-//    
-//    private func formatTime(_ date: Date) -> String {
-//        let formatter = DateFormatter()
-//        formatter.timeStyle = .short
-//        formatter.dateStyle = .none
-//        return formatter.string(from: date)
-//    }
+//
 //}
