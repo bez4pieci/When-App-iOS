@@ -18,10 +18,6 @@ struct MainView: View {
     @State private var isLoading = false
     @State private var showStationSelection = false
     @State private var lastUpdate = Date()
-    @State private var region = MKCoordinateRegion(
-        center: CLLocationCoordinate2D(latitude: 52.5200, longitude: 13.4050),  // Berlin center
-        span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
-    )
 
     private var selectedStation: Station? {
         stations.first
@@ -33,52 +29,10 @@ struct MainView: View {
                 Color.yellow.ignoresSafeArea()
 
                 VStack(spacing: 0) {
-                    if let station = selectedStation,
-                        let latitude = station.latitude,
-                        let longitude = station.longitude
-                    {
-                        ZStack(alignment: .topTrailing) {
-                            Map(position: .constant(.region(region))) {
-                                Marker(
-                                    station.name,
-                                    coordinate: CLLocationCoordinate2D(
-                                        latitude: latitude,
-                                        longitude: longitude
-                                    ))
-                            }
-//                            .mapStyle(.imagery(elevation: .realistic))
-                            .frame(height: 200)
-                            .allowsHitTesting(false)
-
-                            Button(action: { showStationSelection = true }) {
-                                Image(systemName: "gearshape.fill")
-                                    .font(.system(size: 24))
-                                    .foregroundColor(Color.dDefault)
-                                    .padding(8)
-                                    .background(Color.yellow)
-                                    .clipShape(Circle())
-                            }
-                            .buttonStyle(PlainButtonStyle())
-                            .padding(.top, 60)
-                            .padding(.trailing, 16)
-                        }
-                        DefaultDivider()
-
-                    } else {
-                        HStack {
-                            Spacer()
-                            Button(action: { showStationSelection = true }) {
-                                Image(systemName: "gearshape.fill")
-                                    .font(.system(size: 24))
-                                    .foregroundColor(.black)
-                                    .padding(8)
-                                    .background(Color.yellow.opacity(0.8))
-                                    .clipShape(Circle())
-                            }
-                            .padding(.top, 60)
-                            .padding(.trailing, 16)
-                        }
-                    }
+                    HeaderMapView(
+                        station: selectedStation,
+                        onGearButtonTap: { showStationSelection = true }
+                    )
 
                     if selectedStation != nil {
                         DepartureBoardView(
@@ -95,28 +49,7 @@ struct MainView: View {
             .task {
                 await loadDepartures()
             }
-            .onAppear {
-                if let station = selectedStation,
-                    let latitude = station.latitude,
-                    let longitude = station.longitude
-                {
-                    region = MKCoordinateRegion(
-                        center: CLLocationCoordinate2D(latitude: latitude, longitude: longitude),
-                        span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
-                    )
-                }
-            }
             .onChange(of: selectedStation) { _, newStation in
-                if let station = newStation,
-                    let latitude = station.latitude,
-                    let longitude = station.longitude
-                {
-                    dump(station)
-                    region = MKCoordinateRegion(
-                        center: CLLocationCoordinate2D(latitude: latitude, longitude: longitude),
-                        span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
-                    )
-                }
                 if newStation != nil {
                     Task {
                         await loadDepartures()
