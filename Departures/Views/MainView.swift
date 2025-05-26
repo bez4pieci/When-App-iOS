@@ -5,13 +5,13 @@ import TripKit
 
 struct MainView: View {
     @Environment(\.modelContext) private var modelContext
+    @EnvironmentObject private var liveActivityManager: LiveActivityManager
     @Query(sort: \Station.selectedAt, order: .reverse) private var stations: [Station]
 
     @State private var departures: [Departure] = []
     @State private var isLoading = false
     @State private var showStationSelection = false
     @State private var lastUpdate = Date()
-    @StateObject private var liveActivityManager = LiveActivityManager()
 
     private var selectedStation: Station? {
         stations.first
@@ -33,7 +33,7 @@ struct MainView: View {
                         HStack {
                             Text("Show Live")
                                 .font(Font.dNormal)
-                                .foregroundColor(.black)
+                                .foregroundColor(Color.dDefault)
                             Spacer()
                             Toggle("", isOn: $liveActivityManager.isLiveActivityActive)
                                 .labelsHidden()

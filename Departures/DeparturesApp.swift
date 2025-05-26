@@ -3,6 +3,8 @@ import SwiftUI
 
 @main
 struct DeparturesApp: App {
+    @StateObject private var liveActivityManager = LiveActivityManager()
+
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
             Station.self
@@ -23,6 +25,7 @@ struct DeparturesApp: App {
             MainView()
                 .environment(\.font, Font.dNormal)
                 .environment(\.colorScheme, .light)
+                .environmentObject(liveActivityManager)
         }
         .modelContainer(sharedModelContainer)
     }

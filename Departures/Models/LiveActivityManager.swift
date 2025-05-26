@@ -30,6 +30,19 @@ class LiveActivityManager: ObservableObject {
                 content: .init(state: contentState, staleDate: Date().addingTimeInterval(60))
             )
 
+            // Observe activity state changes
+            Task {
+                for await state in activity.activityStateUpdates {
+                    await MainActor.run {
+                        self.isLiveActivityActive = state == .active
+                        if state != .active {
+                            self.currentActivity = nil
+                            self.stopUpdateTimer()
+                        }
+                    }
+                }
+            }
+
             currentActivity = activity
             isLiveActivityActive = true
 
@@ -117,25 +130,4 @@ class LiveActivityManager: ObservableObject {
 // Notification for updates
 extension Notification.Name {
     static let liveActivityNeedsUpdate = Notification.Name("liveActivityNeedsUpdate")
-}
-
-// Copy the activity attributes struct here so it's available in the main app
-struct DeparturesActivityAttributes: ActivityAttributes {
-    public struct ContentState: Codable, Hashable {
-        var departures: [DepartureInfo]
-        var lastUpdate: Date
-
-        struct DepartureInfo: Codable, Hashable {
-            let lineLabel: String
-            let destination: String
-            let plannedTime: Date
-            let predictedTime: Date?
-            let isCancelled: Bool
-            let lineBackgroundColor: Int
-            let lineForegroundColor: Int
-        }
-    }
-
-    let stationName: String
-    let stationId: String
 }
