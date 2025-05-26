@@ -11,6 +11,7 @@ struct StationSelectionView: View {
     @State private var searchResults: [SuggestedLocation] = []
     @State private var isSearching = false
     @State private var searchTask: Task<Void, Never>?
+    @State private var debounceTimer: Timer?
 
     var body: some View {
         NavigationStack {
@@ -24,8 +25,6 @@ struct StationSelectionView: View {
                     // Results
                     if isSearching {
                         loadingView
-                    } else if searchResults.isEmpty && !searchText.isEmpty {
-                        emptyResultsView
                     } else if !searchResults.isEmpty {
                         resultsView
                     } else {
@@ -67,9 +66,18 @@ struct StationSelectionView: View {
                 .disableAutocorrection(true)
                 .focused($isSearchFieldFocused)
                 .onChange(of: searchText) { _, newValue in
+                    // Cancel any existing timer
+                    debounceTimer?.invalidate()
+
+                    // Cancel any existing search task
                     searchTask?.cancel()
-                    searchTask = Task {
-                        await performSearch(query: newValue)
+
+                    // Create a new timer that will trigger the search after 200ms
+                    debounceTimer = Timer.scheduledTimer(withTimeInterval: 0.2, repeats: false) {
+                        _ in
+                        searchTask = Task {
+                            await performSearch(query: newValue)
+                        }
                     }
                 }
 
@@ -151,46 +159,19 @@ struct StationSelectionView: View {
 
     private var loadingView: some View {
         VStack {
-            ProgressView()
-                .progressViewStyle(CircularProgressViewStyle(tint: .yellow))
-                .scaleEffect(1.5)
-                .padding()
-
-            Text("Searching...")
-                .foregroundColor(.gray)
-        }
-        .frame(maxHeight: .infinity)
-    }
-
-    private var emptyResultsView: some View {
-        VStack(spacing: 20) {
-            Image(systemName: "magnifyingglass")
-                .font(.system(size: 50))
-                .foregroundColor(.gray)
-
-            Text("No stations found")
-                .font(.title3)
-                .fontWeight(.medium)
-                .foregroundColor(.white)
-
-            Text("Try a different search term")
-                .foregroundColor(.gray)
+            Text("Searching...").foregroundColor(Color.dLight)
         }
         .frame(maxHeight: .infinity)
     }
 
     private func performSearch(query: String) async {
-        guard !query.isEmpty else {
-            await MainActor.run {
-                searchResults = []
-                isSearching = false
-            }
+        if query.isEmpty {
+            searchResults = []
+            isSearching = false
             return
         }
 
-        await MainActor.run {
-            isSearching = true
-        }
+        isSearching = true
 
         do {
             let provider = BvgProvider(apiAuthorization: AppConfig.bvgApiAuthorization)
@@ -198,27 +179,17 @@ struct StationSelectionView: View {
 
             switch result {
             case .success(let locations):
-                await MainActor.run {
-                    self.searchResults = locations.filter { location in
-                        // Filter for stations only
-                        location.location.type == .station
-                    }
-                    self.isSearching = false
-                }
+                searchResults = locations.filter { $0.location.type == .station }
             case .failure(let error):
                 print("Search error: \(error)")
-                await MainActor.run {
-                    self.searchResults = []
-                    self.isSearching = false
-                }
+                searchResults = []
             }
         } catch {
             print("Search error: \(error)")
-            await MainActor.run {
-                self.searchResults = []
-                self.isSearching = false
-            }
+            searchResults = []
         }
+
+        isSearching = false
     }
 
     private func selectStation(_ location: Location) {
