@@ -67,9 +67,7 @@ struct MainView: View {
         }
 
         do {
-            let provider = BvgProvider(apiAuthorization: [
-                "type": "AID", "aid": "dVg4TZbW8anjx9ztPwe2uk4LVRi9wO",
-            ])
+            let provider = BvgProvider(apiAuthorization: AppConfig.bvgApiAuthorization)
 
             let (_, result) = await provider.queryDepartures(stationId: station.id)
 
