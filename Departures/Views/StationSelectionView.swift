@@ -1,10 +1,3 @@
-//
-//  StationSelectionView.swift
-//  Departures
-//
-//  Created on 24.05.25.
-//
-
 import SwiftData
 import SwiftUI
 import TripKit
@@ -26,7 +19,6 @@ struct StationSelectionView: View {
                     .ignoresSafeArea()
 
                 VStack(spacing: 0) {
-                    // Search bar
                     searchBar
 
                     // Results

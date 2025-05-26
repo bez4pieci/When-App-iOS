@@ -1,10 +1,3 @@
-//
-//  MainView 2.swift
-//  Departures
-//
-//  Created by Ernests Karlsons on 24.05.25.
-//
-
 import MapKit
 import SwiftData
 import SwiftUI
