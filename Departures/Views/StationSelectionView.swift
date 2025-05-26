@@ -22,7 +22,6 @@ struct StationSelectionView: View {
                 VStack(spacing: 0) {
                     searchBar
 
-                    // Results
                     if isSearching {
                         loadingView
                     } else if !searchResults.isEmpty {
@@ -66,13 +65,8 @@ struct StationSelectionView: View {
                 .disableAutocorrection(true)
                 .focused($isSearchFieldFocused)
                 .onChange(of: searchText) { _, newValue in
-                    // Cancel any existing timer
                     debounceTimer?.invalidate()
-
-                    // Cancel any existing search task
                     searchTask?.cancel()
-
-                    // Create a new timer that will trigger the search after 200ms
                     debounceTimer = Timer.scheduledTimer(withTimeInterval: 0.2, repeats: false) {
                         _ in
                         searchTask = Task {
