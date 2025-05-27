@@ -1,3 +1,4 @@
+import PhosphorSwift
 import SwiftData
 import SwiftUI
 import TripKit
@@ -52,9 +53,9 @@ struct StationSelectionView: View {
         VStack {
             DefaultDivider()
 
-            HStack {
-                Image(systemName: "magnifyingglass")
-                    .foregroundColor(Color.dDefault)
+            HStack(spacing: 12) {
+                Ph.mapPinSimple.regular
+                    .frame(width: 24, height: 24)
 
                 TextField(
                     "", text: $searchText,
@@ -80,9 +81,11 @@ struct StationSelectionView: View {
                         searchText = ""
                         searchResults = []
                     }) {
-                        Image(systemName: "xmark.circle.fill")
-                            .foregroundColor(.gray)
+                        Ph.x.regular
+                            .frame(width: 24, height: 24)
+                            .foregroundColor(Color.dLight)
                     }
+                    .fixedSize()
                 }
             }
             .padding()

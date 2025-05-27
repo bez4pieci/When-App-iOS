@@ -19,6 +19,7 @@
 		134693D52DE5017B00617A4D /* DateExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 134693D32DE5017B00617A4D /* DateExtensions.swift */; };
 		134693D82DE502FB00617A4D /* DeparturesActivityAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 134693D62DE502FB00617A4D /* DeparturesActivityAttributes.swift */; };
 		134693D92DE502FB00617A4D /* DeparturesActivityAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 134693D62DE502FB00617A4D /* DeparturesActivityAttributes.swift */; };
+		13ADDF0F2DE5A903000F9376 /* PhosphorSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 13ADDF0E2DE5A903000F9376 /* PhosphorSwift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -113,6 +114,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1307F7B42DE1F61B009F0C4C /* TripKit in Frameworks */,
+				13ADDF0F2DE5A903000F9376 /* PhosphorSwift in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -211,6 +213,7 @@
 			name = Departures;
 			packageProductDependencies = (
 				1307F7B32DE1F61B009F0C4C /* TripKit */,
+				13ADDF0E2DE5A903000F9376 /* PhosphorSwift */,
 			);
 			productName = Departures;
 			productReference = 1307F7782DE1F376009F0C4C /* Departures.app */;
@@ -268,6 +271,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				1307F7B22DE1F61B009F0C4C /* XCRemoteSwiftPackageReference "tripkit" */,
+				13ADDF0D2DE5A903000F9376 /* XCRemoteSwiftPackageReference "swift" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 1307F7792DE1F376009F0C4C /* Products */;
@@ -462,12 +466,16 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Departures/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Departures;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.navigation";
 				INFOPLIST_KEY_NSSupportsLiveActivities = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UIStatusBarStyle = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -496,12 +504,16 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Departures/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Departures;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.navigation";
 				INFOPLIST_KEY_NSSupportsLiveActivities = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UIStatusBarStyle = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -621,6 +633,14 @@
 				minimumVersion = 1.17.0;
 			};
 		};
+		13ADDF0D2DE5A903000F9376 /* XCRemoteSwiftPackageReference "swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/phosphor-icons/swift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.1.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -633,6 +653,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 1307F7B22DE1F61B009F0C4C /* XCRemoteSwiftPackageReference "tripkit" */;
 			productName = TripKit;
+		};
+		13ADDF0E2DE5A903000F9376 /* PhosphorSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 13ADDF0D2DE5A903000F9376 /* XCRemoteSwiftPackageReference "swift" */;
+			productName = PhosphorSwift;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

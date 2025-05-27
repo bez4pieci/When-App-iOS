@@ -1,26 +1,10 @@
 import MapKit
+import PhosphorSwift
 import SwiftUI
 
 struct HeaderMapView: View {
     let station: Station?
     let onGearButtonTap: () -> Void
-
-    private var region: MKCoordinateRegion {
-        if let station = station,
-            let latitude = station.latitude,
-            let longitude = station.longitude
-        {
-            return MKCoordinateRegion(
-                center: CLLocationCoordinate2D(latitude: latitude, longitude: longitude),
-                span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
-            )
-        }
-        // Default to Berlin center if no station
-        return MKCoordinateRegion(
-            center: CLLocationCoordinate2D(latitude: 52.5200, longitude: 13.4050),
-            span: MKCoordinateSpan(latitudeDelta: 0.1, longitudeDelta: 0.1)
-        )
-    }
 
     var body: some View {
         if let station = station,
@@ -28,7 +12,15 @@ struct HeaderMapView: View {
             let longitude = station.longitude
         {
             ZStack(alignment: .topTrailing) {
-                Map(position: .constant(.region(region))) {
+                Map(
+                    position: .constant(
+                        .region(
+                            MKCoordinateRegion(
+                                center: CLLocationCoordinate2D(
+                                    latitude: latitude, longitude: longitude),
+                                span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
+                            )))
+                ) {
                     Marker(
                         station.name,
                         coordinate: CLLocationCoordinate2D(
@@ -52,14 +44,13 @@ struct HeaderMapView: View {
 
     private var gearButton: some View {
         Button(action: onGearButtonTap) {
-            Image(systemName: "gearshape.fill")
-                .font(.system(size: 24))
-                .foregroundColor(station != nil ? Color.dDefault : .black)
-                .padding(8)
-                .background(station != nil ? Color.yellow : Color.yellow.opacity(0.8))
-                .clipShape(Circle())
+            Ph.faders.regular.color(Color.dDefault)
+                .frame(width: 24, height: 24)
+                .padding(12)
         }
-        .buttonStyle(PlainButtonStyle())
+        .buttonStyle(.plain)
+        .background(Color.yellow)
+        .clipShape(Circle())
         .padding(.top, 60)
         .padding(.trailing, 16)
     }
@@ -68,10 +59,10 @@ struct HeaderMapView: View {
 #Preview {
     HeaderMapView(
         station: Station(
-            id: "1",
-            name: "Alexanderplatz",
-            latitude: 52.5219,
-            longitude: 13.4132
+            id: "900100003",
+            name: "S+U Alexanderplatz Bhf (Berlin)",
+            latitude: 52.521508,
+            longitude: 13.411267
         ),
         onGearButtonTap: {}
     )

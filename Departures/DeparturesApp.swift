@@ -3,7 +3,7 @@ import SwiftUI
 
 @main
 struct DeparturesApp: App {
-    @StateObject private var liveActivityManager = LiveActivityManager()
+    var liveActivityManager = LiveActivityManager()
 
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
@@ -18,13 +18,10 @@ struct DeparturesApp: App {
         }
     }()
 
-    let departureMonoFont = Font.custom("DepartureMono-Regular", size: 16)
-
     var body: some Scene {
         WindowGroup {
             MainView()
                 .environment(\.font, Font.dNormal)
-                .environment(\.colorScheme, .light)
                 .environmentObject(liveActivityManager)
         }
         .modelContainer(sharedModelContainer)
@@ -45,5 +42,5 @@ struct DeparturesApp: App {
     return MainView()
         .modelContainer(container)
         .environment(\.font, Font.dNormal)
-        .environment(\.colorScheme, .light)
+        .environmentObject(LiveActivityManager())
 }
