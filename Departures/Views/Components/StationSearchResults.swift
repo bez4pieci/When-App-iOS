@@ -37,8 +37,6 @@ struct StationSearchResults: View {
         Button(action: {
             if let onSelect = onSelect {
                 onSelect(location)
-            } else {
-                selectStation(location)
             }
         }) {
             HStack {
@@ -83,27 +81,6 @@ struct StationSearchResults: View {
         case .highSpeedTrain: return "ICE"
         case .onDemand: return "On Demand"
         case .cablecar: return "Cable Car"
-        }
-    }
-
-    private func selectStation(_ location: Location) {
-        print("Selecting station: \(location.coord?.lat ?? 0), \(location.coord?.lon ?? 0)")
-        let station = Station(
-            id: location.id ?? UUID().uuidString,
-            name: location.getUniqueShortName(),
-            latitude: location.coord?.lat != nil ? Double(location.coord!.lat) / 1000000.0 : nil,
-            longitude: location.coord?.lon != nil ? Double(location.coord!.lon) / 1000000.0 : nil
-        )
-        print("Selecting station: \(station.latitude), \(station.longitude)")
-
-        station.selectedAt = Date()
-        modelContext.insert(station)
-
-        do {
-            try modelContext.save()
-            dismiss()
-        } catch {
-            print("Error saving station: \(error)")
         }
     }
 }

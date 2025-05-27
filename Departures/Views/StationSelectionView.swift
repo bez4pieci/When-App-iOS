@@ -258,29 +258,17 @@ struct StationSelectionView: View {
 
         isSearching = true
 
-        do {
-            let provider = BvgProvider(apiAuthorization: AppConfig.bvgApiAuthorization)
-            let (_, result) = await provider.suggestLocations(constraint: query)
+        let provider = BvgProvider(apiAuthorization: AppConfig.bvgApiAuthorization)
+        let (_, result) = await provider.suggestLocations(constraint: query)
 
-            switch result {
-            case .success(let locations):
-                await MainActor.run {
-                    searchResults = locations.filter { $0.location.type == .station }
-                    isSearching = false
-                }
-            case .failure(let error):
-                print("Search error: \(error)")
-                await MainActor.run {
-                    searchResults = []
-                    isSearching = false
-                }
-            }
-        } catch {
+        switch result {
+        case .success(let locations):
+            searchResults = locations.filter { $0.location.type == .station }
+            isSearching = false
+        case .failure(let error):
             print("Search error: \(error)")
-            await MainActor.run {
-                searchResults = []
-                isSearching = false
-            }
+            searchResults = []
+            isSearching = false
         }
     }
 }

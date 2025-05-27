@@ -42,32 +42,27 @@ class DeparturesViewModel {
             try? await Task.sleep(nanoseconds: 1_000_000_000)  // 1 second
         }
 
-        do {
-            let provider = BvgProvider(apiAuthorization: AppConfig.bvgApiAuthorization)
+        let provider = BvgProvider(apiAuthorization: AppConfig.bvgApiAuthorization)
+        let (_, result) = await provider.queryDepartures(stationId: station.id)
 
-            let (_, result) = await provider.queryDepartures(stationId: station.id)
+        // Wait for both the API call and minimum loading time to complete
+        _ = await (minimumLoadingTime, result)
 
-            // Wait for both the API call and minimum loading time to complete
-            _ = await (minimumLoadingTime, result)
+        switch result {
+        case .success(let stationDepartures):
+            await MainActor.run {
+                self.departures = stationDepartures.flatMap { $0.departures }
+                self.lastUpdate = Date()
 
-            switch result {
-            case .success(let stationDepartures):
-                await MainActor.run {
-                    self.departures = stationDepartures.flatMap { $0.departures }
-                    self.lastUpdate = Date()
-
-                    // Update live activity if active with filtered departures
-                    if liveActivityManager.isLiveActivityActive {
-                        liveActivityManager.updateLiveActivity(
-                            departures: self.filteredDepartures)
-                    }
+                // Update live activity if active with filtered departures
+                if liveActivityManager.isLiveActivityActive {
+                    liveActivityManager.updateLiveActivity(
+                        departures: self.filteredDepartures)
                 }
-            case .invalidStation:
-                print("Invalid station id")
-            case .failure(let error):
-                print("Error loading departures: \(error)")
             }
-        } catch {
+        case .invalidStation:
+            print("Invalid station id")
+        case .failure(let error):
             print("Error loading departures: \(error)")
         }
     }

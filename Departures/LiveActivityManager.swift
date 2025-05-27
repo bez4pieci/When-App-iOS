@@ -112,7 +112,7 @@ class LiveActivityManager: ObservableObject {
         stopUpdateTimer()
 
         // Update every 30 seconds
-        updateTimer = Timer.scheduledTimer(withTimeInterval: 30.0, repeats: true) { [weak self] _ in
+        updateTimer = Timer.scheduledTimer(withTimeInterval: 30.0, repeats: true) { _ in
             NotificationCenter.default.post(name: .liveActivityNeedsUpdate, object: nil)
         }
     }
