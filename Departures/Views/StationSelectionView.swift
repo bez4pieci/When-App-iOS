@@ -107,6 +107,7 @@ struct StationSelectionView: View {
                 Spacer()
                 Toggle("", isOn: $settings.showCancelledDepartures)
                     .labelsHidden()
+                    .tint(Color.dDefault)
             }
             .padding(.horizontal, 20)
             .padding(.vertical, 20)
@@ -127,6 +128,7 @@ struct StationSelectionView: View {
                 )
             )
             .labelsHidden()
+            .tint(Color.dDefault)
         }
     }
 

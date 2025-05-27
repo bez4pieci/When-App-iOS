@@ -16,6 +16,7 @@ struct DepartureBoard: View {
             Spacer()
             Toggle("", isOn: $liveActivityManager.isLiveActivityActive)
                 .labelsHidden()
+                .tint(Color.dDefault)
                 .onChange(of: liveActivityManager.isLiveActivityActive) {
                     _, isActive in
                     handleLiveActivityToggle(isActive: isActive, station: station)
