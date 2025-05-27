@@ -15,7 +15,7 @@ final class Station {
     var latitude: Double?
     var longitude: Double?
     var selectedAt: Date
-    
+
     init(id: String, name: String, latitude: Double? = nil, longitude: Double? = nil) {
         self.id = id
         self.name = name
@@ -23,4 +23,4 @@ final class Station {
         self.longitude = longitude
         self.selectedAt = Date()
     }
-} 
+}

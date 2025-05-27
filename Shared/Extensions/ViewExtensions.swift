@@ -23,3 +23,11 @@ extension Font {
     static let dNormal = Font.custom("DepartureMono-Regular", size: 20)
     static let dLarge = Font.custom("DepartureMono-Regular", size: 24)
 }
+
+// MARK: - TextFieldStyle
+struct DefaultTextFieldStyle: TextFieldStyle {
+    func _body(configuration: TextField<Self._Label>) -> some View {
+        configuration
+            .font(Font.dNormal)
+    }
+}

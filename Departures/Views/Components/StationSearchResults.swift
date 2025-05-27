@@ -7,13 +7,26 @@ struct StationSearchResults: View {
     @Environment(\.dismiss) private var dismiss
 
     let searchResults: [SuggestedLocation]
+    let maxResults: Int?
+    let onSelect: ((Location) -> Void)?
+
+    init(
+        searchResults: [SuggestedLocation], maxResults: Int? = nil,
+        onSelect: ((Location) -> Void)? = nil
+    ) {
+        self.searchResults = searchResults
+        self.maxResults = maxResults
+        self.onSelect = onSelect
+    }
 
     var body: some View {
-        ScrollView {
-            LazyVStack(spacing: 0) {
-                ForEach(Array(searchResults.enumerated()), id: \.offset) {
-                    index, suggestedLocation in
-                    stationRow(suggestedLocation.location)
+        LazyVStack(spacing: 0) {
+            let results =
+                maxResults != nil ? Array(searchResults.prefix(maxResults!)) : searchResults
+            ForEach(Array(results.enumerated()), id: \.offset) {
+                index, suggestedLocation in
+                stationRow(suggestedLocation.location)
+                if index < results.count - 1 {
                     DefaultDivider()
                 }
             }
@@ -21,10 +34,17 @@ struct StationSearchResults: View {
     }
 
     private func stationRow(_ location: Location) -> some View {
-        Button(action: { selectStation(location) }) {
+        Button(action: {
+            if let onSelect = onSelect {
+                onSelect(location)
+            } else {
+                selectStation(location)
+            }
+        }) {
             HStack {
                 VStack(alignment: .leading, spacing: 4) {
                     Text(location.getUniqueShortName())
+                        .font(Font.dNormal)
                         .foregroundColor(Color.dDefault)
 
                     if let products = location.products, !products.isEmpty {
@@ -45,7 +65,8 @@ struct StationSearchResults: View {
                 Spacer()
             }
             .padding(.horizontal, 20)
-            .padding(.vertical, 20)
+            .padding(.vertical, 12)
+            .background(Color.white)
             .contentShape(Rectangle())
         }
         .buttonStyle(PlainButtonStyle())

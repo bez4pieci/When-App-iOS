@@ -7,6 +7,7 @@ struct MainView: View {
     @Environment(\.modelContext) private var modelContext
     @EnvironmentObject private var liveActivityManager: LiveActivityManager
     @Query(sort: \Station.selectedAt, order: .reverse) private var stations: [Station]
+    @StateObject private var settings = Settings()
 
     @State private var departures: [Departure] = []
     @State private var isLoading = false
@@ -15,6 +16,23 @@ struct MainView: View {
 
     private var selectedStation: Station? {
         stations.first
+    }
+
+    private var filteredDepartures: [Departure] {
+        departures.filter { departure in
+            // Filter by cancelled status
+            if !settings.showCancelledDepartures && departure.cancelled {
+                return false
+            }
+
+            // Filter by transport type
+            if let product = departure.line.product {
+                return settings.isProductEnabled(product)
+            }
+
+            // If no product info, show by default
+            return true
+        }
     }
 
     var body: some View {
@@ -48,7 +66,7 @@ struct MainView: View {
                         DefaultDivider()
 
                         DepartureBoardView(
-                            departures: departures,
+                            departures: filteredDepartures,
                             onRefresh: loadDepartures
                         )
                     } else {
@@ -70,6 +88,7 @@ struct MainView: View {
             }
             .sheet(isPresented: $showStationSelection) {
                 StationSelectionView()
+                    .environmentObject(settings)
             }
             .onReceive(NotificationCenter.default.publisher(for: .liveActivityNeedsUpdate)) { _ in
                 Task {
@@ -87,7 +106,7 @@ struct MainView: View {
 
         // Create a task to ensure minimum loading time
         async let minimumLoadingTime = Task {
-            try? await Task.sleep(nanoseconds: 3_000_000_000)  // 1 second
+            try? await Task.sleep(nanoseconds: 1_000_000_000)  // 1 second
         }
 
         do {
@@ -104,9 +123,9 @@ struct MainView: View {
                     self.departures = stationDepartures.flatMap { $0.departures }
                     self.lastUpdate = Date()
 
-                    // Update live activity if active
+                    // Update live activity if active with filtered departures
                     if liveActivityManager.isLiveActivityActive {
-                        liveActivityManager.updateLiveActivity(departures: self.departures)
+                        liveActivityManager.updateLiveActivity(departures: self.filteredDepartures)
                     }
                 }
             case .invalidStation:
@@ -123,7 +142,7 @@ struct MainView: View {
         guard let station = selectedStation else { return }
 
         if isActive {
-            liveActivityManager.startLiveActivity(station: station, departures: departures)
+            liveActivityManager.startLiveActivity(station: station, departures: filteredDepartures)
         } else {
             liveActivityManager.stopLiveActivity()
         }
