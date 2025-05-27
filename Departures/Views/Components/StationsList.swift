@@ -62,8 +62,8 @@ struct StationsList: View {
                 }
                 Spacer()
             }
-            .padding(.horizontal, 20)
             .padding(.vertical, 12)
+            .padding(.horizontal, 20)
             .background(Color.white)
             .contentShape(Rectangle())
         }
