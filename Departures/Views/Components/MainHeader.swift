@@ -2,7 +2,7 @@ import MapKit
 import PhosphorSwift
 import SwiftUI
 
-struct HeaderMapView: View {
+struct MainHeader: View {
     let station: Station?
     let onGearButtonTap: () -> Void
 
@@ -57,7 +57,7 @@ struct HeaderMapView: View {
 }
 
 #Preview {
-    HeaderMapView(
+    MainHeader(
         station: Station(
             id: "900100003",
             name: "S+U Alexanderplatz Bhf (Berlin)",

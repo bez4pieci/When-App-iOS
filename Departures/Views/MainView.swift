@@ -22,7 +22,7 @@ struct MainView: View {
                 Color.yellow.ignoresSafeArea()
 
                 VStack(spacing: 0) {
-                    HeaderMapView(
+                    MainHeader(
                         station: selectedStation,
                         onGearButtonTap: { showStationSelection = true }
                     )
@@ -40,7 +40,7 @@ struct MainView: View {
                             }
                         )
                     } else {
-                        NoStationView(onSelectStation: { showStationSelection = true })
+                        NoStation(onSelectStation: { showStationSelection = true })
                     }
                 }
                 .ignoresSafeArea()

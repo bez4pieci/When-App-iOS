@@ -2,7 +2,7 @@ import SwiftData
 import SwiftUI
 import TripKit
 
-struct StationSearchResults: View {
+struct StationsList: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
 

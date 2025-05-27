@@ -10,11 +10,11 @@ struct StationSelectionView: View {
     @EnvironmentObject var settings: Settings
 
     @State private var searchText = ""
-    @State private var searchResults: [SuggestedLocation] = []
+    @State private var suggestedLocations: [SuggestedLocation] = []
+    @State private var showingSuggestedLocations = false
     @State private var isSearching = false
     @State private var searchTask: Task<Void, Never>?
     @State private var debounceTimer: Timer?
-    @State private var showingSearchResults = false
     @FocusState private var isSearchFieldFocused
 
     private var selectedStation: Station? {
@@ -33,7 +33,7 @@ struct StationSelectionView: View {
                         stationSelectionSection
 
                         // Show search results inline if searching
-                        if showingSearchResults && !searchText.isEmpty {
+                        if showingSuggestedLocations && !searchText.isEmpty {
                             VStack(spacing: 0) {
                                 if isSearching {
                                     HStack {
@@ -45,9 +45,9 @@ struct StationSelectionView: View {
                                     .padding(.horizontal, 20)
                                     .padding(.vertical, 12)
                                     .background(Color.white)
-                                } else if !searchResults.isEmpty {
-                                    StationSearchResults(
-                                        searchResults: searchResults,
+                                } else if !suggestedLocations.isEmpty {
+                                    StationsList(
+                                        searchResults: suggestedLocations,
                                         maxResults: 5,
                                         onSelect: { location in
                                             selectStation(location)
@@ -112,15 +112,15 @@ struct StationSelectionView: View {
                     }
 
                     // Show search results when typing
-                    showingSearchResults = true
+                    showingSuggestedLocations = true
 
                     // Debounce search
                     debounceTimer?.invalidate()
                     searchTask?.cancel()
 
                     if newValue.isEmpty {
-                        searchResults = []
-                        showingSearchResults = false
+                        suggestedLocations = []
+                        showingSuggestedLocations = false
                     } else {
                         debounceTimer = Timer.scheduledTimer(withTimeInterval: 0.3, repeats: false)
                         { _ in
@@ -135,8 +135,8 @@ struct StationSelectionView: View {
                     Button(action: {
                         // Clear search and selected station
                         searchText = ""
-                        searchResults = []
-                        showingSearchResults = false
+                        suggestedLocations = []
+                        showingSuggestedLocations = false
 
                         if let station = selectedStation {
                             modelContext.delete(station)
@@ -235,8 +235,8 @@ struct StationSelectionView: View {
         do {
             try modelContext.save()
 
-            searchResults = []
-            showingSearchResults = false
+            suggestedLocations = []
+            showingSuggestedLocations = false
             isSearchFieldFocused = false
 
             // Update search text with selected station name
@@ -251,7 +251,7 @@ struct StationSelectionView: View {
 
     private func performSearch(query: String) async {
         if query.isEmpty {
-            searchResults = []
+            suggestedLocations = []
             isSearching = false
             return
         }
@@ -263,11 +263,11 @@ struct StationSelectionView: View {
 
         switch result {
         case .success(let locations):
-            searchResults = locations.filter { $0.location.type == .station }
+            suggestedLocations = locations.filter { $0.location.type == .station }
             isSearching = false
         case .failure(let error):
             print("Search error: \(error)")
-            searchResults = []
+            suggestedLocations = []
             isSearching = false
         }
     }
