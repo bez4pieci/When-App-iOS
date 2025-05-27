@@ -147,11 +147,4 @@ struct MainView: View {
             liveActivityManager.stopLiveActivity()
         }
     }
-
-    private var timeFormatter: DateFormatter {
-        let formatter = DateFormatter()
-        formatter.timeStyle = .medium
-        formatter.dateStyle = .none
-        return formatter
-    }
 }
