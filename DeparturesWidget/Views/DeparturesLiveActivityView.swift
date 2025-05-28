@@ -13,9 +13,11 @@ struct DeparturesLiveActivityView: View {
                     .font(Font.dNormal)
                     .foregroundColor(Color.dDefault)
                 Spacer()
-                // Text("Updated \(context.state.lastUpdate, style: .relative) ago")
-                //     .font(.caption)
-                //     .foregroundColor(.black.opacity(0.6))
+                Text(context.state.lastUpdate, style: .timer)
+                    .font(Font.dSmall)
+                    .foregroundColor(Color.dDefault)
+                    .multilineTextAlignment(.trailing)
+
             }
 
             // Departures list
@@ -24,10 +26,12 @@ struct DeparturesLiveActivityView: View {
                     index, departure in
                     HStack(spacing: 8) {
                         Text(departure.lineLabel)
+                            .foregroundColor(Color.dDefault)
 
                         // Destination
                         Text(departure.destination)
                             .lineLimit(1)
+                            .foregroundColor(Color.dDefault)
 
                         Spacer()
 

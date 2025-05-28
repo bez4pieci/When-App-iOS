@@ -41,6 +41,8 @@ class DeparturesViewModel {
         async let minimumLoadingTime = Task {
             try? await Task.sleep(nanoseconds: 1_000_000_000)  // 1 second
         }
+        
+        print("Fetching departures")
 
         let provider = BvgProvider(apiAuthorization: AppConfig.bvgApiAuthorization)
         let (_, result) = await provider.queryDepartures(stationId: station.id)

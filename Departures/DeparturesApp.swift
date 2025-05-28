@@ -1,8 +1,22 @@
+import BackgroundTasks
 import SwiftData
 import SwiftUI
 
+// App Delegate for background task registration
+class AppDelegate: NSObject, UIApplicationDelegate {
+    func application(
+        _ application: UIApplication,
+        didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil
+    ) -> Bool {
+        // Background tasks are registered in LiveActivityManager.registerBackgroundTasks()
+        // No need to register here to avoid duplicate registration
+        return true
+    }
+}
+
 @main
 struct DeparturesApp: App {
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     var liveActivityManager = LiveActivityManager()
     @StateObject private var settings = Settings()
 
@@ -18,6 +32,11 @@ struct DeparturesApp: App {
             fatalError("Could not create ModelContainer: \(error)")
         }
     }()
+
+    init() {
+        // Register background tasks with the LiveActivityManager
+        liveActivityManager.registerBackgroundTasks()
+    }
 
     var body: some Scene {
         WindowGroup {

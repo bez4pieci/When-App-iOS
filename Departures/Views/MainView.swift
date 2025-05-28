@@ -73,6 +73,16 @@ struct MainView: View {
                     }
                 }
             }
+            .onReceive(
+                NotificationCenter.default.publisher(for: .liveActivityNeedsBackgroundUpdate)
+            ) { _ in
+                print("MainView: Received a notification to fetch new departures")
+                if let station = selectedStation {
+                    Task {
+                        await viewModel?.loadDepartures(for: station)
+                    }
+                }
+            }
         }
     }
 }
