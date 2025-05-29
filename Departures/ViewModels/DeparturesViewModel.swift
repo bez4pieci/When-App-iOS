@@ -6,14 +6,12 @@ import TripKit
 @Observable
 class DeparturesViewModel {
     private var settings: Settings
-    private var liveActivityManager: LiveActivityManager
     var departures: [Departure] = []
     var isLoading = false
     var lastUpdate = Date()
 
-    init(settings: Settings, liveActivityManager: LiveActivityManager) {
+    init(settings: Settings) {
         self.settings = settings
-        self.liveActivityManager = liveActivityManager
     }
 
     var filteredDepartures: [Departure] {
@@ -53,12 +51,6 @@ class DeparturesViewModel {
             await MainActor.run {
                 self.departures = stationDepartures.flatMap { $0.departures }
                 self.lastUpdate = Date()
-
-                // Update live activity if active with filtered departures
-                if liveActivityManager.isLiveActivityActive {
-                    liveActivityManager.updateLiveActivity(
-                        departures: self.filteredDepartures)
-                }
             }
         case .invalidStation:
             print("Invalid station id")

@@ -19,10 +19,6 @@ func makeDynamicIsland(context: ActivityViewContext<DeparturesActivityAttributes
                             .font(.caption2)
                             .padding(.horizontal, 4)
                             .padding(.vertical, 1)
-                            .background(Color(hex: UInt(departure.lineBackgroundColor)))
-                            .foregroundColor(
-                                Color(hex: UInt(departure.lineForegroundColor))
-                            )
                             .cornerRadius(4)
                         Text((departure.predictedTime ?? departure.plannedTime).formatTime())
                             .font(.caption)
@@ -43,10 +39,6 @@ func makeDynamicIsland(context: ActivityViewContext<DeparturesActivityAttributes
                             .font(.caption2)
                             .padding(.horizontal, 4)
                             .padding(.vertical, 1)
-                            .background(Color(hex: UInt(departure.lineBackgroundColor)))
-                            .foregroundColor(
-                                Color(hex: UInt(departure.lineForegroundColor))
-                            )
                             .cornerRadius(4)
                         Text((departure.predictedTime ?? departure.plannedTime).formatTime())
                             .font(.caption)
@@ -69,8 +61,6 @@ func makeDynamicIsland(context: ActivityViewContext<DeparturesActivityAttributes
                     .font(.caption2)
                     .padding(.horizontal, 3)
                     .padding(.vertical, 1)
-                    .background(Color(hex: UInt(firstDeparture.lineBackgroundColor)))
-                    .foregroundColor(Color(hex: UInt(firstDeparture.lineForegroundColor)))
                     .cornerRadius(3)
             }
         }
@@ -88,8 +78,6 @@ func makeDynamicIsland(context: ActivityViewContext<DeparturesActivityAttributes
                 .font(.caption2)
                 .padding(.horizontal, 3)
                 .padding(.vertical, 1)
-                .background(Color(hex: UInt(firstDeparture.lineBackgroundColor)))
-                .foregroundColor(Color(hex: UInt(firstDeparture.lineForegroundColor)))
                 .cornerRadius(3)
         }
     }

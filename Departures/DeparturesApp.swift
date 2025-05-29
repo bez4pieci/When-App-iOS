@@ -1,10 +1,25 @@
+import FirebaseCore
 import SwiftData
 import SwiftUI
 
+class AppDelegate: NSObject, UIApplicationDelegate {
+    func application(
+        _ application: UIApplication,
+        didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil
+    ) -> Bool {
+        FirebaseApp.configure()
+
+        return true
+    }
+}
+
 @main
 struct DeparturesApp: App {
-    var liveActivityManager = LiveActivityManager()
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+    @StateObject private var liveActivityManager = LiveActivityManager()
     @StateObject private var settings = Settings()
+
+    var appSettings = AppSettings()
 
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
@@ -25,6 +40,7 @@ struct DeparturesApp: App {
                 .environment(\.font, Font.dNormal)
                 .environmentObject(liveActivityManager)
                 .environmentObject(settings)
+                .environmentObject(appSettings)
         }
         .modelContainer(sharedModelContainer)
     }
@@ -46,4 +62,5 @@ struct DeparturesApp: App {
         .environment(\.font, Font.dNormal)
         .environmentObject(LiveActivityManager())
         .environmentObject(Settings())
+        .environmentObject(AppSettings())
 }

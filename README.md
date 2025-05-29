@@ -24,6 +24,11 @@ An iOS application for showing public transit departures from a selected stop/st
    - Dependencies
    - Module imports
 
+### Set up Firebase
+
+1. Set up a [Firebase](https://firebase.google.com/) project with a [Firestore database](https://firebase.google.com/docs/firestore/quickstart). Make sure not to use the Firebase Studio - create a project and database manually.
+2. Get `GoogleService-Info.plist` ([instructions](https://firebase.google.com/docs/ios/setup)) and put it in the project root.
+
 ## Building and Running
 
 ### Using Xcode

@@ -13,8 +13,6 @@ struct DeparturesActivityAttributes: ActivityAttributes {
             let plannedTime: Date
             let predictedTime: Date?
             let isCancelled: Bool
-            let lineBackgroundColor: Int
-            let lineForegroundColor: Int
         }
     }
 

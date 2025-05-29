@@ -20,6 +20,12 @@
 		134693D82DE502FB00617A4D /* DeparturesActivityAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 134693D62DE502FB00617A4D /* DeparturesActivityAttributes.swift */; };
 		134693D92DE502FB00617A4D /* DeparturesActivityAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 134693D62DE502FB00617A4D /* DeparturesActivityAttributes.swift */; };
 		13ADDF0F2DE5A903000F9376 /* PhosphorSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 13ADDF0E2DE5A903000F9376 /* PhosphorSwift */; };
+		13BC3D442DE794E4009B1B7F /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = 13BC3D432DE794E4009B1B7F /* FirebaseCore */; };
+		13BC3D462DE794E4009B1B7F /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 13BC3D452DE794E4009B1B7F /* FirebaseFirestore */; };
+		13BC3D4F2DE7959F009B1B7F /* FirebaseAnalyticsWithoutAdIdSupport in Frameworks */ = {isa = PBXBuildFile; productRef = 13BC3D4E2DE7959F009B1B7F /* FirebaseAnalyticsWithoutAdIdSupport */; };
+		13BC3D512DE795A9009B1B7F /* FirebaseAnalyticsWithoutAdIdSupport in Frameworks */ = {isa = PBXBuildFile; productRef = 13BC3D502DE795A9009B1B7F /* FirebaseAnalyticsWithoutAdIdSupport */; };
+		13BC3D522DE7987A009B1B7F /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 13BC3D472DE79519009B1B7F /* GoogleService-Info.plist */; };
+		13BC3D532DE7987A009B1B7F /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 13BC3D472DE79519009B1B7F /* GoogleService-Info.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -55,6 +61,7 @@
 		134693CE2DE500DC00617A4D /* ViewExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewExtensions.swift; sourceTree = "<group>"; };
 		134693D32DE5017B00617A4D /* DateExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateExtensions.swift; sourceTree = "<group>"; };
 		134693D62DE502FB00617A4D /* DeparturesActivityAttributes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeparturesActivityAttributes.swift; sourceTree = "<group>"; };
+		13BC3D472DE79519009B1B7F /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -114,6 +121,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				1307F7B42DE1F61B009F0C4C /* TripKit in Frameworks */,
+				13BC3D4F2DE7959F009B1B7F /* FirebaseAnalyticsWithoutAdIdSupport in Frameworks */,
+				13BC3D462DE794E4009B1B7F /* FirebaseFirestore in Frameworks */,
+				13BC3D442DE794E4009B1B7F /* FirebaseCore in Frameworks */,
 				13ADDF0F2DE5A903000F9376 /* PhosphorSwift in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -123,6 +133,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				134693BC2DE4F5BD00617A4D /* ActivityKit.framework in Frameworks */,
+				13BC3D512DE795A9009B1B7F /* FirebaseAnalyticsWithoutAdIdSupport in Frameworks */,
 				134693182DE4EDA900617A4D /* SwiftUI.framework in Frameworks */,
 				134693C82DE4FAD500617A4D /* TripKit in Frameworks */,
 				134693162DE4EDA900617A4D /* WidgetKit.framework in Frameworks */,
@@ -141,6 +152,7 @@
 				134693192DE4EDA900617A4D /* DeparturesWidget */,
 				134693142DE4EDA900617A4D /* Frameworks */,
 				1307F7792DE1F376009F0C4C /* Products */,
+				13BC3D472DE79519009B1B7F /* GoogleService-Info.plist */,
 			);
 			sourceTree = "<group>";
 		};
@@ -214,6 +226,9 @@
 			packageProductDependencies = (
 				1307F7B32DE1F61B009F0C4C /* TripKit */,
 				13ADDF0E2DE5A903000F9376 /* PhosphorSwift */,
+				13BC3D432DE794E4009B1B7F /* FirebaseCore */,
+				13BC3D452DE794E4009B1B7F /* FirebaseFirestore */,
+				13BC3D4E2DE7959F009B1B7F /* FirebaseAnalyticsWithoutAdIdSupport */,
 			);
 			productName = Departures;
 			productReference = 1307F7782DE1F376009F0C4C /* Departures.app */;
@@ -237,6 +252,7 @@
 			name = DeparturesWidgetExtension;
 			packageProductDependencies = (
 				134693C72DE4FAD500617A4D /* TripKit */,
+				13BC3D502DE795A9009B1B7F /* FirebaseAnalyticsWithoutAdIdSupport */,
 			);
 			productName = DeparturesWidgetExtension;
 			productReference = 134693132DE4EDA900617A4D /* DeparturesWidgetExtension.appex */;
@@ -272,6 +288,7 @@
 			packageReferences = (
 				1307F7B22DE1F61B009F0C4C /* XCRemoteSwiftPackageReference "tripkit" */,
 				13ADDF0D2DE5A903000F9376 /* XCRemoteSwiftPackageReference "swift" */,
+				13BC3D422DE794E4009B1B7F /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 1307F7792DE1F376009F0C4C /* Products */;
@@ -289,6 +306,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				13BC3D522DE7987A009B1B7F /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -296,6 +314,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				13BC3D532DE7987A009B1B7F /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -473,8 +492,7 @@
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UIStatusBarHidden = YES;
 				INFOPLIST_KEY_UIStatusBarStyle = "";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -511,8 +529,7 @@
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UIStatusBarHidden = YES;
 				INFOPLIST_KEY_UIStatusBarStyle = "";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -643,6 +660,14 @@
 				minimumVersion = 2.1.0;
 			};
 		};
+		13BC3D422DE794E4009B1B7F /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 11.13.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -660,6 +685,26 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 13ADDF0D2DE5A903000F9376 /* XCRemoteSwiftPackageReference "swift" */;
 			productName = PhosphorSwift;
+		};
+		13BC3D432DE794E4009B1B7F /* FirebaseCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 13BC3D422DE794E4009B1B7F /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCore;
+		};
+		13BC3D452DE794E4009B1B7F /* FirebaseFirestore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 13BC3D422DE794E4009B1B7F /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestore;
+		};
+		13BC3D4E2DE7959F009B1B7F /* FirebaseAnalyticsWithoutAdIdSupport */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 13BC3D422DE794E4009B1B7F /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAnalyticsWithoutAdIdSupport;
+		};
+		13BC3D502DE795A9009B1B7F /* FirebaseAnalyticsWithoutAdIdSupport */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 13BC3D422DE794E4009B1B7F /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAnalyticsWithoutAdIdSupport;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

@@ -6,7 +6,6 @@ import TripKit
 struct MainView: View {
     @Environment(\.modelContext) private var modelContext
     @EnvironmentObject private var settings: Settings
-    @EnvironmentObject private var liveActivityManager: LiveActivityManager
     @Query(sort: \Station.selectedAt, order: .reverse) private var stations: [Station]
     @State private var viewModel: DeparturesViewModel?
 
@@ -48,8 +47,7 @@ struct MainView: View {
             }
             .onAppear {
                 // Initialize viewModel when the view appears
-                viewModel = DeparturesViewModel(
-                    settings: settings, liveActivityManager: liveActivityManager)
+                viewModel = DeparturesViewModel(settings: settings)
             }
             .task {
                 if let station = selectedStation {
@@ -65,13 +63,6 @@ struct MainView: View {
             }
             .sheet(isPresented: $showStationSelection) {
                 StationSelectionView()
-            }
-            .onReceive(NotificationCenter.default.publisher(for: .liveActivityNeedsUpdate)) { _ in
-                if let station = selectedStation {
-                    Task {
-                        await viewModel?.loadDepartures(for: station)
-                    }
-                }
             }
         }
     }
