@@ -7,19 +7,6 @@ struct DepartureRow: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
-            // Line
-            //            HStack() {
-            //                Text(departure.line.label ?? "")
-            //                    .padding(.horizontal, 6)
-            //                    .padding(.vertical, 2)
-            //                    .font(Font.custom("DepartureMono-Regular", size: 16))
-            //                    .background(Color(hex: departure.line.style?.backgroundColor ?? 0x808080))
-            //                    .foregroundColor(Color(hex: departure.line.style?.foregroundColor ?? 0x000000))
-            //                    .cornerRadius(departure.line.style?.shape == .rounded ? 4 : departure.line.style?.shape == .circle ? 100 : 0)
-            //                Spacer()
-            //            }
-            //            .frame(width: 50)
-
             HStack {
                 Text(departure.line.label ?? "")
                 Spacer()
@@ -62,6 +49,6 @@ struct DepartureRow: View {
         {
             return .red
         }
-        return Color.dDefault
+        return .dDefault
     }
 }

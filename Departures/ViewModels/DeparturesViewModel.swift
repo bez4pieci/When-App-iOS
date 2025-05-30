@@ -48,10 +48,8 @@ class DeparturesViewModel {
 
         switch result {
         case .success(let stationDepartures):
-            await MainActor.run {
-                self.departures = stationDepartures.flatMap { $0.departures }
-                self.lastUpdate = Date()
-            }
+            departures = stationDepartures.flatMap { $0.departures }
+            lastUpdate = Date()
         case .invalidStation:
             print("Invalid station id")
         case .failure(let error):
