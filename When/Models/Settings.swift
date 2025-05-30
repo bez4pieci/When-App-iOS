@@ -60,4 +60,19 @@ class Settings: ObservableObject {
         case .cablecar: filterCablecar.toggle()
         }
     }
+
+    // Helper method to toggle a product
+    func setProduct(_ product: Product, enabled: Bool) {
+        switch product {
+        case .suburbanTrain: filterSuburbanTrain = enabled
+        case .subway: filterSubway = enabled
+        case .tram: filterTram = enabled
+        case .bus: filterBus = enabled
+        case .regionalTrain: filterRegionalTrain = enabled
+        case .ferry: filterFerry = enabled
+        case .highSpeedTrain: filterHighSpeedTrain = enabled
+        case .onDemand: filterOnDemand = enabled
+        case .cablecar: filterCablecar = enabled
+        }
+    }
 }

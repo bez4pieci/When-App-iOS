@@ -84,16 +84,45 @@ struct StationSelectionView: View {
         VStack(spacing: 0) {
             DefaultDivider()
             VStack(spacing: 12) {
-                transportToggle(product: .subway, label: "U-Bahn")
-                transportToggle(product: .suburbanTrain, label: "S-Bahn")
-                transportToggle(product: .bus, label: "Bus")
-                transportToggle(product: .tram, label: "Tram")
-                transportToggle(product: .regionalTrain, label: "Regional Train")
-                transportToggle(product: .ferry, label: "Ferry")
-                transportToggle(product: .highSpeedTrain, label: "ICE/IC")
+                ForEach(Product.allCases, id: \.self) { product in
+                    if selectedStation?.hasProduct(product) ?? true {
+                        transportToggle(
+                            product: product,
+                            label: product.label,
+                            forceEnable: selectedStation?.products.count ?? 0 < 2
+                        )
+                    }
+                }
             }
             .padding(.horizontal, 20)
             .padding(.vertical, 20)
+        }
+    }
+
+    private func transportToggle(product: Product, label: String, forceEnable: Bool = false)
+        -> some View
+    {
+        if forceEnable {
+            Task {
+                settings.setProduct(product, enabled: true)
+            }
+        }
+
+        return HStack {
+            Text(label)
+                .font(Font.dNormal)
+                .foregroundColor(Color.dDefault)
+            Spacer()
+            Toggle(
+                "",
+                isOn: Binding(
+                    get: { settings.isProductEnabled(product) },
+                    set: { _ in settings.toggleProduct(product) }
+                )
+            )
+            .labelsHidden()
+            .tint(Color.dDefault)
+            .disabled(forceEnable)
         }
     }
 
@@ -111,28 +140,6 @@ struct StationSelectionView: View {
             }
             .padding(.horizontal, 20)
             .padding(.vertical, 20)
-        }
-    }
-
-    private func transportToggle(product: Product, label: String) -> some View {
-        let isAvailable = selectedStation?.hasProduct(product) ?? true
-
-        return HStack {
-            Text(label)
-                .font(Font.dNormal)
-                .foregroundColor(isAvailable ? Color.dDefault : Color.dLight)
-            Spacer()
-            Toggle(
-                "",
-                isOn: Binding(
-                    get: { settings.isProductEnabled(product) },
-                    set: { _ in settings.toggleProduct(product) }
-                )
-            )
-            .labelsHidden()
-            .tint(Color.dDefault)
-            .disabled(!isAvailable)
-            .opacity(isAvailable ? 1.0 : 0.25)
         }
     }
 

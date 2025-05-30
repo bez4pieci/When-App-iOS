@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		1325BE0A2DE9AC6E005151AC /* TripKit in Frameworks */ = {isa = PBXBuildFile; productRef = 1325BE092DE9AC6E005151AC /* TripKit */; };
 		1325BE0C2DE9AC77005151AC /* TripKit in Frameworks */ = {isa = PBXBuildFile; productRef = 1325BE0B2DE9AC77005151AC /* TripKit */; };
+		1325C0B52DEA613D005151AC /* ProductExstensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1325C0B42DEA613D005151AC /* ProductExstensions.swift */; };
+		1325C0B62DEA613D005151AC /* ProductExstensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1325C0B42DEA613D005151AC /* ProductExstensions.swift */; };
 		134693162DE4EDA900617A4D /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 134693152DE4EDA900617A4D /* WidgetKit.framework */; };
 		134693182DE4EDA900617A4D /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 134693172DE4EDA900617A4D /* SwiftUI.framework */; };
 		134693292DE4EDAA00617A4D /* When Widgets.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 134693132DE4EDA900617A4D /* When Widgets.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -55,6 +57,7 @@
 /* Begin PBXFileReference section */
 		1307F7782DE1F376009F0C4C /* When App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "When App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1325C01C2DE9D231005151AC /* WhenWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = WhenWidgetExtension.entitlements; sourceTree = "<group>"; };
+		1325C0B42DEA613D005151AC /* ProductExstensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductExstensions.swift; sourceTree = "<group>"; };
 		134693132DE4EDA900617A4D /* When Widgets.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "When Widgets.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
 		134693152DE4EDA900617A4D /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		134693172DE4EDA900617A4D /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
@@ -180,6 +183,7 @@
 		134693CF2DE500DC00617A4D /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				1325C0B42DEA613D005151AC /* ProductExstensions.swift */,
 				134693D32DE5017B00617A4D /* DateExtensions.swift */,
 				134693CE2DE500DC00617A4D /* ViewExtensions.swift */,
 			);
@@ -329,6 +333,7 @@
 			files = (
 				134693D92DE502FB00617A4D /* DeparturesActivityAttributes.swift in Sources */,
 				134693D12DE500DC00617A4D /* ViewExtensions.swift in Sources */,
+				1325C0B52DEA613D005151AC /* ProductExstensions.swift in Sources */,
 				134693D42DE5017B00617A4D /* DateExtensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -340,6 +345,7 @@
 				134693D82DE502FB00617A4D /* DeparturesActivityAttributes.swift in Sources */,
 				134693D52DE5017B00617A4D /* DateExtensions.swift in Sources */,
 				134693D22DE500DC00617A4D /* ViewExtensions.swift in Sources */,
+				1325C0B62DEA613D005151AC /* ProductExstensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
