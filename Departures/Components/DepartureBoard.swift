@@ -41,8 +41,11 @@ struct DepartureBoard: View {
 
     func handleLiveActivityToggle(isActive: Bool, station: Station) {
         if isActive {
-            liveActivityManager.startLiveActivity(
-                station: station, departures: departures)
+            Task {
+                await onRefresh()
+                liveActivityManager.startLiveActivity(
+                    station: station, departures: departures)
+            }
         } else {
             liveActivityManager.stopLiveActivity()
         }

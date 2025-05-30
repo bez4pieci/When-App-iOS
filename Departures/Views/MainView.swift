@@ -32,9 +32,7 @@ struct MainView: View {
                             departures: viewModel?.filteredDepartures ?? [],
                             onRefresh: {
                                 if let station = selectedStation {
-                                    Task {
-                                        await viewModel?.loadDepartures(for: station)
-                                    }
+                                    await viewModel?.loadDepartures(for: station)
                                 }
                             }
                         )

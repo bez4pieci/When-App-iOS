@@ -11,14 +11,14 @@ class LiveActivityManager: ObservableObject {
     // Start the live activity
     func startLiveActivity(station: Station, departures: [Departure]) {
         guard ActivityAuthorizationInfo().areActivitiesEnabled else {
-            print("Live Activities are not enabled")
+            print("Live Activity: Activities are not enabled")
             return
         }
 
         // Stop any existing activity
         stopLiveActivity()
 
-        print("Starting live activity...")
+        print("Live Activity: Starting...")
 
         let attributes = DeparturesActivityAttributes(
             stationName: station.name,
@@ -26,48 +26,26 @@ class LiveActivityManager: ObservableObject {
         )
 
         let contentState = createContentState(from: departures)
+        let activity: Activity<DeparturesActivityAttributes>
 
         do {
-            let activity = try Activity<DeparturesActivityAttributes>.request(
+            activity = try Activity<DeparturesActivityAttributes>.request(
                 attributes: attributes,
                 content: .init(state: contentState, staleDate: Date().addingTimeInterval(60)),
                 pushType: .token
             )
-
-            // Observe activity state changes
-            Task {
-                for await state in activity.activityStateUpdates {
-                    await MainActor.run {
-                        self.isLiveActivityActive = state == .active
-                        if state != .active {
-                            self.currentActivity = nil
-                        }
-                    }
-                }
-            }
-
-            // Get push token for this activity
-            Task {
-                for await pushToken in activity.pushTokenUpdates {
-                    let pushTokenString = pushToken.map { String(format: "%02x", $0) }.joined()
-                    print("Live Activity Push Token: \(pushTokenString)")
-
-                    // Save to Firestore
-                    await saveLiveActivityToFirestore(
-                        token: pushTokenString,
-                        activityId: activity.id,
-                        stationId: station.id,
-                        stationName: station.name
-                    )
-                }
-            }
-
-            currentActivity = activity
-            isLiveActivityActive = true
-
         } catch {
-            print("Error starting live activity: \(error)")
+            print("Live Activity: Error starting: \(error)")
+            isLiveActivityActive = false
+            return
         }
+
+        print("Live Activity: Started!")
+
+        observeActivity(activity: activity, station: station)
+
+        currentActivity = activity
+        isLiveActivityActive = true
     }
 
     // Stop the live activity
@@ -86,7 +64,39 @@ class LiveActivityManager: ObservableObject {
         }
     }
 
-    // Create content state from departures
+    private func observeActivity(
+        activity: Activity<DeparturesActivityAttributes>, station: Station
+    ) {
+        Task {
+            await withTaskGroup(of: Void.self) { group in
+                group.addTask { @MainActor in
+                    for await state in activity.activityStateUpdates {
+                        await MainActor.run {
+                            self.isLiveActivityActive = state == .active
+                            if state != .active {
+                                self.currentActivity = nil
+                            }
+                        }
+                    }
+                }
+
+                group.addTask { @MainActor in
+                    for await pushToken in activity.pushTokenUpdates {
+                        let pushTokenString = pushToken.map { String(format: "%02x", $0) }.joined()
+
+                        // Save to Firestore
+                        await self.saveLiveActivityToFirestore(
+                            token: pushTokenString,
+                            activityId: activity.id,
+                            stationId: station.id,
+                            stationName: station.name
+                        )
+                    }
+                }
+            }
+        }
+    }
+
     private func createContentState(from departures: [Departure])
         -> DeparturesActivityAttributes.ContentState
     {
@@ -112,8 +122,6 @@ class LiveActivityManager: ObservableObject {
     ) async {
         let appSettings = AppSettings()
 
-        print("Saving live activity to Firestore with userDeviceId: \(appSettings.userDeviceId)")
-
         let data: [String: Any] = [
             "pushToken": token,
             "activityId": activityId,
@@ -126,11 +134,10 @@ class LiveActivityManager: ObservableObject {
         do {
             try await db.collection("liveActivities").document(appSettings.userDeviceId).setData(
                 data)
-            print(
-                "Live activity saved to Firestore with for userDeviceId \(appSettings.userDeviceId)"
-            )
+            print("Live Activity: Saved to Firestore for userDeviceId \(appSettings.userDeviceId)")
         } catch {
-            print("Error saving live activity to Firestore: \(error)")
+            print("Live Activity: Error saving to Firestore: \(error)")
+            stopLiveActivity()
         }
     }
 
@@ -141,9 +148,10 @@ class LiveActivityManager: ObservableObject {
 
             try await db.collection("liveActivities").document(appSettings.userDeviceId).delete()
             print(
-                "Deleted live activity from Firestore for userDeviceId \(appSettings.userDeviceId)")
+                "Live Activity: Deleted from Firestore for userDeviceId \(appSettings.userDeviceId)"
+            )
         } catch {
-            print("Error deleting live activity in Firestore: \(error)")
+            print("Live Activity: Error deleting from Firestore: \(error)")
         }
     }
 }
