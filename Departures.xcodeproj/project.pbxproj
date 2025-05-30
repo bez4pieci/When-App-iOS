@@ -7,12 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		1307F7B42DE1F61B009F0C4C /* TripKit in Frameworks */ = {isa = PBXBuildFile; productRef = 1307F7B32DE1F61B009F0C4C /* TripKit */; };
+		1325BE0A2DE9AC6E005151AC /* TripKit in Frameworks */ = {isa = PBXBuildFile; productRef = 1325BE092DE9AC6E005151AC /* TripKit */; };
+		1325BE0C2DE9AC77005151AC /* TripKit in Frameworks */ = {isa = PBXBuildFile; productRef = 1325BE0B2DE9AC77005151AC /* TripKit */; };
 		134693162DE4EDA900617A4D /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 134693152DE4EDA900617A4D /* WidgetKit.framework */; };
 		134693182DE4EDA900617A4D /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 134693172DE4EDA900617A4D /* SwiftUI.framework */; };
 		134693292DE4EDAA00617A4D /* DeparturesWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 134693132DE4EDA900617A4D /* DeparturesWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		134693BC2DE4F5BD00617A4D /* ActivityKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 134693BB2DE4F5BD00617A4D /* ActivityKit.framework */; };
-		134693C82DE4FAD500617A4D /* TripKit in Frameworks */ = {isa = PBXBuildFile; productRef = 134693C72DE4FAD500617A4D /* TripKit */; };
 		134693D12DE500DC00617A4D /* ViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 134693CE2DE500DC00617A4D /* ViewExtensions.swift */; };
 		134693D22DE500DC00617A4D /* ViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 134693CE2DE500DC00617A4D /* ViewExtensions.swift */; };
 		134693D42DE5017B00617A4D /* DateExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 134693D32DE5017B00617A4D /* DateExtensions.swift */; };
@@ -120,11 +120,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1307F7B42DE1F61B009F0C4C /* TripKit in Frameworks */,
 				13BC3D4F2DE7959F009B1B7F /* FirebaseAnalyticsWithoutAdIdSupport in Frameworks */,
 				13BC3D462DE794E4009B1B7F /* FirebaseFirestore in Frameworks */,
 				13BC3D442DE794E4009B1B7F /* FirebaseCore in Frameworks */,
 				13ADDF0F2DE5A903000F9376 /* PhosphorSwift in Frameworks */,
+				1325BE0A2DE9AC6E005151AC /* TripKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -135,8 +135,8 @@
 				134693BC2DE4F5BD00617A4D /* ActivityKit.framework in Frameworks */,
 				13BC3D512DE795A9009B1B7F /* FirebaseAnalyticsWithoutAdIdSupport in Frameworks */,
 				134693182DE4EDA900617A4D /* SwiftUI.framework in Frameworks */,
-				134693C82DE4FAD500617A4D /* TripKit in Frameworks */,
 				134693162DE4EDA900617A4D /* WidgetKit.framework in Frameworks */,
+				1325BE0C2DE9AC77005151AC /* TripKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -224,11 +224,11 @@
 			);
 			name = Departures;
 			packageProductDependencies = (
-				1307F7B32DE1F61B009F0C4C /* TripKit */,
 				13ADDF0E2DE5A903000F9376 /* PhosphorSwift */,
 				13BC3D432DE794E4009B1B7F /* FirebaseCore */,
 				13BC3D452DE794E4009B1B7F /* FirebaseFirestore */,
 				13BC3D4E2DE7959F009B1B7F /* FirebaseAnalyticsWithoutAdIdSupport */,
+				1325BE092DE9AC6E005151AC /* TripKit */,
 			);
 			productName = Departures;
 			productReference = 1307F7782DE1F376009F0C4C /* Departures.app */;
@@ -251,8 +251,8 @@
 			);
 			name = DeparturesWidgetExtension;
 			packageProductDependencies = (
-				134693C72DE4FAD500617A4D /* TripKit */,
 				13BC3D502DE795A9009B1B7F /* FirebaseAnalyticsWithoutAdIdSupport */,
+				1325BE0B2DE9AC77005151AC /* TripKit */,
 			);
 			productName = DeparturesWidgetExtension;
 			productReference = 134693132DE4EDA900617A4D /* DeparturesWidgetExtension.appex */;
@@ -286,9 +286,9 @@
 			mainGroup = 1307F76F2DE1F376009F0C4C;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				1307F7B22DE1F61B009F0C4C /* XCRemoteSwiftPackageReference "tripkit" */,
 				13ADDF0D2DE5A903000F9376 /* XCRemoteSwiftPackageReference "swift" */,
 				13BC3D422DE794E4009B1B7F /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				1325BE082DE9AC6E005151AC /* XCRemoteSwiftPackageReference "tripkit" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 1307F7792DE1F376009F0C4C /* Products */;
@@ -644,12 +644,12 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		1307F7B22DE1F61B009F0C4C /* XCRemoteSwiftPackageReference "tripkit" */ = {
+		1325BE082DE9AC6E005151AC /* XCRemoteSwiftPackageReference "tripkit" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/alexander-albers/tripkit.git";
 			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.17.0;
+				branch = main;
+				kind = branch;
 			};
 		};
 		13ADDF0D2DE5A903000F9376 /* XCRemoteSwiftPackageReference "swift" */ = {
@@ -671,14 +671,14 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		1307F7B32DE1F61B009F0C4C /* TripKit */ = {
+		1325BE092DE9AC6E005151AC /* TripKit */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 1307F7B22DE1F61B009F0C4C /* XCRemoteSwiftPackageReference "tripkit" */;
+			package = 1325BE082DE9AC6E005151AC /* XCRemoteSwiftPackageReference "tripkit" */;
 			productName = TripKit;
 		};
-		134693C72DE4FAD500617A4D /* TripKit */ = {
+		1325BE0B2DE9AC77005151AC /* TripKit */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 1307F7B22DE1F61B009F0C4C /* XCRemoteSwiftPackageReference "tripkit" */;
+			package = 1325BE082DE9AC6E005151AC /* XCRemoteSwiftPackageReference "tripkit" */;
 			productName = TripKit;
 		};
 		13ADDF0E2DE5A903000F9376 /* PhosphorSwift */ = {
