@@ -17,5 +17,7 @@
 		<key>UIImageName</key>
 		<string>LaunchScreenLogo</string>
 	</dict>
+	<key>NSSupportsLiveActivitiesFrequentUpdates</key>
+	<true/>
 </dict>
 </plist>
