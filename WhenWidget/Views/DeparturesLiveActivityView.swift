@@ -24,9 +24,12 @@ struct DeparturesLiveActivityView: View {
                     index, departure in
                     HStack(spacing: 8) {
                         Text(departure.lineLabel)
+                            .strikethrough(departure.isCancelled)
                             .foregroundColor(Color.dDefault)
+
                         Text(departure.destination)
                             .lineLimit(1)
+                            .strikethrough(departure.isCancelled)
                             .foregroundColor(Color.dDefault)
 
                         Spacer()
@@ -40,18 +43,14 @@ struct DeparturesLiveActivityView: View {
                         }
 
                         Text((departure.predictedTime ?? departure.plannedTime).formatTime())
+                            .strikethrough(departure.isCancelled)
                             .foregroundColor(
                                 departure.predictedTime != nil
                                     && departure.predictedTime! > departure.plannedTime
                                     ? .red : Color.dDefault)
                     }
                     .font(Font.dSmall)
-                    .opacity(departure.isCancelled ? 0.5 : 1.0)
-
-                    // if index < min(3, context.state.departures.count - 1) {
-                    //     Divider()
-                    //         .background(Color.black.opacity(0.2))
-                    // }
+                    .opacity(departure.isCancelled ? 0.25 : 1.0)
                 }
             }
         }
