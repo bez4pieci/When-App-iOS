@@ -121,8 +121,6 @@ class LiveActivityManager: ObservableObject {
             "stationId": stationId,
             "stationName": stationName,
             "createdAt": FieldValue.serverTimestamp(),
-            "updatedAt": FieldValue.serverTimestamp(),
-            "isActive": true,
         ]
 
         do {
