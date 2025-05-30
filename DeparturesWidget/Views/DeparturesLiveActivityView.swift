@@ -24,10 +24,10 @@ struct DeparturesLiveActivityView: View {
                     index, departure in
                     HStack(spacing: 8) {
                         Text(departure.lineLabel)
-
-                        // Destination
+                            .foregroundColor(Color.dDefault)
                         Text(departure.destination)
                             .lineLimit(1)
+                            .foregroundColor(Color.dDefault)
 
                         Spacer()
 
