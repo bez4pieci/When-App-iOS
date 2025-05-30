@@ -24,8 +24,9 @@ struct StationSearchField: View {
                 .frame(width: 24, height: 24)
 
             TextField(
-                "", text: $searchText,
-                prompt: Text("Search for station...").foregroundColor(Color.dLight)
+                "",
+                text: $searchText,
+                prompt: Text("Search for a station").foregroundColor(Color.dLight)
             )
             .textFieldStyle(PlainTextFieldStyle())
             .foregroundColor(Color.dDefault)
@@ -50,13 +51,8 @@ struct StationSearchField: View {
 
             if !searchText.isEmpty {
                 Button(action: {
-                    // Clear search and selected station
                     searchText = ""
-
-                    if let station = selectedStation {
-                        modelContext.delete(station)
-                        try? modelContext.save()
-                    }
+                    isSearchFieldFocused = true
                 }) {
                     Ph.x.regular
                         .frame(width: 24, height: 24)
