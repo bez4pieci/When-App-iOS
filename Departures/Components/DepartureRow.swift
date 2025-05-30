@@ -11,7 +11,7 @@ struct DepartureRow: View {
                 Text(departure.line.label ?? "")
                 Spacer()
                 Text(timeString)
-                    .foregroundColor(departureColor)
+                    .foregroundColor(timeColor)
             }
             .font(Font.dLarge)
             .strikethrough(departure.cancelled)
@@ -30,10 +30,10 @@ struct DepartureRow: View {
 
             }
             .font(Font.dSmall)
-
         }
         .padding(.horizontal, 20)
         .padding(.vertical, 16)
+        .opacity(departure.cancelled ? 0.25 : 1)
     }
 
     private var timeString: String {
@@ -43,12 +43,13 @@ struct DepartureRow: View {
         return departure.plannedTime.formatTime()
     }
 
-    private var departureColor: Color {
+    private var timeColor: Color {
         if let predictedTime = departure.predictedTime,
             predictedTime > departure.plannedTime
         {
             return .red
         }
+
         return .dDefault
     }
 }
