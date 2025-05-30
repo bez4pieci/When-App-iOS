@@ -7,16 +7,13 @@ struct StationSearchField: View {
     @Environment(\.modelContext) private var modelContext
     @Query(sort: \Station.selectedAt, order: .reverse) private var stations: [Station]
 
+    let selectedStation: Station?
     let onSearch: (String) async -> Void
 
     @State private var searchText: String = ""
     @State private var debounceTimer: Timer?
     @State private var searchTask: Task<Void, Never>?
     @FocusState private var isSearchFieldFocused: Bool
-
-    private var selectedStation: Station? {
-        stations.first
-    }
 
     var body: some View {
         HStack(spacing: 12) {

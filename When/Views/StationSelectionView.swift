@@ -4,18 +4,72 @@ import SwiftUI
 import TripKit
 
 struct StationSelectionView: View {
-    @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
-    @Query(sort: \Station.selectedAt, order: .reverse) private var stations: [Station]
+
+    @Environment(\.modelContext) private var modelContext
     @EnvironmentObject var settings: Settings
+    @Query(sort: \Station.selectedAt, order: .reverse) private var stations: [Station]
+
+    private var selectedStation: Station? {
+        stations.first
+    }
+
+    var body: some View {
+        StationSelectionViewContent(
+            settings: settings,
+            selectedStation: selectedStation,
+            onApply: saveChanges,
+            onCancel: { dismiss() }
+        )
+    }
+
+    private func saveChanges(station: Station?, temporarySettings: TemporarySettings) {
+        guard let station = station else { return }
+
+        if let existingStation = selectedStation {
+            modelContext.delete(existingStation)
+        }
+
+        station.selectedAt = Date()
+        modelContext.insert(station)
+
+        do {
+            try modelContext.save()
+        } catch {
+            print("Error saving station: \(error)")
+        }
+
+        // Apply temporary settings to persistent settings
+        temporarySettings.applyTo(settings)
+
+        dismiss()
+    }
+}
+
+private struct StationSelectionViewContent: View {
+    let onApply: (_ station: Station?, _ temporarySettings: TemporarySettings) -> Void
+    let onCancel: () -> Void
 
     @State private var suggestedLocations: [SuggestedLocation] = []
     @State private var showingSuggestedLocations = false
     @State private var isSearching = false
     @FocusState private var isSearchFieldFocused
 
-    private var selectedStation: Station? {
-        stations.first
+    // Local state for temporary changes
+    @State private var temporarySelectedStation: Station?
+    @StateObject private var temporarySettings: TemporarySettings
+
+    init(
+        settings: Settings,
+        selectedStation: Station?,
+        onApply: @escaping (_ station: Station?, _ temporarySettings: TemporarySettings) -> Void,
+        onCancel: @escaping () -> Void
+    ) {
+        self.onApply = onApply
+        self.onCancel = onCancel
+
+        self.temporarySelectedStation = selectedStation
+        _temporarySettings = StateObject(wrappedValue: TemporarySettings(from: settings))
     }
 
     var body: some View {
@@ -26,7 +80,10 @@ struct StationSelectionView: View {
 
                 ScrollView {
                     VStack(spacing: 0) {
-                        StationSearchField(onSearch: performSearch)
+                        StationSearchField(
+                            selectedStation: temporarySelectedStation,
+                            onSearch: performSearch
+                        )
 
                         // Show search results inline
                         VStack(spacing: 0) {
@@ -49,7 +106,7 @@ struct StationSelectionView: View {
                                     searchResults: suggestedLocations,
                                     maxResults: 5,
                                     onSelect: { location in
-                                        selectStation(location)
+                                        setStation(location)
                                     }
                                 )
                             }
@@ -67,9 +124,15 @@ struct StationSelectionView: View {
                 .padding(.top, 1)
             }
             .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button("Cancel") {
+                        onCancel()
+                    }
+                    .foregroundColor(Color.dDefault)
+                }
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button("Done") {
-                        dismiss()
+                    Button("Apply") {
+                        onApply(temporarySelectedStation, temporarySettings)
                     }
                     .foregroundColor(Color.dDefault)
                 }
@@ -85,11 +148,11 @@ struct StationSelectionView: View {
             DefaultDivider()
             VStack(spacing: 12) {
                 ForEach(Product.allCases, id: \.self) { product in
-                    if selectedStation?.hasProduct(product) ?? true {
+                    if temporarySelectedStation?.hasProduct(product) ?? true {
                         transportToggle(
                             product: product,
                             label: product.label,
-                            forceEnable: selectedStation?.products.count ?? 0 < 2
+                            forceEnable: temporarySelectedStation?.products.count ?? 0 < 2
                         )
                     }
                 }
@@ -104,7 +167,7 @@ struct StationSelectionView: View {
     {
         if forceEnable {
             Task {
-                settings.setProduct(product, enabled: true)
+                temporarySettings.setProduct(product, enabled: true)
             }
         }
 
@@ -116,8 +179,8 @@ struct StationSelectionView: View {
             Toggle(
                 "",
                 isOn: Binding(
-                    get: { settings.isProductEnabled(product) },
-                    set: { _ in settings.toggleProduct(product) }
+                    get: { temporarySettings.isProductEnabled(product) },
+                    set: { _ in temporarySettings.toggleProduct(product) }
                 )
             )
             .labelsHidden()
@@ -134,7 +197,7 @@ struct StationSelectionView: View {
                     .font(Font.dNormal)
                     .foregroundColor(Color.dDefault)
                 Spacer()
-                Toggle("", isOn: $settings.showCancelledDepartures)
+                Toggle("", isOn: $temporarySettings.showCancelledDepartures)
                     .labelsHidden()
                     .tint(Color.dDefault)
             }
@@ -143,34 +206,22 @@ struct StationSelectionView: View {
         }
     }
 
-    private func selectStation(_ location: Location) {
-        // Delete existing station if any
-        if let existingStation = selectedStation {
-            modelContext.delete(existingStation)
-        }
-
-        // Create new station
-        let station = Station(
+    private func setStation(_ location: Location) {
+        // Store the selection temporarily
+        temporarySelectedStation = Station(
             id: location.id ?? UUID().uuidString,
             name: location.name ?? location.getUniqueShortName(),
-            latitude: location.coord?.lat != nil ? Double(location.coord!.lat) / 1000000.0 : nil,
-            longitude: location.coord?.lon != nil ? Double(location.coord!.lon) / 1000000.0 : nil,
+            latitude: location.coord?.lat != nil
+                ? Double(location.coord!.lat) / 1000000.0 : nil,
+            longitude: location.coord?.lon != nil
+                ? Double(location.coord!.lon) / 1000000.0 : nil,
             products: location.products ?? []
         )
 
-        station.selectedAt = Date()
-        modelContext.insert(station)
-
-        do {
-            try modelContext.save()
-
-            suggestedLocations = []
-            showingSuggestedLocations = false
-            isSearchFieldFocused = false
-
-        } catch {
-            print("Error saving station: \(error)")
-        }
+        // Clear search results
+        suggestedLocations = []
+        showingSuggestedLocations = false
+        isSearchFieldFocused = false
     }
 
     private func performSearch(query: String) async {
