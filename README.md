@@ -44,7 +44,7 @@ An iOS application for showing public transit departures from a selected stop/st
 xcodebuild -project Departures.xcodeproj -scheme Departures -destination 'platform=iOS Simulator,name=iPhone 16'
 
 # Open in the simulator
-xcrun simctl launch booted com.bez4pieci.Departures
+xcrun simctl launch booted com.bez4pieci.When
 ```
 
 ## License

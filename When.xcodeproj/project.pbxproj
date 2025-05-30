@@ -11,7 +11,7 @@
 		1325BE0C2DE9AC77005151AC /* TripKit in Frameworks */ = {isa = PBXBuildFile; productRef = 1325BE0B2DE9AC77005151AC /* TripKit */; };
 		134693162DE4EDA900617A4D /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 134693152DE4EDA900617A4D /* WidgetKit.framework */; };
 		134693182DE4EDA900617A4D /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 134693172DE4EDA900617A4D /* SwiftUI.framework */; };
-		134693292DE4EDAA00617A4D /* DeparturesWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 134693132DE4EDA900617A4D /* DeparturesWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		134693292DE4EDAA00617A4D /* When Widgets.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 134693132DE4EDA900617A4D /* When Widgets.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		134693BC2DE4F5BD00617A4D /* ActivityKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 134693BB2DE4F5BD00617A4D /* ActivityKit.framework */; };
 		134693D12DE500DC00617A4D /* ViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 134693CE2DE500DC00617A4D /* ViewExtensions.swift */; };
 		134693D22DE500DC00617A4D /* ViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 134693CE2DE500DC00617A4D /* ViewExtensions.swift */; };
@@ -34,7 +34,7 @@
 			containerPortal = 1307F7702DE1F376009F0C4C /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 134693122DE4EDA900617A4D;
-			remoteInfo = DeparturesWidgetExtension;
+			remoteInfo = WhenWidgetExtension;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -45,7 +45,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
-				134693292DE4EDAA00617A4D /* DeparturesWidgetExtension.appex in Embed Foundation Extensions */,
+				134693292DE4EDAA00617A4D /* When Widgets.appex in Embed Foundation Extensions */,
 			);
 			name = "Embed Foundation Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -53,8 +53,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		1307F7782DE1F376009F0C4C /* Departures.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Departures.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		134693132DE4EDA900617A4D /* DeparturesWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = DeparturesWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		1307F7782DE1F376009F0C4C /* When App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "When App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		1325C01C2DE9D231005151AC /* WhenWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = WhenWidgetExtension.entitlements; sourceTree = "<group>"; };
+		134693132DE4EDA900617A4D /* When Widgets.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "When Widgets.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
 		134693152DE4EDA900617A4D /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		134693172DE4EDA900617A4D /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		134693BB2DE4F5BD00617A4D /* ActivityKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ActivityKit.framework; path = System/Library/Frameworks/ActivityKit.framework; sourceTree = SDKROOT; };
@@ -65,52 +66,52 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		130E60D02DE238870033F2BA /* Exceptions for "Departures" folder in "Departures" target */ = {
+		1325BE692DE9CF05005151AC /* Exceptions for "When" folder in "When App" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
 			);
-			target = 1307F7772DE1F376009F0C4C /* Departures */;
+			target = 1307F7772DE1F376009F0C4C /* When App */;
 		};
-		1346932D2DE4EDAA00617A4D /* Exceptions for "DeparturesWidget" folder in "DeparturesWidgetExtension" target */ = {
+		1346932D2DE4EDAA00617A4D /* Exceptions for "WhenWidget" folder in "When Widgets" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
 			);
-			target = 134693122DE4EDA900617A4D /* DeparturesWidgetExtension */;
+			target = 134693122DE4EDA900617A4D /* When Widgets */;
 		};
-		134693C62DE4FA7A00617A4D /* Exceptions for "Fonts" folder in "DeparturesWidgetExtension" target */ = {
+		134693C62DE4FA7A00617A4D /* Exceptions for "Fonts" folder in "When Widgets" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				"DepartureMono-Regular.otf",
 			);
-			target = 134693122DE4EDA900617A4D /* DeparturesWidgetExtension */;
+			target = 134693122DE4EDA900617A4D /* When Widgets */;
 		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		1307F77A2DE1F376009F0C4C /* Departures */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				130E60D02DE238870033F2BA /* Exceptions for "Departures" folder in "Departures" target */,
-			);
-			path = Departures;
-			sourceTree = "<group>";
-		};
 		130E60C72DE232FB0033F2BA /* Fonts */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				134693C62DE4FA7A00617A4D /* Exceptions for "Fonts" folder in "DeparturesWidgetExtension" target */,
+				134693C62DE4FA7A00617A4D /* Exceptions for "Fonts" folder in "When Widgets" target */,
 			);
 			path = Fonts;
 			sourceTree = "<group>";
 		};
-		134693192DE4EDA900617A4D /* DeparturesWidget */ = {
+		1325BE552DE9CF05005151AC /* When */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				1346932D2DE4EDAA00617A4D /* Exceptions for "DeparturesWidget" folder in "DeparturesWidgetExtension" target */,
+				1325BE692DE9CF05005151AC /* Exceptions for "When" folder in "When App" target */,
 			);
-			path = DeparturesWidget;
+			path = When;
+			sourceTree = "<group>";
+		};
+		134693192DE4EDA900617A4D /* WhenWidget */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				1346932D2DE4EDAA00617A4D /* Exceptions for "WhenWidget" folder in "When Widgets" target */,
+			);
+			path = WhenWidget;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -146,10 +147,11 @@
 		1307F76F2DE1F376009F0C4C = {
 			isa = PBXGroup;
 			children = (
+				1325C01C2DE9D231005151AC /* WhenWidgetExtension.entitlements */,
 				134693D02DE500DC00617A4D /* Shared */,
 				130E60C72DE232FB0033F2BA /* Fonts */,
-				1307F77A2DE1F376009F0C4C /* Departures */,
-				134693192DE4EDA900617A4D /* DeparturesWidget */,
+				1325BE552DE9CF05005151AC /* When */,
+				134693192DE4EDA900617A4D /* WhenWidget */,
 				134693142DE4EDA900617A4D /* Frameworks */,
 				1307F7792DE1F376009F0C4C /* Products */,
 				13BC3D472DE79519009B1B7F /* GoogleService-Info.plist */,
@@ -159,8 +161,8 @@
 		1307F7792DE1F376009F0C4C /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				1307F7782DE1F376009F0C4C /* Departures.app */,
-				134693132DE4EDA900617A4D /* DeparturesWidgetExtension.appex */,
+				1307F7782DE1F376009F0C4C /* When App.app */,
+				134693132DE4EDA900617A4D /* When Widgets.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -204,9 +206,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		1307F7772DE1F376009F0C4C /* Departures */ = {
+		1307F7772DE1F376009F0C4C /* When App */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 1307F79B2DE1F377009F0C4C /* Build configuration list for PBXNativeTarget "Departures" */;
+			buildConfigurationList = 1307F79B2DE1F377009F0C4C /* Build configuration list for PBXNativeTarget "When App" */;
 			buildPhases = (
 				1307F7742DE1F376009F0C4C /* Sources */,
 				1307F7752DE1F376009F0C4C /* Frameworks */,
@@ -219,10 +221,10 @@
 				134693282DE4EDAA00617A4D /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
-				1307F77A2DE1F376009F0C4C /* Departures */,
 				130E60C72DE232FB0033F2BA /* Fonts */,
+				1325BE552DE9CF05005151AC /* When */,
 			);
-			name = Departures;
+			name = "When App";
 			packageProductDependencies = (
 				13ADDF0E2DE5A903000F9376 /* PhosphorSwift */,
 				13BC3D432DE794E4009B1B7F /* FirebaseCore */,
@@ -231,12 +233,12 @@
 				1325BE092DE9AC6E005151AC /* TripKit */,
 			);
 			productName = Departures;
-			productReference = 1307F7782DE1F376009F0C4C /* Departures.app */;
+			productReference = 1307F7782DE1F376009F0C4C /* When App.app */;
 			productType = "com.apple.product-type.application";
 		};
-		134693122DE4EDA900617A4D /* DeparturesWidgetExtension */ = {
+		134693122DE4EDA900617A4D /* When Widgets */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 1346932A2DE4EDAA00617A4D /* Build configuration list for PBXNativeTarget "DeparturesWidgetExtension" */;
+			buildConfigurationList = 1346932A2DE4EDAA00617A4D /* Build configuration list for PBXNativeTarget "When Widgets" */;
 			buildPhases = (
 				1346930F2DE4EDA900617A4D /* Sources */,
 				134693102DE4EDA900617A4D /* Frameworks */,
@@ -247,15 +249,15 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				134693192DE4EDA900617A4D /* DeparturesWidget */,
+				134693192DE4EDA900617A4D /* WhenWidget */,
 			);
-			name = DeparturesWidgetExtension;
+			name = "When Widgets";
 			packageProductDependencies = (
 				13BC3D502DE795A9009B1B7F /* FirebaseAnalyticsWithoutAdIdSupport */,
 				1325BE0B2DE9AC77005151AC /* TripKit */,
 			);
-			productName = DeparturesWidgetExtension;
-			productReference = 134693132DE4EDA900617A4D /* DeparturesWidgetExtension.appex */;
+			productName = WhenWidgetExtension;
+			productReference = 134693132DE4EDA900617A4D /* When Widgets.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
 /* End PBXNativeTarget section */
@@ -276,7 +278,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 1307F7732DE1F376009F0C4C /* Build configuration list for PBXProject "Departures" */;
+			buildConfigurationList = 1307F7732DE1F376009F0C4C /* Build configuration list for PBXProject "When" */;
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -295,8 +297,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				1307F7772DE1F376009F0C4C /* Departures */,
-				134693122DE4EDA900617A4D /* DeparturesWidgetExtension */,
+				1307F7772DE1F376009F0C4C /* When App */,
+				134693122DE4EDA900617A4D /* When Widgets */,
 			);
 		};
 /* End PBXProject section */
@@ -346,7 +348,7 @@
 /* Begin PBXTargetDependency section */
 		134693282DE4EDAA00617A4D /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 134693122DE4EDA900617A4D /* DeparturesWidgetExtension */;
+			target = 134693122DE4EDA900617A4D /* When Widgets */;
 			targetProxy = 134693272DE4EDAA00617A4D /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -478,16 +480,17 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = Departures/Departures.entitlements;
+				CODE_SIGN_ENTITLEMENTS = When/When.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 9EPXPY3668;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = Departures/Info.plist;
+				INFOPLIST_FILE = When/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Departures;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.navigation";
 				INFOPLIST_KEY_NSSupportsLiveActivities = YES;
+				INFOPLIST_KEY_NSSupportsLiveActivitiesFrequentUpdates = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UIStatusBarHidden = YES;
@@ -499,7 +502,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.bez4pieci.Departures;
+				PRODUCT_BUNDLE_IDENTIFIER = com.bez4pieci.When;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -515,16 +518,17 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = Departures/Departures.entitlements;
+				CODE_SIGN_ENTITLEMENTS = When/When.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 9EPXPY3668;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = Departures/Info.plist;
+				INFOPLIST_FILE = When/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Departures;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.navigation";
 				INFOPLIST_KEY_NSSupportsLiveActivities = YES;
+				INFOPLIST_KEY_NSSupportsLiveActivitiesFrequentUpdates = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UIStatusBarHidden = YES;
@@ -536,7 +540,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.bez4pieci.Departures;
+				PRODUCT_BUNDLE_IDENTIFIER = com.bez4pieci.When;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -552,13 +556,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
-				CODE_SIGN_ENTITLEMENTS = DeparturesWidgetExtension.entitlements;
+				CODE_SIGN_ENTITLEMENTS = WhenWidgetExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 9EPXPY3668;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = DeparturesWidget/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = DeparturesWidget;
+				INFOPLIST_FILE = WhenWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = WhenWidget;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -567,7 +571,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.bez4pieci.Departures.DeparturesWidget;
+				PRODUCT_BUNDLE_IDENTIFIER = com.bez4pieci.When.WhenWidget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -584,13 +588,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
-				CODE_SIGN_ENTITLEMENTS = DeparturesWidgetExtension.entitlements;
+				CODE_SIGN_ENTITLEMENTS = WhenWidgetExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 9EPXPY3668;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = DeparturesWidget/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = DeparturesWidget;
+				INFOPLIST_FILE = WhenWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = WhenWidget;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -599,7 +603,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.bez4pieci.Departures.DeparturesWidget;
+				PRODUCT_BUNDLE_IDENTIFIER = com.bez4pieci.When.WhenWidget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -614,7 +618,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		1307F7732DE1F376009F0C4C /* Build configuration list for PBXProject "Departures" */ = {
+		1307F7732DE1F376009F0C4C /* Build configuration list for PBXProject "When" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				1307F7992DE1F377009F0C4C /* Debug */,
@@ -623,7 +627,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		1307F79B2DE1F377009F0C4C /* Build configuration list for PBXNativeTarget "Departures" */ = {
+		1307F79B2DE1F377009F0C4C /* Build configuration list for PBXNativeTarget "When App" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				1307F79C2DE1F377009F0C4C /* Debug */,
@@ -632,7 +636,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		1346932A2DE4EDAA00617A4D /* Build configuration list for PBXNativeTarget "DeparturesWidgetExtension" */ = {
+		1346932A2DE4EDAA00617A4D /* Build configuration list for PBXNativeTarget "When Widgets" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				1346932B2DE4EDAA00617A4D /* Debug */,
