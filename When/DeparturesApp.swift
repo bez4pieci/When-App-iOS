@@ -55,9 +55,12 @@ struct DeparturesApp: App {
 
     // Add some sample data
     let sampleStation = Station(
-        id: "900058101", name: "S Südkreuz Bhf (Berlin)",
+        id: "900058101",
+        name: "S Südkreuz Bhf (Berlin)",
         latitude: 52.475501,
-        longitude: 13.365548)
+        longitude: 13.365548,
+        products: [.suburbanTrain, .bus, .regionalTrain, .highSpeedTrain]
+    )
     container.mainContext.insert(sampleStation)
 
     return MainView()

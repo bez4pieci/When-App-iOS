@@ -115,10 +115,12 @@ struct StationSelectionView: View {
     }
 
     private func transportToggle(product: Product, label: String) -> some View {
-        HStack {
+        let isAvailable = selectedStation?.hasProduct(product) ?? true
+
+        return HStack {
             Text(label)
                 .font(Font.dNormal)
-                .foregroundColor(Color.dDefault)
+                .foregroundColor(isAvailable ? Color.dDefault : Color.dLight)
             Spacer()
             Toggle(
                 "",
@@ -129,6 +131,8 @@ struct StationSelectionView: View {
             )
             .labelsHidden()
             .tint(Color.dDefault)
+            .disabled(!isAvailable)
+            .opacity(isAvailable ? 1.0 : 0.25)
         }
     }
 
@@ -143,7 +147,8 @@ struct StationSelectionView: View {
             id: location.id ?? UUID().uuidString,
             name: location.name ?? location.getUniqueShortName(),
             latitude: location.coord?.lat != nil ? Double(location.coord!.lat) / 1000000.0 : nil,
-            longitude: location.coord?.lon != nil ? Double(location.coord!.lon) / 1000000.0 : nil
+            longitude: location.coord?.lon != nil ? Double(location.coord!.lon) / 1000000.0 : nil,
+            products: location.products ?? []
         )
 
         station.selectedAt = Date()
