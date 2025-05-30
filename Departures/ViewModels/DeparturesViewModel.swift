@@ -41,7 +41,10 @@ class DeparturesViewModel {
         }
 
         let provider = BvgProvider(apiAuthorization: AppConfig.bvgApiAuthorization)
-        let (_, result) = await provider.queryDepartures(stationId: station.id)
+        let (_, result) = await provider.queryDepartures(
+            stationId: station.id,
+            maxDepartures: 20
+        )
 
         // Wait for both the API call and minimum loading time to complete
         _ = await (minimumLoadingTime, result)
@@ -50,10 +53,14 @@ class DeparturesViewModel {
         case .success(let stationDepartures):
             departures = stationDepartures.flatMap { $0.departures }
             lastUpdate = Date()
+            print("Departures: Fetched \(departures.count) departures")
+
         case .invalidStation:
-            print("Invalid station id")
+            print("Departures: Invalid station id")
+
         case .failure(let error):
-            print("Error loading departures: \(error)")
+            print("Departures: Error loading departures: \(error)")
+
         }
     }
 }
