@@ -1,4 +1,4 @@
-# Departures iOS
+# When App (iOS)
 
 An iOS application for showing public transit departures from a selected stop/station in Berlin.
 
