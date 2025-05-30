@@ -41,6 +41,9 @@ struct DeparturesApp: App {
                 .environmentObject(liveActivityManager)
                 .environmentObject(settings)
                 .environmentObject(appSettings)
+                .onAppear {
+                    liveActivityManager.stopAllActivities()
+                }
         }
         .modelContainer(sharedModelContainer)
     }
