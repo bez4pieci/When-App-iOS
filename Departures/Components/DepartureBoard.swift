@@ -47,7 +47,8 @@ struct DepartureBoard: View {
                     station: station, departures: departures)
             }
         } else {
-            liveActivityManager.stopLiveActivity()
+            liveActivityManager.stopAllActivities()
+
         }
     }
 }

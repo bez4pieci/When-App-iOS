@@ -8,6 +8,23 @@ class LiveActivityManager: ObservableObject {
     private var currentActivity: Activity<DeparturesActivityAttributes>?
     private lazy var db = Firestore.firestore()
 
+    func stopAllActivities() {
+        let existingActivities = Activity<DeparturesActivityAttributes>.activities
+
+        print("Live Activity: Stopping \(existingActivities.count) existing activities...")
+
+        Task {
+            for activity in existingActivities {
+                await deleteLiveActivityFromFirestore(activityId: activity.id)
+                await activity.end(nil, dismissalPolicy: .immediate)
+                print("Live Activity: Ended activity with ID: \(activity.id)")
+            }
+        }
+
+        currentActivity = nil
+        isLiveActivityActive = false
+    }
+
     // Start the live activity
     func startLiveActivity(station: Station, departures: [Departure]) {
         guard ActivityAuthorizationInfo().areActivitiesEnabled else {
@@ -15,22 +32,19 @@ class LiveActivityManager: ObservableObject {
             return
         }
 
-        // Stop any existing activity
-        stopLiveActivity()
+        stopAllActivities()
 
         print("Live Activity: Starting...")
-
-        let attributes = DeparturesActivityAttributes(
-            stationName: station.name,
-            stationId: station.id
-        )
 
         let contentState = createContentState(from: departures)
         let activity: Activity<DeparturesActivityAttributes>
 
         do {
             activity = try Activity<DeparturesActivityAttributes>.request(
-                attributes: attributes,
+                attributes: DeparturesActivityAttributes(
+                    stationName: station.name,
+                    stationId: station.id
+                ),
                 content: .init(state: contentState, staleDate: Date().addingTimeInterval(60)),
                 pushType: .token
             )
@@ -46,22 +60,6 @@ class LiveActivityManager: ObservableObject {
 
         currentActivity = activity
         isLiveActivityActive = true
-    }
-
-    // Stop the live activity
-    func stopLiveActivity() {
-        guard let activity = currentActivity else { return }
-
-        Task {
-            // Delete from Firestore
-            await deleteLiveActivityFromFirestore(activityId: activity.id)
-
-            await activity.end(nil, dismissalPolicy: .immediate)
-            await MainActor.run {
-                self.currentActivity = nil
-                self.isLiveActivityActive = false
-            }
-        }
     }
 
     private func observeActivity(
@@ -137,7 +135,7 @@ class LiveActivityManager: ObservableObject {
             print("Live Activity: Saved to Firestore for userDeviceId \(appSettings.userDeviceId)")
         } catch {
             print("Live Activity: Error saving to Firestore: \(error)")
-            stopLiveActivity()
+            stopAllActivities()
         }
     }
 
