@@ -49,7 +49,7 @@ struct StationsList: View {
                         HStack(spacing: 4) {
                             ForEach(Array(products.enumerated()), id: \.element) { index, product in
                                 HStack(spacing: 0) {
-                                    Text(productLabel(for: product))
+                                    Text(product.shortLabel)
                                     if index < products.count - 1 {
                                         Text(",")
                                     }
@@ -68,19 +68,5 @@ struct StationsList: View {
             .contentShape(Rectangle())
         }
         .buttonStyle(PlainButtonStyle())
-    }
-
-    private func productLabel(for product: Product) -> String {
-        switch product {
-        case .suburbanTrain: return "S"
-        case .subway: return "U"
-        case .tram: return "Tram"
-        case .bus: return "Bus"
-        case .regionalTrain: return "RE"
-        case .ferry: return "F"
-        case .highSpeedTrain: return "ICE"
-        case .onDemand: return "On Demand"
-        case .cablecar: return "Cable Car"
-        }
     }
 }

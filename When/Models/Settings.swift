@@ -37,6 +37,10 @@ extension SettingsProtocol {
         return products
     }
 
+    func enabledProductsForStation(_ station: Station) -> Set<Product> {
+        return enabledProducts.filter { station.hasProduct($0) }
+    }
+
     func isProductEnabled(_ product: Product) -> Bool {
         switch product {
         case .suburbanTrain: return filterSuburbanTrain
