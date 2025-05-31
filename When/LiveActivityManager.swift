@@ -63,7 +63,8 @@ class LiveActivityManager: ObservableObject {
     }
 
     private func observeActivity(
-        activity: Activity<DeparturesActivityAttributes>, station: Station
+        activity: Activity<DeparturesActivityAttributes>,
+        station: Station
     ) {
         Task {
             await withTaskGroup(of: Void.self) { group in
@@ -86,8 +87,7 @@ class LiveActivityManager: ObservableObject {
                         await self.saveLiveActivityToFirestore(
                             token: pushTokenString,
                             activityId: activity.id,
-                            stationId: station.id,
-                            stationName: station.name
+                            station: station
                         )
                     }
                 }
@@ -116,17 +116,22 @@ class LiveActivityManager: ObservableObject {
 
     // Save live activity to Firestore
     private func saveLiveActivityToFirestore(
-        token: String, activityId: String, stationId: String, stationName: String
+        token: String,
+        activityId: String,
+        station: Station
     ) async {
         let appSettings = AppSettings()
+        let settings = Settings()
 
         let data: [String: Any] = [
             "pushToken": token,
             "activityId": activityId,
             "userDeviceId": appSettings.userDeviceId,
-            "stationId": stationId,
-            "stationName": stationName,
+            "stationId": station.id,
+            "stationName": station.name,
             "createdAt": FieldValue.serverTimestamp(),
+            "enabledProducts": settings.enabledProductsForStation(station).map { $0.name },
+            "showCancelledDepartures": settings.showCancelledDepartures,
         ]
 
         do {
