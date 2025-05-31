@@ -147,6 +147,8 @@ private struct StationSelectionViewContent: View {
         VStack(spacing: 0) {
             DefaultDivider()
             VStack(spacing: 12) {
+                // TODO: use allCases for Settings, so that we don't depend here on TripKit.
+                //       TripKit might change products, and our settings will break.
                 ForEach(Product.allCases, id: \.self) { product in
                     if temporarySelectedStation?.hasProduct(product) ?? true {
                         transportToggle(
