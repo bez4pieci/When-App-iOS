@@ -8,7 +8,7 @@ struct DepartureRow: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
             HStack {
-                Text(departure.line.label ?? "")
+                Text(departure.line.name ?? departure.line.label ?? "")
                 Spacer()
                 Text(timeString)
                     .foregroundColor(timeColor)
@@ -17,7 +17,7 @@ struct DepartureRow: View {
             .strikethrough(departure.cancelled)
 
             HStack(spacing: 8) {
-                Text(departure.destination?.name ?? "")
+                Text(destination)
                     .lineLimit(1)
                 Spacer()
                 if let predictedTime = departure.predictedTime,
@@ -34,6 +34,17 @@ struct DepartureRow: View {
         .padding(.horizontal, 20)
         .padding(.vertical, 16)
         .opacity(departure.cancelled ? 0.25 : 1)
+    }
+
+    private var destination: String {
+        if let place = departure.destination?.place,
+            let name = departure.destination?.name,
+            place != "Berlin"
+        {
+            return "\(place), \(name)"
+        }
+
+        return departure.destination?.name ?? ""
     }
 
     private var timeString: String {
