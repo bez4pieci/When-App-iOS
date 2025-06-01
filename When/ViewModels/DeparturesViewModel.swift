@@ -43,7 +43,7 @@ class DeparturesViewModel {
         let provider = BvgProvider(apiAuthorization: AppConfig.bvgApiAuthorization)
         let (_, result) = await provider.queryDepartures(
             stationId: station.id,
-            maxDepartures: 20
+            maxDepartures: 40  // Larger number to allow for filtering
         )
 
         // Wait for both the API call and minimum loading time to complete
