@@ -1,4 +1,4 @@
-<img src="Documentation/Icon.png" srcset="Documentation/Icon@2x.png 3x"><br>
+<img src="Documentation/Icon@2x.png" width=100><br>
 
 # When? (iOS)
 
