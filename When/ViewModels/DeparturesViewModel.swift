@@ -5,25 +5,27 @@ import TripKit
 
 @Observable
 class DeparturesViewModel {
-    private var settings: Settings
+    private var station: Station?
     var departures: [Departure] = []
     var isLoading = false
     var lastUpdate = Date()
 
-    init(settings: Settings) {
-        self.settings = settings
+    init() {
+        // No longer takes settings in init
     }
 
     var filteredDepartures: [Departure] {
-        departures.filter { departure in
+        guard let station = station else { return [] }
+
+        return departures.filter { departure in
             // Filter by cancelled status
-            if !settings.showCancelledDepartures && departure.cancelled {
+            if !station.showCancelledDepartures && departure.cancelled {
                 return false
             }
 
             // Filter by transport type
             if let product = departure.line.product {
-                return settings.isProductEnabled(product)
+                return station.isProductEnabled(product)
             }
 
             // If no product info, show by default
@@ -32,6 +34,7 @@ class DeparturesViewModel {
     }
 
     func loadDepartures(for station: Station) async {
+        self.station = station
         isLoading = true
         defer { isLoading = false }
 

@@ -17,8 +17,6 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 struct DeparturesApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     @StateObject private var liveActivityManager = LiveActivityManager()
-    @StateObject private var settings = Settings()
-
     var appSettings = AppSettings()
 
     var sharedModelContainer: ModelContainer = {
@@ -39,7 +37,6 @@ struct DeparturesApp: App {
             MainView()
                 .environment(\.font, Font.dNormal)
                 .environmentObject(liveActivityManager)
-                .environmentObject(settings)
                 .environmentObject(appSettings)
                 .onAppear {
                     liveActivityManager.stopAllActivities()
@@ -59,7 +56,7 @@ struct DeparturesApp: App {
         name: "S Südkreuz Bhf (Berlin)",
         latitude: 52.475501,
         longitude: 13.365548,
-        products: [.suburbanTrain, .bus, .regionalTrain, .highSpeedTrain]
+        products: [.suburbanTrain, .bus, .regionalTrain, .highSpeedTrain],
     )
     container.mainContext.insert(sampleStation)
 
@@ -67,6 +64,5 @@ struct DeparturesApp: App {
         .modelContainer(container)
         .environment(\.font, Font.dNormal)
         .environmentObject(LiveActivityManager())
-        .environmentObject(Settings())
         .environmentObject(AppSettings())
 }

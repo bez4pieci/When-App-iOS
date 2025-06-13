@@ -121,7 +121,6 @@ class LiveActivityManager: ObservableObject {
         station: Station
     ) async {
         let appSettings = AppSettings()
-        let settings = Settings()
 
         let data: [String: Any] = [
             "pushToken": token,
@@ -130,8 +129,8 @@ class LiveActivityManager: ObservableObject {
             "stationId": station.id,
             "stationName": station.name,
             "createdAt": FieldValue.serverTimestamp(),
-            "enabledProducts": settings.enabledProductsForStation(station).map { $0.name },
-            "showCancelledDepartures": settings.showCancelledDepartures,
+            "enabledProducts": station.enabledProductStrings,
+            "showCancelledDepartures": station.showCancelledDepartures,
         ]
 
         do {

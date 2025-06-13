@@ -4,9 +4,6 @@ import SwiftUI
 import TripKit
 
 struct StationSearchField: View {
-    @Environment(\.modelContext) private var modelContext
-    @Query(sort: \Station.selectedAt, order: .reverse) private var stations: [Station]
-
     let selectedStation: Station?
     let onSearch: (String) async -> Void
 
@@ -16,6 +13,8 @@ struct StationSearchField: View {
     @FocusState private var isSearchFieldFocused: Bool
 
     var body: some View {
+        Text(selectedStation?.name ?? "No station selected")
+            .foregroundColor(Color.red)
         HStack(spacing: 12) {
             Ph.mapPinSimple.regular
                 .frame(width: 24, height: 24)

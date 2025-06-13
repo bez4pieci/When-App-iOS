@@ -5,9 +5,8 @@ import TripKit
 
 struct MainView: View {
     @Environment(\.modelContext) private var modelContext
-    @EnvironmentObject private var settings: Settings
     @Query(sort: \Station.selectedAt, order: .reverse) private var stations: [Station]
-    @State private var viewModel: DeparturesViewModel?
+    @State private var viewModel = DeparturesViewModel()
 
     @State private var showStationSelection = false
 
@@ -29,11 +28,9 @@ struct MainView: View {
                     if let station = selectedStation {
                         DepartureBoard(
                             station: station,
-                            departures: viewModel?.filteredDepartures ?? [],
+                            departures: viewModel.filteredDepartures,
                             onRefresh: {
-                                if let station = selectedStation {
-                                    await viewModel?.loadDepartures(for: station)
-                                }
+                                await viewModel.loadDepartures(for: station)
                             }
                         )
                     } else {
@@ -43,19 +40,15 @@ struct MainView: View {
                 .ignoresSafeArea()
                 .navigationBarHidden(true)
             }
-            .onAppear {
-                // Initialize viewModel when the view appears
-                viewModel = DeparturesViewModel(settings: settings)
-            }
             .task {
                 if let station = selectedStation {
-                    await viewModel?.loadDepartures(for: station)
+                    await viewModel.loadDepartures(for: station)
                 }
             }
             .onChange(of: selectedStation) { _, newStation in
                 if let station = newStation {
                     Task {
-                        await viewModel?.loadDepartures(for: station)
+                        await viewModel.loadDepartures(for: station)
                     }
                 }
             }

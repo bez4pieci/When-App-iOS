@@ -5,9 +5,7 @@ import TripKit
 
 struct StationSelectionView: View {
     @Environment(\.dismiss) private var dismiss
-
     @Environment(\.modelContext) private var modelContext
-    @EnvironmentObject var settings: Settings
     @Query(sort: \Station.selectedAt, order: .reverse) private var stations: [Station]
 
     private var selectedStation: Station? {
@@ -16,14 +14,13 @@ struct StationSelectionView: View {
 
     var body: some View {
         StationSelectionViewContent(
-            settings: settings,
             selectedStation: selectedStation,
             onApply: saveChanges,
             onCancel: { dismiss() }
         )
     }
 
-    private func saveChanges(station: Station?, temporarySettings: TemporarySettings) {
+    private func saveChanges(station: Station?) {
         guard let station = station else { return }
 
         if let existingStation = selectedStation {
@@ -39,15 +36,12 @@ struct StationSelectionView: View {
             print("Error saving station: \(error)")
         }
 
-        // Apply temporary settings to persistent settings
-        temporarySettings.applyTo(settings)
-
         dismiss()
     }
 }
 
 private struct StationSelectionViewContent: View {
-    let onApply: (_ station: Station?, _ temporarySettings: TemporarySettings) -> Void
+    let onApply: (_ station: Station?) -> Void
     let onCancel: () -> Void
 
     @State private var suggestedLocations: [SuggestedLocation] = []
@@ -57,19 +51,15 @@ private struct StationSelectionViewContent: View {
 
     // Local state for temporary changes
     @State private var temporarySelectedStation: Station?
-    @StateObject private var temporarySettings: TemporarySettings
 
     init(
-        settings: Settings,
         selectedStation: Station?,
-        onApply: @escaping (_ station: Station?, _ temporarySettings: TemporarySettings) -> Void,
+        onApply: @escaping (_ station: Station?) -> Void,
         onCancel: @escaping () -> Void
     ) {
         self.onApply = onApply
         self.onCancel = onCancel
-
-        self.temporarySelectedStation = selectedStation
-        _temporarySettings = StateObject(wrappedValue: TemporarySettings(from: settings))
+        _temporarySelectedStation = State(initialValue: selectedStation)
     }
 
     var body: some View {
@@ -132,7 +122,7 @@ private struct StationSelectionViewContent: View {
                 }
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button("Apply") {
-                        onApply(temporarySelectedStation, temporarySettings)
+                        onApply(temporarySelectedStation)
                     }
                     .foregroundColor(Color.dDefault)
                 }
@@ -168,9 +158,7 @@ private struct StationSelectionViewContent: View {
         -> some View
     {
         if forceEnable {
-            Task {
-                temporarySettings.setProduct(product, enabled: true)
-            }
+            temporarySelectedStation?.setProduct(product, enabled: true)
         }
 
         return HStack {
@@ -181,8 +169,8 @@ private struct StationSelectionViewContent: View {
             Toggle(
                 "",
                 isOn: Binding(
-                    get: { temporarySettings.isProductEnabled(product) },
-                    set: { _ in temporarySettings.toggleProduct(product) }
+                    get: { temporarySelectedStation?.isProductEnabled(product) ?? false },
+                    set: { _ in temporarySelectedStation?.toggleProduct(product) }
                 )
             )
             .labelsHidden()
@@ -199,9 +187,17 @@ private struct StationSelectionViewContent: View {
                     .font(Font.dNormal)
                     .foregroundColor(Color.dDefault)
                 Spacer()
-                Toggle("", isOn: $temporarySettings.showCancelledDepartures)
-                    .labelsHidden()
-                    .tint(Color.dDefault)
+                Toggle(
+                    "",
+                    isOn: Binding(
+                        get: { temporarySelectedStation?.showCancelledDepartures ?? true },
+                        set: { newValue in
+                            temporarySelectedStation?.showCancelledDepartures = newValue
+                        }
+                    )
+                )
+                .labelsHidden()
+                .tint(Color.dDefault)
             }
             .padding(.horizontal, 20)
             .padding(.vertical, 20)
