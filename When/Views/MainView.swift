@@ -58,3 +58,22 @@ struct MainView: View {
         }
     }
 }
+
+#Preview {
+    let config = ModelConfiguration(isStoredInMemoryOnly: true)
+    let container = try! ModelContainer(for: Station.self, configurations: config)
+    let sampleStation = Station(
+        id: "900058101",
+        name: "S Südkreuz Bhf (Berlin)",
+        latitude: 52.475501,
+        longitude: 13.365548,
+        products: [.suburbanTrain, .bus, .regionalTrain, .highSpeedTrain],
+    )
+    container.mainContext.insert(sampleStation)
+
+    return MainView()
+        .modelContainer(container)
+        .environment(\.font, Font.dNormal)
+        .environmentObject(LiveActivityManager())
+        .environmentObject(AppSettings())
+}
