@@ -158,7 +158,9 @@ private struct StationSelectionViewContent: View {
         -> some View
     {
         if forceEnable {
-            temporarySelectedStation?.setProduct(product, enabled: true)
+            Task {
+                temporarySelectedStation?.setProduct(product, enabled: true)
+            }
         }
 
         return HStack {

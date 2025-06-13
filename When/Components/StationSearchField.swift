@@ -13,8 +13,6 @@ struct StationSearchField: View {
     @FocusState private var isSearchFieldFocused: Bool
 
     var body: some View {
-        Text(selectedStation?.name ?? "No station selected")
-            .foregroundColor(Color.red)
         HStack(spacing: 12) {
             Ph.mapPinSimple.regular
                 .frame(width: 24, height: 24)
