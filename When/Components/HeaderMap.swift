@@ -44,15 +44,9 @@ struct HeaderMap: View {
                 ))
         }
         .allowsHitTesting(false)
-        
-        // set map style to satellite
-        .mapStyle(.standard)
 
-        // Add an overlay here that will blend and thus make the map look grayscale
-        .overlay(
-            Color.black.opacity(1)
-                .blendMode(.hue)
-        )
+        // TODO: Find our why this is not working on iPhone 12
+        //.overlay(Color.black.opacity(1).blendMode(.hue))
     }
 
     private func adjustedCenter(latitude: Double, longitude: Double) -> CLLocationCoordinate2D {
@@ -69,10 +63,9 @@ struct HeaderMap: View {
         let latitudeDelta = 0.03  // Same as the span's latitudeDelta
         var latitudeOffset = latitudeDelta * offsetRatio
 
-        if(offset < 0) {
+        if offset < 0 {
             latitudeOffset += offset / 60000
-        }
-        else if offset < 120 {
+        } else if offset < 120 {
             latitudeOffset += offset / 30000
         } else if offset >= 120 {
             latitudeOffset += 120 / 30000

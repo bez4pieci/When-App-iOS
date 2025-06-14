@@ -28,9 +28,6 @@ struct MainView: View {
                     MainHeader(onGearButtonTap: { showStationSelection = true })
                         .zIndex(5)
 
-                    Text(offset.formatted())
-                        .offset(y: 50)
-
                     ScrollView {
                         Color.clear
                             .frame(height: headerHeight + 20)
