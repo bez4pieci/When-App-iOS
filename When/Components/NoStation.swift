@@ -10,7 +10,7 @@ struct NoStation: View {
                     .foregroundColor(.black)
                     .padding(.horizontal, 30)
                     .padding(.vertical, 15)
-                    .background(Color.yellow)
+                    .background(Color.dBackground)
                     .cornerRadius(8)
             }
         }

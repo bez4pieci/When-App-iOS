@@ -15,6 +15,11 @@ extension Color {
     static let dDefault = Color(hex: 0x000000)
     static let dMedium = Color(hex: 0x000000, alpha: 0.8)
     static let dLight = Color(hex: 0x000000, alpha: 0.6)
+
+    static let dBackground = Color.yellow
+    // static let dBackground = Color(hex: 0xFFE477)
+    // static let dBackground = Color(hex: 0xFEDF43)
+    // static let dBackground = Color(hex: 0xFDDF0C)
 }
 
 // MARK: - Font Extension

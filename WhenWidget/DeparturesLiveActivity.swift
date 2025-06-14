@@ -7,7 +7,7 @@ struct DeparturesLiveActivity: Widget {
     var body: some WidgetConfiguration {
         ActivityConfiguration(for: DeparturesActivityAttributes.self) { context in
             DeparturesLiveActivityView(context: context)
-                .activityBackgroundTint(Color.yellow)
+                .activityBackgroundTint(Color.dBackground)
                 .activitySystemActionForegroundColor(Color.dDefault)
 
         } dynamicIsland: { context in

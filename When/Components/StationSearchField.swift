@@ -4,9 +4,6 @@ import SwiftUI
 import TripKit
 
 struct StationSearchField: View {
-    @Environment(\.modelContext) private var modelContext
-    @Query(sort: \Station.selectedAt, order: .reverse) private var stations: [Station]
-
     let selectedStation: Station?
     let onSearch: (String) async -> Void
 
