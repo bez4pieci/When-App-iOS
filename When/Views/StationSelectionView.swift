@@ -65,7 +65,7 @@ private struct StationSelectionViewContent: View {
     var body: some View {
         NavigationStack {
             ZStack {
-                Color.yellow
+                Color.dBackground
                     .ignoresSafeArea()
 
                 ScrollView {
@@ -127,10 +127,9 @@ private struct StationSelectionViewContent: View {
                     .foregroundColor(Color.dDefault)
                 }
             }
-            .toolbarBackground(Color.yellow, for: .navigationBar)
+            .toolbarBackground(Color.dBackground, for: .navigationBar)
             .toolbarBackground(.visible, for: .navigationBar)
         }
-        .presentationBackground(Color.black)
     }
 
     private var transportFiltersSection: some View {
