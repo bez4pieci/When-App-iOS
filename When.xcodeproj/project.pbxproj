@@ -22,6 +22,7 @@
 		134693D82DE502FB00617A4D /* DeparturesActivityAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 134693D62DE502FB00617A4D /* DeparturesActivityAttributes.swift */; };
 		134693D92DE502FB00617A4D /* DeparturesActivityAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 134693D62DE502FB00617A4D /* DeparturesActivityAttributes.swift */; };
 		13ADDF0F2DE5A903000F9376 /* PhosphorSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 13ADDF0E2DE5A903000F9376 /* PhosphorSwift */; };
+		13B486AB2DFE279A00ECBA4F /* MapboxMaps in Frameworks */ = {isa = PBXBuildFile; productRef = 13B486AA2DFE279A00ECBA4F /* MapboxMaps */; };
 		13BC3D442DE794E4009B1B7F /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = 13BC3D432DE794E4009B1B7F /* FirebaseCore */; };
 		13BC3D462DE794E4009B1B7F /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 13BC3D452DE794E4009B1B7F /* FirebaseFirestore */; };
 		13BC3D4F2DE7959F009B1B7F /* FirebaseAnalyticsWithoutAdIdSupport in Frameworks */ = {isa = PBXBuildFile; productRef = 13BC3D4E2DE7959F009B1B7F /* FirebaseAnalyticsWithoutAdIdSupport */; };
@@ -124,6 +125,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				13B486AB2DFE279A00ECBA4F /* MapboxMaps in Frameworks */,
 				13BC3D4F2DE7959F009B1B7F /* FirebaseAnalyticsWithoutAdIdSupport in Frameworks */,
 				13BC3D462DE794E4009B1B7F /* FirebaseFirestore in Frameworks */,
 				13BC3D442DE794E4009B1B7F /* FirebaseCore in Frameworks */,
@@ -235,6 +237,7 @@
 				13BC3D452DE794E4009B1B7F /* FirebaseFirestore */,
 				13BC3D4E2DE7959F009B1B7F /* FirebaseAnalyticsWithoutAdIdSupport */,
 				1325BE092DE9AC6E005151AC /* TripKit */,
+				13B486AA2DFE279A00ECBA4F /* MapboxMaps */,
 			);
 			productName = Departures;
 			productReference = 1307F7782DE1F376009F0C4C /* When App.app */;
@@ -295,6 +298,7 @@
 				13ADDF0D2DE5A903000F9376 /* XCRemoteSwiftPackageReference "swift" */,
 				13BC3D422DE794E4009B1B7F /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				1325BE082DE9AC6E005151AC /* XCRemoteSwiftPackageReference "tripkit" */,
+				13B486A92DFE279A00ECBA4F /* XCRemoteSwiftPackageReference "mapbox-maps-ios" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 1307F7792DE1F376009F0C4C /* Products */;
@@ -678,6 +682,14 @@
 				minimumVersion = 2.1.0;
 			};
 		};
+		13B486A92DFE279A00ECBA4F /* XCRemoteSwiftPackageReference "mapbox-maps-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/mapbox/mapbox-maps-ios.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 11.12.2;
+			};
+		};
 		13BC3D422DE794E4009B1B7F /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
@@ -703,6 +715,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 13ADDF0D2DE5A903000F9376 /* XCRemoteSwiftPackageReference "swift" */;
 			productName = PhosphorSwift;
+		};
+		13B486AA2DFE279A00ECBA4F /* MapboxMaps */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 13B486A92DFE279A00ECBA4F /* XCRemoteSwiftPackageReference "mapbox-maps-ios" */;
+			productName = MapboxMaps;
 		};
 		13BC3D432DE794E4009B1B7F /* FirebaseCore */ = {
 			isa = XCSwiftPackageProductDependency;
