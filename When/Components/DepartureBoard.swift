@@ -9,10 +9,12 @@ struct DepartureBoard: View {
     let onRefresh: () async -> Void
 
     var body: some View {
+        // Use VStack instead of LazyVStack for better performance
         VStack(spacing: 0) {
-            LazyVStack(spacing: 0) {
-                ForEach(Array(departures.enumerated()), id: \.offset) { index, departure in
-                    DepartureRow(departure: departure)
+            ForEach(departures, id: \.hash) { departure in
+                DepartureRow(departure: departure)
+
+                if departure != departures.last {
                     DefaultDivider()
                 }
             }
