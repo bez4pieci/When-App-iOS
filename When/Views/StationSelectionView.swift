@@ -156,13 +156,7 @@ private struct StationSelectionViewContent: View {
     private func transportToggle(product: Product, label: String, forceEnable: Bool = false)
         -> some View
     {
-        if forceEnable {
-            Task {
-                temporarySelectedStation?.setProduct(product, enabled: true)
-            }
-        }
-
-        return HStack {
+        HStack {
             Text(label)
                 .font(Font.dNormal)
                 .foregroundColor(Color.dDefault)
@@ -177,6 +171,11 @@ private struct StationSelectionViewContent: View {
             .labelsHidden()
             .tint(Color.dDefault)
             .disabled(forceEnable)
+        }
+        .onAppear {
+            if forceEnable {
+                temporarySelectedStation?.setProduct(product, enabled: true)
+            }
         }
     }
 

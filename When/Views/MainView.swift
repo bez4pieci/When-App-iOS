@@ -108,29 +108,33 @@ struct MainView: View {
     }
 
     var liveToggle: some View {
-        HStack {
-            Text("Show Live")
-                .font(Font.dNormal)
-                .foregroundColor(Color.dDefault)
-            Spacer()
-            Toggle("", isOn: $liveActivityManager.isLiveActivityActive)
-                .labelsHidden()
-                .tint(Color.dDefault)
-                .onChange(of: liveActivityManager.isLiveActivityActive) {
-                    _, isActive in
-                    handleLiveActivityToggle(
-                        isActive: isActive, station: selectedStation!)
+        Group {
+            if let station = selectedStation {
+                HStack {
+                    Text("Show Live")
+                        .font(Font.dNormal)
+                        .foregroundColor(Color.dDefault)
+                    Spacer()
+                    Toggle("", isOn: $liveActivityManager.isLiveActivityActive)
+                        .labelsHidden()
+                        .tint(Color.dDefault)
+                        .onChange(of: liveActivityManager.isLiveActivityActive) {
+                            _, isActive in
+                            handleLiveActivityToggle(
+                                isActive: isActive, station: station)
+                        }
                 }
+                .padding(.horizontal, 20)
+                .padding(.vertical, 12)
+                .background(Color.dBackground)
+                .clipShape(
+                    .rect(
+                        cornerSize: .init(
+                            width: cornerRadius, height: cornerRadius),
+                        style: .continuous)
+                )
+            }
         }
-        .padding(.horizontal, 20)
-        .padding(.vertical, 12)
-        .background(Color.dBackground)
-        .clipShape(
-            .rect(
-                cornerSize: .init(
-                    width: cornerRadius, height: cornerRadius),
-                style: .continuous)
-        )
     }
 
     func handleLiveActivityToggle(isActive: Bool, station: Station) {
