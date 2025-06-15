@@ -3,6 +3,7 @@ import SwiftUI
 import TripKit
 
 struct MainView: View {
+    @Environment(\.safeAreaInsets) private var safeAreaInsets
     @EnvironmentObject private var liveActivityManager: LiveActivityManager
     @Environment(\.modelContext) private var modelContext
     @Query(sort: \Station.selectedAt, order: .reverse) private var stations: [Station]
@@ -70,8 +71,8 @@ struct MainView: View {
                             }
                             .offset(y: offset >= 120 ? offset - 120 : 0)
                         }
-                        .padding(.horizontal, 20)
-                        .padding(.bottom, 40)
+                        .padding(.horizontal, 16)
+                        .padding(.bottom, 60 + safeAreaInsets.bottom)
                     }
                     .zIndex(2)
                     .refreshable {
