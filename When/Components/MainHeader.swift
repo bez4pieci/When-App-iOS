@@ -17,6 +17,9 @@ struct MainHeader: View {
             Ph.faders.regular.color(Color.dDefault)
                 .frame(width: 24, height: 24)
                 .padding(12)
+
+                // Needed so that .plain button style takes the whole area as tappable, including the empty space
+                .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
         .background(Color.dBackground)
