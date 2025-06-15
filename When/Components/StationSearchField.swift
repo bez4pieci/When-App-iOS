@@ -51,6 +51,9 @@ struct StationSearchField: View {
                     Ph.x.regular
                         .frame(width: 24, height: 24)
                         .foregroundColor(Color.dLight)
+
+                        // To make the button easier to tap
+                        .contentShape(Rectangle())
                 }
                 .fixedSize()
             }
