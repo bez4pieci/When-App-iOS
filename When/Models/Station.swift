@@ -16,11 +16,33 @@ final class Station {
     var latitude: Double?
     var longitude: Double?
     var selectedAt: Date
-    var productStrings: [String] = []
+
+    // Store arrays as comma-separated strings to avoid CoreData array issues
+    var productStringsData: String = ""
 
     // Per-station settings
     var showCancelledDepartures: Bool = true
-    var enabledProductStrings: [String] = []  // Store enabled product names
+    var enabledProductStringsData: String = ""  // Store enabled product names
+
+    // Computed properties to provide array interface
+    var productStrings: [String] {
+        get {
+            productStringsData.isEmpty ? [] : productStringsData.components(separatedBy: ",")
+        }
+        set {
+            productStringsData = newValue.joined(separator: ",")
+        }
+    }
+
+    var enabledProductStrings: [String] {
+        get {
+            enabledProductStringsData.isEmpty
+                ? [] : enabledProductStringsData.components(separatedBy: ",")
+        }
+        set {
+            enabledProductStringsData = newValue.joined(separator: ",")
+        }
+    }
 
     init(
         id: String, name: String, latitude: Double? = nil, longitude: Double? = nil,
@@ -36,16 +58,6 @@ final class Station {
         // Initialize settings with defaults - enable all products available at this station
         self.showCancelledDepartures = true
         self.enabledProductStrings = products.map { $0.name }
-    }
-
-    func apply(_ other: Station) {
-        self.name = other.name
-        self.latitude = other.latitude
-        self.longitude = other.longitude
-        self.selectedAt = other.selectedAt
-        self.productStrings = other.productStrings
-        self.showCancelledDepartures = other.showCancelledDepartures
-        self.enabledProductStrings = other.enabledProductStrings
     }
 
     // Helper computed property to convert stored strings back to Product enums
