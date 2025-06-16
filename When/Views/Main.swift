@@ -7,7 +7,6 @@ struct MainView: View {
     @EnvironmentObject private var liveActivityManager: LiveActivityManager
     @Environment(\.modelContext) private var modelContext
     @Query() private var stations: [Station]
-    @State private var multiStationViewModel = MultiStationViewModel()
 
     @State private var showStationSelection = false
     @State private var currentTabIndex = 0
@@ -32,46 +31,19 @@ struct MainView: View {
                 })
                 .zIndex(5)
 
-                Text(currentStation?.name ?? "No station")
-                    .foregroundColor(.red)
-                    .zIndex(10)
-
                 TabView(selection: $currentTabIndex) {
                     ForEach(Array(stations.enumerated()), id: \.element.id) {
                         index, station in
-                        StationTab(
-                            station: station,
-                            viewModel: multiStationViewModel.getDeparturesViewModel(
-                                for: station),
-                            offset: $offset,
-                            onRefresh: {
-                                await multiStationViewModel.loadDepartures(for: station)
-                            }
-                        )
-                        .tag(index)
+                        StationTab(station: station, offset: $offset)
                     }
 
                     NoStation(onSelectStation: { showStationSelection = true })
-                        .tag(stations.count)
                 }
                 .tabViewStyle(.page(indexDisplayMode: .never))
                 .zIndex(2)
             }
             .ignoresSafeArea()
             .navigationBarHidden(true)
-            .task {
-                if let station = currentStation {
-                    await multiStationViewModel.loadDepartures(for: station)
-                }
-            }
-            .onChange(of: currentTabIndex) { _, newIndex in
-                if newIndex < stations.count {
-                    let station = stations[newIndex]
-                    Task {
-                        await multiStationViewModel.loadDepartures(for: station)
-                    }
-                }
-            }
             .sheet(isPresented: $showStationSelection) {
                 StationSettingsView(
                     station: currentStation,
@@ -82,10 +54,6 @@ struct MainView: View {
     }
 
     private func deleteStation(_ station: Station) {
-        // Remove the ViewModel for this station
-        multiStationViewModel.removeDeparturesViewModel(for: station.id)
-
-        // Delete the station from the database
         modelContext.delete(station)
 
         do {

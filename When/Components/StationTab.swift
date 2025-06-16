@@ -7,21 +7,16 @@ struct StationTab: View {
     @EnvironmentObject private var liveActivityManager: LiveActivityManager
 
     let station: Station
-    let viewModel: DeparturesViewModel
-    let offset: Binding<Double>
-    let onRefresh: () async -> Void
 
+    let offset: Binding<Double>
+
+    @State private var viewModel = DeparturesViewModel()
     private var headerHeight = 240.0
     private var cornerRadius = AppConfig.cornerRadius
 
-    init(
-        station: Station, viewModel: DeparturesViewModel, offset: Binding<Double>,
-        onRefresh: @escaping () async -> Void
-    ) {
+    init(station: Station, offset: Binding<Double>) {
         self.station = station
-        self.viewModel = viewModel
         self.offset = offset
-        self.onRefresh = onRefresh
     }
 
     var body: some View {
@@ -37,8 +32,7 @@ struct StationTab: View {
                         VStack(spacing: 0) {
                             DepartureBoard(
                                 station: station,
-                                departures: viewModel.filteredDepartures,
-                                onRefresh: onRefresh
+                                departures: viewModel.filteredDepartures
                             )
                         }
                         .background(Color.dBackground)
@@ -63,8 +57,11 @@ struct StationTab: View {
             .padding(.bottom, 60 + safeAreaInsets.bottom)
         }
         .refreshable {
-            await onRefresh()
+            await viewModel.loadDepartures(for: station)
         }
+        //        .task {
+        //            await viewModel.loadDepartures(for: station)
+        //        }
         .onScrollGeometryChange(for: CGFloat.self) { geometry in
             return geometry.contentOffset.y + geometry.contentInsets.top
         } action: { _, new in

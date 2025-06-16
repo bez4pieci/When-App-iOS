@@ -24,13 +24,24 @@ struct StationSettingsView: View {
     }
 
     private func saveChanges(changedStation: Station?) {
-        guard let newStation = changedStation else { return }
-        newStation.selectedAt = Date()
+        guard let changedStation = changedStation else { return }
 
         if let existingStation = station {
-            existingStation.apply(newStation)
+            // Update existing station with values from changed station
+            existingStation.id = changedStation.id
+            existingStation.name = changedStation.name
+            existingStation.latitude = changedStation.latitude
+            existingStation.longitude = changedStation.longitude
+            existingStation.productStrings = changedStation.productStrings
+            existingStation.showCancelledDepartures = changedStation.showCancelledDepartures
+            existingStation.selectedAt = Date()
+
+            // Copy enabled products settings
+            existingStation.enabledProductStrings = changedStation.enabledProductStrings
         } else {
-            modelContext.insert(newStation)
+            // Insert new station
+            changedStation.selectedAt = Date()
+            modelContext.insert(changedStation)
         }
 
         do {
