@@ -38,6 +38,10 @@ class DeparturesViewModel {
         isLoading = true
         defer { isLoading = false }
 
+        print("Departures: Loading departures for \(station.name)...")
+        print("Departures: Products: \(station.productStrings)")
+        print("Departures: Enabled products: \(station.enabledProductStrings)")
+
         // Create a task to ensure minimum loading time
         async let minimumLoadingTime = Task {
             try? await Task.sleep(nanoseconds: 1_000_000_000)  // 1 second
