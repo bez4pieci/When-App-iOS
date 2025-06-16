@@ -6,7 +6,6 @@ struct DepartureBoard: View {
     @EnvironmentObject private var liveActivityManager: LiveActivityManager
     let station: Station
     let departures: [Departure]
-    let onRefresh: () async -> Void
 
     var body: some View {
         // Use VStack instead of LazyVStack for better performance
