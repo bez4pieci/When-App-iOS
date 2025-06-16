@@ -3,7 +3,7 @@ import SwiftData
 import SwiftUI
 import TripKit
 
-struct StationSelectionView: View {
+struct StationSettingsView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.modelContext) private var modelContext
     @Query(sort: \Station.selectedAt, order: .reverse) private var stations: [Station]

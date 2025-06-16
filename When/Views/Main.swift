@@ -102,7 +102,7 @@ struct MainView: View {
                 }
             }
             .sheet(isPresented: $showStationSelection) {
-                StationSelectionView()
+                StationSettingsView()
             }
         }
     }
