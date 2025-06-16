@@ -38,6 +38,16 @@ final class Station {
         self.enabledProductStrings = products.map { $0.name }
     }
 
+    func apply(_ other: Station) {
+        self.name = other.name
+        self.latitude = other.latitude
+        self.longitude = other.longitude
+        self.selectedAt = other.selectedAt
+        self.productStrings = other.productStrings
+        self.showCancelledDepartures = other.showCancelledDepartures
+        self.enabledProductStrings = other.enabledProductStrings
+    }
+
     // Helper computed property to convert stored strings back to Product enums
     var products: [Product] {
         productStrings.compactMap { Product.fromName($0) }

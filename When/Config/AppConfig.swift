@@ -5,4 +5,6 @@ enum AppConfig {
         "type": "AID",
         "aid": "dVg4TZbW8anjx9ztPwe2uk4LVRi9wO",
     ]
+
+    static let cornerRadius: CGFloat = 12.0
 }

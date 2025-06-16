@@ -6,148 +6,100 @@ struct MainView: View {
     @Environment(\.safeAreaInsets) private var safeAreaInsets
     @EnvironmentObject private var liveActivityManager: LiveActivityManager
     @Environment(\.modelContext) private var modelContext
-    @Query(sort: \Station.selectedAt, order: .reverse) private var stations: [Station]
-    @State private var viewModel = DeparturesViewModel()
+    @Query() private var stations: [Station]
+    @State private var multiStationViewModel = MultiStationViewModel()
 
     @State private var showStationSelection = false
+    @State private var currentTabIndex = 0
 
     private var headerHeight = 240.0
     @State private var offset = 0.0
-    private var cornerRadius = 12
+    private var cornerRadius = AppConfig.cornerRadius
 
-    private var selectedStation: Station? {
-        stations.first
+    private var currentStation: Station? {
+        guard !stations.isEmpty && currentTabIndex < stations.count else { return nil }
+        return stations[currentTabIndex]
     }
 
     var body: some View {
         NavigationStack {
-            ZStack {
-                ZStack(alignment: .top) {
-                    HeaderMap(station: selectedStation, offset: offset)
-                        .zIndex(1)
+            ZStack(alignment: .top) {
+                HeaderMap(station: currentStation, offset: offset)
+                    .zIndex(1)
 
-                    MainHeader(onGearButtonTap: { showStationSelection = true })
-                        .zIndex(5)
+                MainHeader(onGearButtonTap: {
+                    showStationSelection = true
+                })
+                .zIndex(5)
 
-                    ScrollView {
-                        Color.clear
-                            .frame(height: headerHeight + 20)
+                Text(currentStation?.name ?? "No station")
+                    .foregroundColor(.red)
+                    .zIndex(10)
 
-                        VStack(spacing: 0) {
-                            VStack(spacing: 20) {
-                                liveToggle
-
-                                VStack(spacing: 0) {
-                                    VStack(spacing: 0) {
-                                        if let station = selectedStation {
-                                            DepartureBoard(
-                                                station: station,
-                                                departures: viewModel.filteredDepartures,
-                                                onRefresh: {
-                                                    await viewModel.loadDepartures(for: station)
-                                                }
-                                            )
-                                        } else {
-                                            NoStation(onSelectStation: {
-                                                showStationSelection = true
-                                            })
-                                        }
-                                    }
-                                    .background(Color.dBackground)
-                                    .clipShape(
-                                        .rect(
-                                            cornerSize: .init(
-                                                width: cornerRadius, height: cornerRadius),
-                                            style: .continuous)
-                                    )
-                                    .offset(y: offset >= 120 ? -(offset - 120) : 0)
-                                }
-                                .clipShape(
-                                    .rect(
-                                        cornerSize: .init(
-                                            width: cornerRadius, height: cornerRadius),
-                                        style: .continuous)
-                                )
+                TabView(selection: $currentTabIndex) {
+                    ForEach(Array(stations.enumerated()), id: \.element.id) {
+                        index, station in
+                        StationTab(
+                            station: station,
+                            viewModel: multiStationViewModel.getDeparturesViewModel(
+                                for: station),
+                            offset: $offset,
+                            onRefresh: {
+                                await multiStationViewModel.loadDepartures(for: station)
                             }
-                            .offset(y: offset >= 120 ? offset - 120 : 0)
-                        }
-                        .padding(.horizontal, 16)
-                        .padding(.bottom, 60 + safeAreaInsets.bottom)
+                        )
+                        .tag(index)
                     }
-                    .zIndex(2)
-                    .refreshable {
-                        if let station = selectedStation {
-                            await viewModel.loadDepartures(for: station)
-                        }
-                    }
-                    .onScrollGeometryChange(for: CGFloat.self) { geometry in
-                        return geometry.contentOffset.y + geometry.contentInsets.top
-                    } action: { _, new in
-                        self.offset = new
-                    }
+
+                    NoStation(onSelectStation: { showStationSelection = true })
+                        .tag(stations.count)
                 }
-                .ignoresSafeArea()
-                .navigationBarHidden(true)
+                .tabViewStyle(.page(indexDisplayMode: .never))
+                .zIndex(2)
             }
+            .ignoresSafeArea()
+            .navigationBarHidden(true)
             .task {
-                if let station = selectedStation {
-                    await viewModel.loadDepartures(for: station)
+                if let station = currentStation {
+                    await multiStationViewModel.loadDepartures(for: station)
                 }
             }
-            .onChange(of: selectedStation) { _, newStation in
-                if let station = newStation {
+            .onChange(of: currentTabIndex) { _, newIndex in
+                if newIndex < stations.count {
+                    let station = stations[newIndex]
                     Task {
-                        await viewModel.loadDepartures(for: station)
+                        await multiStationViewModel.loadDepartures(for: station)
                     }
                 }
             }
             .sheet(isPresented: $showStationSelection) {
-                StationSettingsView()
-            }
-        }
-    }
-
-    var liveToggle: some View {
-        Group {
-            if let station = selectedStation {
-                HStack {
-                    Text("Show Live")
-                        .font(Font.dNormal)
-                        .foregroundColor(Color.dDefault)
-                    Spacer()
-                    Toggle("", isOn: $liveActivityManager.isLiveActivityActive)
-                        .labelsHidden()
-                        .tint(Color.dDefault)
-                        .onChange(of: liveActivityManager.isLiveActivityActive) {
-                            _, isActive in
-                            handleLiveActivityToggle(
-                                isActive: isActive, station: station)
-                        }
-                }
-                .padding(.horizontal, 20)
-                .padding(.vertical, 12)
-                .background(Color.dBackground)
-                .clipShape(
-                    .rect(
-                        cornerSize: .init(
-                            width: cornerRadius, height: cornerRadius),
-                        style: .continuous)
+                StationSettingsView(
+                    station: currentStation,
+                    onDelete: deleteStation
                 )
             }
         }
     }
 
-    func handleLiveActivityToggle(isActive: Bool, station: Station) {
-        if isActive {
-            Task {
-                await viewModel.loadDepartures(for: station)
-                liveActivityManager.startLiveActivity(
-                    station: station, departures: viewModel.filteredDepartures)
-            }
-        } else {
-            liveActivityManager.stopAllActivities()
+    private func deleteStation(_ station: Station) {
+        // Remove the ViewModel for this station
+        multiStationViewModel.removeDeparturesViewModel(for: station.id)
+
+        // Delete the station from the database
+        modelContext.delete(station)
+
+        do {
+            try modelContext.save()
+        } catch {
+            print("Error deleting station: \(error)")
+        }
+
+        // Adjust currentTabIndex if necessary
+        if currentTabIndex >= stations.count && !stations.isEmpty {
+            currentTabIndex = stations.count - 1
         }
     }
+
 }
 
 #Preview {

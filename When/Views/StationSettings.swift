@@ -8,27 +8,30 @@ struct StationSettingsView: View {
     @Environment(\.modelContext) private var modelContext
     @Query(sort: \Station.selectedAt, order: .reverse) private var stations: [Station]
 
-    private var selectedStation: Station? {
-        stations.first
-    }
+    let station: Station?
+    let onDelete: ((Station) -> Void)
 
     var body: some View {
-        StationSelectionViewContent(
-            selectedStation: selectedStation,
+        StationSettingsContentView(
+            station: station,
             onApply: saveChanges,
-            onCancel: { dismiss() }
+            onCancel: { dismiss() },
+            onDelete: { station in
+                onDelete(station)
+                dismiss()
+            }
         )
     }
 
-    private func saveChanges(station: Station?) {
-        guard let station = station else { return }
+    private func saveChanges(changedStation: Station?) {
+        guard let newStation = changedStation else { return }
+        newStation.selectedAt = Date()
 
-        if let existingStation = selectedStation {
-            modelContext.delete(existingStation)
+        if let existingStation = station {
+            existingStation.apply(newStation)
+        } else {
+            modelContext.insert(newStation)
         }
-
-        station.selectedAt = Date()
-        modelContext.insert(station)
 
         do {
             try modelContext.save()
@@ -40,9 +43,11 @@ struct StationSettingsView: View {
     }
 }
 
-private struct StationSelectionViewContent: View {
+private struct StationSettingsContentView: View {
     let onApply: (_ station: Station?) -> Void
     let onCancel: () -> Void
+    let onDelete: ((Station) -> Void)?
+    let wasInitialisedWithAStation: Bool
 
     @State private var suggestedLocations: [SuggestedLocation] = []
     @State private var showingSuggestedLocations = false
@@ -52,14 +57,20 @@ private struct StationSelectionViewContent: View {
     // Local state for temporary changes
     @State private var temporarySelectedStation: Station?
 
+    private var hPadding: CGFloat = 20
+    private var vPadding: CGFloat = 20
+
     init(
-        selectedStation: Station?,
+        station: Station?,
         onApply: @escaping (_ station: Station?) -> Void,
-        onCancel: @escaping () -> Void
+        onCancel: @escaping () -> Void,
+        onDelete: ((Station) -> Void)? = nil,
     ) {
         self.onApply = onApply
         self.onCancel = onCancel
-        _temporarySelectedStation = State(initialValue: selectedStation)
+        self.onDelete = onDelete
+        _temporarySelectedStation = State(initialValue: station)
+        self.wasInitialisedWithAStation = station != nil
     }
 
     var body: some View {
@@ -85,8 +96,8 @@ private struct StationSelectionViewContent: View {
                                         .foregroundColor(Color.dLight)
                                     Spacer()
                                 }
-                                .padding(.horizontal, 20)
-                                .padding(.vertical, 20)
+                                .padding(.horizontal, hPadding)
+                                .padding(.vertical, vPadding)
                                 .background(Color.white)
                             }
 
@@ -107,6 +118,11 @@ private struct StationSelectionViewContent: View {
 
                         // Show Cancelled Departures Toggle
                         showCancelledSection
+
+                        // Delete button
+                        if wasInitialisedWithAStation {
+                            deleteButton
+                        }
 
                         DefaultDivider()
                     }
@@ -148,8 +164,8 @@ private struct StationSelectionViewContent: View {
                     }
                 }
             }
-            .padding(.horizontal, 20)
-            .padding(.vertical, 20)
+            .padding(.horizontal, hPadding)
+            .padding(.vertical, vPadding)
         }
     }
 
@@ -199,8 +215,34 @@ private struct StationSelectionViewContent: View {
                 .labelsHidden()
                 .tint(Color.dDefault)
             }
-            .padding(.horizontal, 20)
-            .padding(.vertical, 20)
+            .padding(.horizontal, hPadding)
+            .padding(.vertical, vPadding)
+        }
+    }
+
+    private var deleteButton: some View {
+        VStack(spacing: 0) {
+            DefaultDivider()
+            Button(action: {
+                if let station = temporarySelectedStation {
+                    onDelete?(station)
+                }
+            }) {
+                HStack {
+                    Ph.trash.regular
+                        .frame(width: 24, height: 24)
+                        .foregroundColor(.red)
+
+                    Text("Delete")
+                        .font(Font.dNormal)
+                        .foregroundColor(.red)
+
+                    Spacer()
+                }
+                .padding(.horizontal, hPadding)
+                .padding(.vertical, vPadding)
+            }
+            .buttonStyle(.plain)
         }
     }
 
