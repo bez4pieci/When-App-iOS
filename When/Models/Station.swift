@@ -1,10 +1,3 @@
-//
-//  Station.swift
-//  Departures
-//
-//  Created on 24.05.25.
-//
-
 import Foundation
 import SwiftData
 import TripKit

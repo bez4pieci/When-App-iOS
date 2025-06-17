@@ -7,15 +7,15 @@ struct StationTab: View {
     @EnvironmentObject private var liveActivityManager: LiveActivityManager
 
     let station: Station
-
+    let departuresViewModel: DeparturesViewModel
     let offset: Binding<Double>
 
-    @State private var viewModel = DeparturesViewModel()
     private var headerHeight = 240.0
     private var cornerRadius = AppConfig.cornerRadius
 
-    init(station: Station, offset: Binding<Double>) {
+    init(station: Station, departuresViewModel: DeparturesViewModel, offset: Binding<Double>) {
         self.station = station
+        self.departuresViewModel = departuresViewModel
         self.offset = offset
     }
 
@@ -32,7 +32,7 @@ struct StationTab: View {
                         VStack(spacing: 0) {
                             DepartureBoard(
                                 station: station,
-                                departures: viewModel.filteredDepartures
+                                departures: departuresViewModel.filteredDepartures(for: station)
                             )
                         }
                         .background(Color.dBackground)
@@ -57,10 +57,10 @@ struct StationTab: View {
             .padding(.bottom, 60 + safeAreaInsets.bottom)
         }
         .refreshable {
-            await viewModel.loadDepartures(for: station)
+            await departuresViewModel.loadDepartures(for: station)
         }
         //        .task {
-        //            await viewModel.loadDepartures(for: station)
+        //            await departuresViewModel.loadDepartures(for: station)
         //        }
         .onScrollGeometryChange(for: CGFloat.self) { geometry in
             return geometry.contentOffset.y + geometry.contentInsets.top
@@ -98,9 +98,11 @@ struct StationTab: View {
     func handleLiveActivityToggle(isActive: Bool, station: Station) {
         if isActive {
             Task {
-                await viewModel.loadDepartures(for: station)
+                await departuresViewModel.loadDepartures(for: station)
                 liveActivityManager.startLiveActivity(
-                    station: station, departures: viewModel.filteredDepartures)
+                    station: station,
+                    departures: departuresViewModel.filteredDepartures(for: station)
+                )
             }
         } else {
             liveActivityManager.stopAllActivities()

@@ -5,17 +5,20 @@ import TripKit
 
 @Observable
 class DeparturesViewModel {
-    private var station: Station?
-    var departures: [Departure] = []
-    var isLoading = false
-    var lastUpdate = Date()
+    private var stationDepartures: [String: [Departure]] = [:]
+    private var loadingStations: Set<String> = []
+    private var lastUpdates: [String: Date] = [:]
 
-    init() {
-        // No longer takes settings in init
+    init() {}
+
+    // Get departures for a specific station
+    func departures(for station: Station) -> [Departure] {
+        return stationDepartures[station.id] ?? []
     }
 
-    var filteredDepartures: [Departure] {
-        guard let station = station else { return [] }
+    // Get filtered departures for a specific station
+    func filteredDepartures(for station: Station) -> [Departure] {
+        let departures = self.departures(for: station)
 
         return departures.filter { departure in
             // Filter by cancelled status
@@ -33,10 +36,19 @@ class DeparturesViewModel {
         }
     }
 
+    // Check if a station is loading
+    func isLoading(for station: Station) -> Bool {
+        return loadingStations.contains(station.id)
+    }
+
+    // Get last update time for a station
+    func lastUpdate(for station: Station) -> Date? {
+        return lastUpdates[station.id]
+    }
+
     func loadDepartures(for station: Station) async {
-        self.station = station
-        isLoading = true
-        defer { isLoading = false }
+        loadingStations.insert(station.id)
+        defer { loadingStations.remove(station.id) }
 
         print("Departures: Loading departures for \(station.name)...")
         print("Departures: Products: \(station.productStrings)")
@@ -58,16 +70,22 @@ class DeparturesViewModel {
 
         switch result {
         case .success(let stationDepartures):
-            departures = stationDepartures.flatMap { $0.departures }
-            lastUpdate = Date()
-            print("Departures: Fetched \(departures.count) departures")
+            let departures = stationDepartures.flatMap { $0.departures }
+            self.stationDepartures[station.id] = departures
+            self.lastUpdates[station.id] = Date()
+            print("Departures: Fetched \(departures.count) departures for \(station.name)")
 
         case .invalidStation:
-            print("Departures: Invalid station id")
+            print("Departures: Invalid station id for \(station.name)")
 
         case .failure(let error):
-            print("Departures: Error loading departures: \(error)")
-
+            print("Departures: Error loading departures for \(station.name): \(error)")
         }
+    }
+
+    func delete(for station: Station) {
+        stationDepartures.removeValue(forKey: station.id)
+        lastUpdates.removeValue(forKey: station.id)
+        loadingStations.remove(station.id)
     }
 }

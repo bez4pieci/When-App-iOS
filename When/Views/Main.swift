@@ -10,9 +10,10 @@ struct MainView: View {
 
     @State private var showStationSelection = false
     @State private var currentTabIndex = 0
+    @State private var scrollOffsets: [String: Double] = [:]
+    @State private var departuresViewModel = DeparturesViewModel()
 
     private var headerHeight = 240.0
-    @State private var offset = 0.0
     private var cornerRadius = AppConfig.cornerRadius
 
     private var currentStation: Station? {
@@ -20,11 +21,19 @@ struct MainView: View {
         return stations[currentTabIndex]
     }
 
+    private var currentScrollOffset: Double {
+        guard let station = currentStation else { return 0.0 }
+        return scrollOffsets[station.id] ?? 0.0
+    }
+
     var body: some View {
         NavigationStack {
             ZStack(alignment: .top) {
-                HeaderMap(station: currentStation, offset: offset)
-                    .zIndex(1)
+                HeaderMap(
+                    station: currentStation,
+                    offset: currentScrollOffset
+                )
+                .zIndex(1)
 
                 MainHeader(onGearButtonTap: {
                     showStationSelection = true
@@ -32,12 +41,17 @@ struct MainView: View {
                 .zIndex(5)
 
                 TabView(selection: $currentTabIndex) {
-                    ForEach(Array(stations.enumerated()), id: \.element.id) {
-                        index, station in
-                        StationTab(station: station, offset: $offset)
+                    ForEach(Array(stations.enumerated()), id: \.element.id) { index, station in
+                        StationTab(
+                            station: station,
+                            departuresViewModel: departuresViewModel,
+                            offset: $scrollOffsets[station.id]
+                        )
+                        .tag(index)
                     }
 
                     NoStation(onSelectStation: { showStationSelection = true })
+                        .tag(stations.count)
                 }
                 .tabViewStyle(.page(indexDisplayMode: .never))
                 .zIndex(2)
@@ -61,6 +75,9 @@ struct MainView: View {
         } catch {
             print("Error deleting station: \(error)")
         }
+
+        // Clean up offset for deleted station
+        scrollOffsets.removeValue(forKey: station.id)
 
         // Adjust currentTabIndex if necessary
         if currentTabIndex >= stations.count && !stations.isEmpty {
