@@ -94,8 +94,30 @@ struct HeaderMap: UIViewRepresentable {
         )
 
         if hasStationChanged {
-            // Use fly animation for station changes
-            coordinator.mapView.camera.fly(to: cameraOptions, duration: 1.5)
+            // Use custom easeOutQuint curve with Mapbox native animation
+            let animator = coordinator.mapView.camera.makeAnimator(
+                duration: 1,
+                controlPoint1: CGPoint(x: 0.23, y: 1),
+                controlPoint2: CGPoint(x: 0.32, y: 1),
+            ) { transition in
+                if let center = cameraOptions.center {
+                    transition.center.toValue = center
+                }
+                if let zoom = cameraOptions.zoom {
+                    transition.zoom.toValue = zoom
+                }
+                if let bearing = cameraOptions.bearing {
+                    transition.bearing.toValue = bearing
+                }
+                if let pitch = cameraOptions.pitch {
+                    transition.pitch.toValue = pitch
+                }
+                if let padding = cameraOptions.padding {
+                    transition.padding.toValue = padding
+                }
+            }
+            animator.startAnimation()
+
             coordinator.updateAnnotation(
                 for: station, latitude: latitude, longitude: longitude)
         } else {
