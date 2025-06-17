@@ -7,8 +7,12 @@ struct HeaderMap: View {
     let station: Station?
     let offset: Double
 
-    private var defaultLatitude = 48.8583
-    private var defaultLongitude = 2.2923
+    @State private var currentViewport: Viewport
+
+    // Default coordinates for Berlin Alexanderplatz
+    private var defaultLatitude = 52.521508
+    private var defaultLongitude = 13.411267
+
     private var mapStyle: MapStyle = MapStyle(
         uri: StyleURI(
             rawValue: "mapbox://styles/bez4pieci/cmbwsv0y5019f01smb3fo9rvr?cachebust=1612137633444")!
@@ -26,7 +30,7 @@ struct HeaderMap: View {
         station?.name ?? "S+U Alexanderplatz"
     }
 
-    private var viewport: Viewport {
+    private func createViewport(latitude: Double, longitude: Double) -> Viewport {
         .camera(
             center: adjustedCenter(latitude: latitude, longitude: longitude),
             zoom: 15.5,
@@ -46,33 +50,26 @@ struct HeaderMap: View {
     init(station: Station?, offset: Double) {
         self.station = station
         self.offset = offset
+
+        //Initialize the viewport with the current station or default coordinates
+        let initialLatitude = station?.latitude ?? 48.8583
+        let initialLongitude = station?.longitude ?? 2.2923
+        self._currentViewport = State(
+            initialValue: Viewport.camera(
+                center: CLLocationCoordinate2D(
+                    latitude: initialLatitude,
+                    longitude: initialLongitude
+                ),
+                zoom: 15.5,
+                bearing: 0,
+                pitch: 30
+            ))
     }
 
     var body: some View {
-        Map(viewport: .constant(viewport)) {
-            if let station = station {
-                MapViewAnnotation(
-                    coordinate: CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
-                ) {
-                    VStack(spacing: 4) {
-                        Ph.mapPinSimple.regular
-                            .frame(width: 24, height: 24)
-                        Text(station.name)
-                            .font(Font.dSmall)
-                    }
-                    .foregroundColor(.dAccent)
-                    .shadow(
-                        color: Color.black.opacity(0.6),
-                        radius: 1,
-                        x: 2,
-                        y: 2
-                    )
-                }
-                .priority(10)
-                .allowOverlap(true)
-                .allowZElevate(true)
-                .variableAnchors([ViewAnnotationAnchorConfig(anchor: .bottom, offsetY: -32)])
-                .ignoreCameraPadding(true)
+        Map(viewport: $currentViewport) {
+            if let marker = marker {
+                marker
             }
         }
         .mapStyle(mapStyle)
@@ -96,6 +93,47 @@ struct HeaderMap: View {
                 logo: .init(margins: CGPoint(x: 20, y: 8))
             )
         )
+        .onChange(of: station?.id) { _, _ in
+            print("HeaderMap: Flying to to \(latitude), \(longitude)")
+            withViewportAnimation(.fly(duration: 1.5)) {
+                currentViewport = createViewport(latitude: latitude, longitude: longitude)
+            }
+        }
+        .onChange(of: offset) { _, _ in
+            currentViewport = createViewport(latitude: latitude, longitude: longitude)
+        }
+        .onAppear {
+            currentViewport = createViewport(latitude: latitude, longitude: longitude)
+        }
+    }
+
+    private var marker: MapViewAnnotation? {
+        guard let station = station else {
+            return nil
+        }
+
+        return MapViewAnnotation(
+            coordinate: CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+        ) {
+            VStack(spacing: 4) {
+                Ph.mapPinSimple.regular
+                    .frame(width: 24, height: 24)
+                Text(station.name)
+                    .font(Font.dSmall)
+            }
+            .foregroundColor(.dAccent)
+            .shadow(
+                color: Color.black.opacity(0.6),
+                radius: 1,
+                x: 2,
+                y: 2
+            )
+        }
+        .priority(10)
+        .allowOverlap(true)
+        .allowZElevate(true)
+        .variableAnchors([ViewAnnotationAnchorConfig(anchor: .bottom, offsetY: -32)])
+        .ignoreCameraPadding(true)
     }
 
     private func adjustedCenter(latitude: Double, longitude: Double) -> CLLocationCoordinate2D {
