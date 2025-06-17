@@ -57,11 +57,13 @@ struct StationTab: View {
             .padding(.bottom, 60 + safeAreaInsets.bottom)
         }
         .refreshable {
+            // Manual refresh - not throttled
             await departuresViewModel.loadDepartures(for: station)
         }
-        //        .task {
-        //            await departuresViewModel.loadDepartures(for: station)
-        //        }
+        .task {
+            // Automatic refresh when tab appears - throttled to max once per 30 seconds
+            await departuresViewModel.loadDeparturesIfNeeded(for: station)
+        }
         .onScrollGeometryChange(for: CGFloat.self) { geometry in
             return geometry.contentOffset.y + geometry.contentInsets.top
         } action: { _, new in
@@ -98,6 +100,7 @@ struct StationTab: View {
     func handleLiveActivityToggle(isActive: Bool, station: Station) {
         if isActive {
             Task {
+                // For live activity, always refresh regardless of throttling
                 await departuresViewModel.loadDepartures(for: station)
                 liveActivityManager.startLiveActivity(
                     station: station,

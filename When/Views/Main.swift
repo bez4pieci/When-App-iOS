@@ -76,8 +76,9 @@ struct MainView: View {
             print("Error deleting station: \(error)")
         }
 
-        // Clean up offset for deleted station
+        // Clean up data for deleted station
         scrollOffsets.removeValue(forKey: station.id)
+        departuresViewModel.delete(for: station)
 
         // Adjust currentTabIndex if necessary
         if currentTabIndex >= stations.count && !stations.isEmpty {
