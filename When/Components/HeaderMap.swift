@@ -1,22 +1,19 @@
+import CoreLocation
 import MapboxMaps
 import PhosphorSwift
 import SwiftUI
 
-struct HeaderMap: View {
+struct HeaderMap: UIViewRepresentable {
     @Environment(\.safeAreaInsets) private var safeAreaInsets
     let station: Station?
     let offset: Double
-
-    @State private var currentViewport: Viewport
 
     // Default coordinates for Berlin Alexanderplatz
     private var defaultLatitude = 52.521508
     private var defaultLongitude = 13.411267
 
-    private var mapStyle: MapStyle = MapStyle(
-        uri: StyleURI(
-            rawValue: "mapbox://styles/bez4pieci/cmbwsv0y5019f01smb3fo9rvr?cachebust=1612137633444")!
-    )
+    private var styleURI = StyleURI(
+        rawValue: "mapbox://styles/bez4pieci/cmbwsv0y5019f01smb3fo9rvr?cachebust=1612137633444")!
 
     private var latitude: Double {
         station?.latitude ?? defaultLatitude
@@ -30,110 +27,85 @@ struct HeaderMap: View {
         station?.name ?? "S+U Alexanderplatz"
     }
 
-    private func createViewport(latitude: Double, longitude: Double) -> Viewport {
-        .camera(
-            center: adjustedCenter(latitude: latitude, longitude: longitude),
+    init(station: Station?, offset: Double) {
+        self.station = station
+        self.offset = offset
+    }
+
+    func makeUIView(context: Context) -> MapView {
+        let coordinator = context.coordinator
+
+        // Create the MapView with proper initialization
+        let cameraOptions = CameraOptions(
+            center: CLLocationCoordinate2D(latitude: latitude, longitude: longitude),
             zoom: 15.5,
             bearing: 0,
             pitch: 30
         )
-        .padding(
-            EdgeInsets(
+        let mapInitOptions = MapInitOptions(
+            cameraOptions: cameraOptions,
+            styleURI: styleURI
+        )
+
+        coordinator.mapView = MapView(frame: .zero, mapInitOptions: mapInitOptions)
+
+        // Configure gesture options to disable all interactions
+        coordinator.mapView.gestures.options = GestureOptions(
+            panEnabled: false,
+            pinchEnabled: false,
+            rotateEnabled: false,
+            simultaneousRotateAndPinchZoomEnabled: false,
+            pinchZoomEnabled: false,
+            pinchPanEnabled: false,
+            pitchEnabled: false,
+            doubleTapToZoomInEnabled: false,
+            doubleTouchToZoomOutEnabled: false,
+            quickZoomEnabled: false
+        )
+
+        // Configure ornament options
+        coordinator.mapView.ornaments.options = OrnamentOptions(
+            scaleBar: .init(visibility: .hidden),
+            logo: .init(margins: CGPoint(x: 20, y: 8))
+        )
+
+        return coordinator.mapView
+    }
+
+    func updateUIView(_ uiView: MapView, context: Context) {
+        let coordinator = context.coordinator
+
+        // Check if station has changed
+        let hasStationChanged = station?.id != coordinator.currentStationId
+
+        // Update camera position
+        let adjustedCenter = adjustedCenter(latitude: latitude, longitude: longitude)
+        let cameraOptions = CameraOptions(
+            center: adjustedCenter,
+            padding: UIEdgeInsets(
                 top: safeAreaInsets.top,
-                leading: 0,
+                left: 0,
                 bottom: UIScreen.main.bounds.height - 240,
-                trailing: 0
-            )
+                right: 0
+            ),
+            zoom: 15.5,
+            bearing: 0,
+            pitch: 30
         )
-    }
 
-    init(station: Station?, offset: Double) {
-        self.station = station
-        self.offset = offset
-
-        //Initialize the viewport with the current station or default coordinates
-        let initialLatitude = station?.latitude ?? 48.8583
-        let initialLongitude = station?.longitude ?? 2.2923
-        self._currentViewport = State(
-            initialValue: Viewport.camera(
-                center: CLLocationCoordinate2D(
-                    latitude: initialLatitude,
-                    longitude: initialLongitude
-                ),
-                zoom: 15.5,
-                bearing: 0,
-                pitch: 30
-            ))
-    }
-
-    var body: some View {
-        Map(viewport: $currentViewport) {
-            if let marker = marker {
-                marker
-            }
-        }
-        .mapStyle(mapStyle)
-        .gestureOptions(
-            GestureOptions.init(
-                panEnabled: false,
-                pinchEnabled: false,
-                rotateEnabled: false,
-                simultaneousRotateAndPinchZoomEnabled: false,
-                pinchZoomEnabled: false,
-                pinchPanEnabled: false,
-                pitchEnabled: false,
-                doubleTapToZoomInEnabled: false,
-                doubleTouchToZoomOutEnabled: false,
-                quickZoomEnabled: false
-            )
-        )
-        .ornamentOptions(
-            OrnamentOptions(
-                scaleBar: .init(visibility: .hidden),
-                logo: .init(margins: CGPoint(x: 20, y: 8))
-            )
-        )
-        .onChange(of: station?.id) { _, _ in
-            print("HeaderMap: Flying to to \(latitude), \(longitude)")
-            withViewportAnimation(.fly(duration: 1.5)) {
-                currentViewport = createViewport(latitude: latitude, longitude: longitude)
-            }
-        }
-        .onChange(of: offset) { _, _ in
-            currentViewport = createViewport(latitude: latitude, longitude: longitude)
-        }
-        .onAppear {
-            currentViewport = createViewport(latitude: latitude, longitude: longitude)
+        if hasStationChanged {
+            // Use fly animation for station changes
+            coordinator.mapView.camera.fly(to: cameraOptions, duration: 1.5)
+            coordinator.updateAnnotation(
+                for: station, latitude: latitude, longitude: longitude)
+        } else {
+            // Just set camera position for offset changes
+            coordinator.mapView.mapboxMap.setCamera(to: cameraOptions)
         }
     }
 
-    private var marker: MapViewAnnotation? {
-        guard let station = station else {
-            return nil
-        }
-
-        return MapViewAnnotation(
-            coordinate: CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
-        ) {
-            VStack(spacing: 4) {
-                Ph.mapPinSimple.regular
-                    .frame(width: 24, height: 24)
-                Text(station.name)
-                    .font(Font.dSmall)
-            }
-            .foregroundColor(.dAccent)
-            .shadow(
-                color: Color.black.opacity(0.6),
-                radius: 1,
-                x: 2,
-                y: 2
-            )
-        }
-        .priority(10)
-        .allowOverlap(true)
-        .allowZElevate(true)
-        .variableAnchors([ViewAnnotationAnchorConfig(anchor: .bottom, offsetY: -32)])
-        .ignoreCameraPadding(true)
+    func makeCoordinator() -> Coordinator {
+        Coordinator(self)
     }
 
     private func adjustedCenter(latitude: Double, longitude: Double) -> CLLocationCoordinate2D {
@@ -155,6 +127,78 @@ struct HeaderMap: View {
             latitude: latitude - latitudeOffset,
             longitude: longitude
         )
+    }
+}
+
+// MARK: - Coordinator
+extension HeaderMap {
+    class Coordinator: NSObject {
+        var parent: HeaderMap
+        var mapView: MapView!
+        private var currentAnnotation: ViewAnnotation?
+        private(set) var currentStationId: String?
+
+        init(_ parent: HeaderMap) {
+            self.parent = parent
+        }
+
+        func updateAnnotation(for station: Station?, latitude: Double, longitude: Double) {
+            let newStationId = station?.id
+            currentStationId = newStationId
+
+            // Remove existing annotation
+            if let annotation = currentAnnotation {
+                annotation.remove()
+                currentAnnotation = nil
+            }
+
+            // Add new annotation if station exists
+            guard let station = station else { return }
+
+            let annotationView = createSwiftUIAnnotationView(for: station)
+            let viewAnnotation = ViewAnnotation(
+                coordinate: CLLocationCoordinate2D(latitude: latitude, longitude: longitude),
+                view: annotationView
+            )
+
+            viewAnnotation.allowOverlap = true
+            viewAnnotation.allowZElevate = true
+            viewAnnotation.variableAnchors = [
+                ViewAnnotationAnchorConfig(anchor: .top, offsetY: 24 + 2)
+            ]
+            viewAnnotation.ignoreCameraPadding = true
+
+            mapView.viewAnnotations.add(viewAnnotation)
+            currentAnnotation = viewAnnotation
+        }
+
+        private func createSwiftUIAnnotationView(for station: Station) -> UIView {
+            // Create SwiftUI view content
+            let swiftUIView = VStack(spacing: 4) {
+                Ph.mapPinSimple.regular
+                    .frame(width: 24, height: 24)
+                Text(station.name)
+                    .font(Font.dSmall)
+                Spacer()
+            }
+            .foregroundColor(.dAccent)
+            .shadow(
+                color: Color.black.opacity(0.6),
+                radius: 1,
+                x: 2,
+                y: 2
+            )
+
+            // Convert SwiftUI view to UIView using UIHostingController
+            let hostingController = UIHostingController(rootView: swiftUIView)
+            hostingController.view.backgroundColor = .clear
+            hostingController.view.translatesAutoresizingMaskIntoConstraints = false
+            hostingController.view.widthAnchor.constraint(equalToConstant: 400).isActive =
+                true
+            hostingController.view.heightAnchor.constraint(equalToConstant: 100).isActive = true
+
+            return hostingController.view
+        }
     }
 }
 
