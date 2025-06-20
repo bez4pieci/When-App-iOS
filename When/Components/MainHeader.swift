@@ -3,6 +3,7 @@ import PhosphorSwift
 import SwiftUI
 
 struct MainHeader: View {
+    @Environment(\.safeAreaInsets) private var safeAreaInsets
     let onGearButtonTap: () -> Void
 
     var body: some View {
@@ -24,7 +25,7 @@ struct MainHeader: View {
         .buttonStyle(.plain)
         .background(Color.dBackground)
         .clipShape(Circle())
-        .padding(.top, 60)
+        .padding(.top, safeAreaInsets.top)
         .padding(.trailing, 16)
     }
 }

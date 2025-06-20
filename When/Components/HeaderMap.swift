@@ -6,6 +6,7 @@ import SwiftUI
 struct HeaderMap: UIViewRepresentable {
     @Environment(\.safeAreaInsets) private var safeAreaInsets
     let station: Station?
+    let headerHeight: Double
     let offset: Double
 
     // Default coordinates for Berlin Alexanderplatz
@@ -27,8 +28,9 @@ struct HeaderMap: UIViewRepresentable {
         station?.name ?? "S+U Alexanderplatz"
     }
 
-    init(station: Station?, offset: Double) {
+    init(station: Station?, headerHeight: Double, offset: Double) {
         self.station = station
+        self.headerHeight = headerHeight
         self.offset = offset
     }
 
@@ -85,7 +87,7 @@ struct HeaderMap: UIViewRepresentable {
             padding: UIEdgeInsets(
                 top: safeAreaInsets.top,
                 left: 0,
-                bottom: UIScreen.main.bounds.height - 240,
+                bottom: UIScreen.main.bounds.height - headerHeight,
                 right: 0
             ),
             zoom: 15.5,
@@ -233,12 +235,13 @@ extension HeaderMap {
             longitude: 13.365548,
             products: [.suburbanTrain, .bus, .regionalTrain, .highSpeedTrain],
         ),
+        headerHeight: 240,
         offset: 0
     )
     .ignoresSafeArea(.all)
 }
 
 #Preview {
-    HeaderMap(station: nil, offset: 0)
+    HeaderMap(station: nil, headerHeight: 240, offset: 0)
         .ignoresSafeArea(.all)
 }

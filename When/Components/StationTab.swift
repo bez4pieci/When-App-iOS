@@ -1,3 +1,4 @@
+import Refresher
 import SwiftData
 import SwiftUI
 import TripKit
@@ -8,14 +9,20 @@ struct StationTab: View {
 
     let station: Station
     let departuresViewModel: DeparturesViewModel
+    let headerHeight: Double
     let offset: Binding<Double>
 
-    private var headerHeight = 240.0
     private var cornerRadius = AppConfig.cornerRadius
 
-    init(station: Station, departuresViewModel: DeparturesViewModel, offset: Binding<Double>) {
+    init(
+        station: Station,
+        departuresViewModel: DeparturesViewModel,
+        headerHeight: Double,
+        offset: Binding<Double>
+    ) {
         self.station = station
         self.departuresViewModel = departuresViewModel
+        self.headerHeight = headerHeight
         self.offset = offset
     }
 
@@ -56,8 +63,15 @@ struct StationTab: View {
             .padding(.horizontal, 16)
             .padding(.bottom, 60 + safeAreaInsets.bottom)
         }
-        .refreshable {
-            // Manual refresh - not throttled
+        .refresher(
+            style: .overlay,
+            config: Config(
+                headerShimMaxHeight: RefreshSpinner.height,
+                defaultSpinnerSpinnerStopPoint: -RefreshSpinner.height,
+                defaultSpinnerOffScreenPoint: -RefreshSpinner.height,
+            ),
+            refreshView: RefreshSpinner.init
+        ) {
             await departuresViewModel.loadDepartures(for: station)
         }
         .task {

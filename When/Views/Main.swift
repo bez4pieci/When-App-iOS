@@ -31,6 +31,7 @@ struct MainView: View {
             ZStack(alignment: .top) {
                 HeaderMap(
                     station: currentStation,
+                    headerHeight: headerHeight,
                     offset: currentScrollOffset
                 )
                 .zIndex(1)
@@ -45,6 +46,7 @@ struct MainView: View {
                         StationTab(
                             station: station,
                             departuresViewModel: departuresViewModel,
+                            headerHeight: headerHeight,
                             offset: $scrollOffsets[station.id]
                         )
                         .tag(index)

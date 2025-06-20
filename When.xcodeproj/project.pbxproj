@@ -25,6 +25,7 @@
 		13B486AB2DFE279A00ECBA4F /* MapboxMaps in Frameworks */ = {isa = PBXBuildFile; productRef = 13B486AA2DFE279A00ECBA4F /* MapboxMaps */; };
 		13B486C22E01B4E300ECBA4F /* Binding+StringDouble.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13B486C12E01B4E300ECBA4F /* Binding+StringDouble.swift */; };
 		13B486C32E01B4E300ECBA4F /* Binding+StringDouble.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13B486C12E01B4E300ECBA4F /* Binding+StringDouble.swift */; };
+		13B486C62E05B91400ECBA4F /* Refresher in Frameworks */ = {isa = PBXBuildFile; productRef = 13B486C52E05B91400ECBA4F /* Refresher */; };
 		13BC3D442DE794E4009B1B7F /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = 13BC3D432DE794E4009B1B7F /* FirebaseCore */; };
 		13BC3D462DE794E4009B1B7F /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 13BC3D452DE794E4009B1B7F /* FirebaseFirestore */; };
 		13BC3D4F2DE7959F009B1B7F /* FirebaseAnalyticsWithoutAdIdSupport in Frameworks */ = {isa = PBXBuildFile; productRef = 13BC3D4E2DE7959F009B1B7F /* FirebaseAnalyticsWithoutAdIdSupport */; };
@@ -134,6 +135,7 @@
 				13BC3D442DE794E4009B1B7F /* FirebaseCore in Frameworks */,
 				13ADDF0F2DE5A903000F9376 /* PhosphorSwift in Frameworks */,
 				1325BE0A2DE9AC6E005151AC /* TripKit in Frameworks */,
+				13B486C62E05B91400ECBA4F /* Refresher in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -242,6 +244,7 @@
 				13BC3D4E2DE7959F009B1B7F /* FirebaseAnalyticsWithoutAdIdSupport */,
 				1325BE092DE9AC6E005151AC /* TripKit */,
 				13B486AA2DFE279A00ECBA4F /* MapboxMaps */,
+				13B486C52E05B91400ECBA4F /* Refresher */,
 			);
 			productName = Departures;
 			productReference = 1307F7782DE1F376009F0C4C /* When App.app */;
@@ -303,6 +306,7 @@
 				13BC3D422DE794E4009B1B7F /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				1325BE082DE9AC6E005151AC /* XCRemoteSwiftPackageReference "tripkit" */,
 				13B486A92DFE279A00ECBA4F /* XCRemoteSwiftPackageReference "mapbox-maps-ios" */,
+				13B486C42E05B91400ECBA4F /* XCRemoteSwiftPackageReference "SwiftUI-Refresher" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 1307F7792DE1F376009F0C4C /* Products */;
@@ -696,6 +700,14 @@
 				minimumVersion = 11.12.2;
 			};
 		};
+		13B486C42E05B91400ECBA4F /* XCRemoteSwiftPackageReference "SwiftUI-Refresher" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/gh123man/SwiftUI-Refresher";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.1.9;
+			};
+		};
 		13BC3D422DE794E4009B1B7F /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
@@ -726,6 +738,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 13B486A92DFE279A00ECBA4F /* XCRemoteSwiftPackageReference "mapbox-maps-ios" */;
 			productName = MapboxMaps;
+		};
+		13B486C52E05B91400ECBA4F /* Refresher */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 13B486C42E05B91400ECBA4F /* XCRemoteSwiftPackageReference "SwiftUI-Refresher" */;
+			productName = Refresher;
 		};
 		13BC3D432DE794E4009B1B7F /* FirebaseCore */ = {
 			isa = XCSwiftPackageProductDependency;
