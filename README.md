@@ -28,6 +28,10 @@ An iOS application for showing public transit departures from a selected stop/st
       - Leave optional fields blank
       - 👉 Download `GoogleService-Info.plist` and put it in the project root
    1. Create a new [Firestore database](https://firebase.google.com/docs/firestore/quickstart). You don't need to do anything beyond just creating it.
+1. Set up [MapBox](https://www.mapbox.com/)
+   1. Create an account
+   1. Make a copy of `MapBox.plist-example` and name it `MapBox.plist`
+   1. Paste your MapBox token as the string value for the key `MBXAccessToken`
 1. Open the project in XCode
 1. Build with XCode
 

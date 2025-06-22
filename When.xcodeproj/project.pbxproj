@@ -22,6 +22,7 @@
 		134693D82DE502FB00617A4D /* DeparturesActivityAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 134693D62DE502FB00617A4D /* DeparturesActivityAttributes.swift */; };
 		134693D92DE502FB00617A4D /* DeparturesActivityAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 134693D62DE502FB00617A4D /* DeparturesActivityAttributes.swift */; };
 		13ADDF0F2DE5A903000F9376 /* PhosphorSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 13ADDF0E2DE5A903000F9376 /* PhosphorSwift */; };
+		13B0FFDD2E080C5B00A358B3 /* MapBox.plist in Resources */ = {isa = PBXBuildFile; fileRef = 13B0FFDC2E080C5B00A358B3 /* MapBox.plist */; };
 		13B486AB2DFE279A00ECBA4F /* MapboxMaps in Frameworks */ = {isa = PBXBuildFile; productRef = 13B486AA2DFE279A00ECBA4F /* MapboxMaps */; };
 		13B486C22E01B4E300ECBA4F /* Binding+StringDouble.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13B486C12E01B4E300ECBA4F /* Binding+StringDouble.swift */; };
 		13B486C32E01B4E300ECBA4F /* Binding+StringDouble.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13B486C12E01B4E300ECBA4F /* Binding+StringDouble.swift */; };
@@ -69,6 +70,7 @@
 		134693CE2DE500DC00617A4D /* ViewExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewExtensions.swift; sourceTree = "<group>"; };
 		134693D32DE5017B00617A4D /* DateExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateExtensions.swift; sourceTree = "<group>"; };
 		134693D62DE502FB00617A4D /* DeparturesActivityAttributes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeparturesActivityAttributes.swift; sourceTree = "<group>"; };
+		13B0FFDC2E080C5B00A358B3 /* MapBox.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = MapBox.plist; sourceTree = "<group>"; };
 		13B486C12E01B4E300ECBA4F /* Binding+StringDouble.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Binding+StringDouble.swift"; sourceTree = "<group>"; };
 		13BC3D472DE79519009B1B7F /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -157,13 +159,14 @@
 		1307F76F2DE1F376009F0C4C = {
 			isa = PBXGroup;
 			children = (
-				1325C01C2DE9D231005151AC /* WhenWidgetExtension.entitlements */,
-				134693D02DE500DC00617A4D /* Shared */,
-				130E60C72DE232FB0033F2BA /* Fonts */,
 				1325BE552DE9CF05005151AC /* When */,
 				134693192DE4EDA900617A4D /* WhenWidget */,
+				130E60C72DE232FB0033F2BA /* Fonts */,
+				134693D02DE500DC00617A4D /* Shared */,
 				134693142DE4EDA900617A4D /* Frameworks */,
 				1307F7792DE1F376009F0C4C /* Products */,
+				1325C01C2DE9D231005151AC /* WhenWidgetExtension.entitlements */,
+				13B0FFDC2E080C5B00A358B3 /* MapBox.plist */,
 				13BC3D472DE79519009B1B7F /* GoogleService-Info.plist */,
 			);
 			sourceTree = "<group>";
@@ -324,6 +327,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				13B0FFDD2E080C5B00A358B3 /* MapBox.plist in Resources */,
 				13BC3D522DE7987A009B1B7F /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
