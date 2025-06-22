@@ -91,14 +91,9 @@ struct StationTab: View {
                 .font(Font.dNormal)
                 .foregroundColor(Color.dDefault)
             Spacer()
-            Toggle("", isOn: $liveActivityManager.isLiveActivityActive)
+            Toggle("", isOn: liveActivityBinding)
                 .labelsHidden()
                 .tint(Color.dDefault)
-                .onChange(of: liveActivityManager.isLiveActivityActive) {
-                    _, isActive in
-                    handleLiveActivityToggle(
-                        isActive: isActive, station: station)
-                }
         }
         .padding(.horizontal, 20)
         .padding(.vertical, 12)
@@ -111,18 +106,29 @@ struct StationTab: View {
         )
     }
 
+    private var liveActivityBinding: Binding<Bool> {
+        Binding(
+            get: { liveActivityManager.isLiveActivityActive(for: station.id) },
+            set: { isActive in
+                handleLiveActivityToggle(isActive: isActive, station: station)
+            }
+        )
+    }
+
     func handleLiveActivityToggle(isActive: Bool, station: Station) {
         if isActive {
             Task {
                 // For live activity, always refresh regardless of throttling
                 await departuresViewModel.loadDepartures(for: station)
-                liveActivityManager.startLiveActivity(
+                await liveActivityManager.startLiveActivity(
                     station: station,
                     departures: departuresViewModel.filteredDepartures(for: station)
                 )
             }
         } else {
-            liveActivityManager.stopAllActivities()
+            Task {
+                await liveActivityManager.stopLiveActivity(for: station.id)
+            }
         }
     }
 }

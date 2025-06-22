@@ -4,7 +4,6 @@ import TripKit
 
 struct MainView: View {
     @Environment(\.safeAreaInsets) private var safeAreaInsets
-    @EnvironmentObject private var liveActivityManager: LiveActivityManager
     @Environment(\.modelContext) private var modelContext
     @Query() private var stations: [Station]
 
