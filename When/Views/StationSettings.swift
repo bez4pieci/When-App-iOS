@@ -3,52 +3,52 @@ import SwiftData
 import SwiftUI
 import TripKit
 
-struct StationSelectionView: View {
+struct StationSettingsView: View {
     @Environment(\.dismiss) private var dismiss
-
     @Environment(\.modelContext) private var modelContext
-    @EnvironmentObject var settings: Settings
     @Query(sort: \Station.selectedAt, order: .reverse) private var stations: [Station]
 
-    private var selectedStation: Station? {
-        stations.first
-    }
+    let station: Station?
+    let onStationDelete: ((Station) -> Void)
+    let onStationChange: ((Station, Station) -> Void)
 
     var body: some View {
-        StationSelectionViewContent(
-            settings: settings,
-            selectedStation: selectedStation,
-            onApply: saveChanges,
-            onCancel: { dismiss() }
+        StationSettingsContentView(
+            station: station,
+            onApply: save,
+            onCancel: { dismiss() },
+            onDelete: delete
         )
     }
 
-    private func saveChanges(station: Station?, temporarySettings: TemporarySettings) {
-        guard let station = station else { return }
+    private func delete(station: Station) {
+        modelContext.delete(station)
+        onStationDelete(station)
+        dismiss()
+    }
 
-        if let existingStation = selectedStation {
-            modelContext.delete(existingStation)
+    private func save(changedStation: Station?) {
+        guard let changedStation = changedStation else { return }
+
+        if let existingStation = station {
+            let oldStation = Station(from: existingStation)
+            existingStation.applyProps(from: changedStation)
+            onStationChange(oldStation, existingStation)
+
+        } else {
+            changedStation.selectedAt = Date()
+            modelContext.insert(changedStation)
         }
-
-        station.selectedAt = Date()
-        modelContext.insert(station)
-
-        do {
-            try modelContext.save()
-        } catch {
-            print("Error saving station: \(error)")
-        }
-
-        // Apply temporary settings to persistent settings
-        temporarySettings.applyTo(settings)
 
         dismiss()
     }
 }
 
-private struct StationSelectionViewContent: View {
-    let onApply: (_ station: Station?, _ temporarySettings: TemporarySettings) -> Void
+private struct StationSettingsContentView: View {
+    let onApply: (_ station: Station?) -> Void
     let onCancel: () -> Void
+    let onDelete: ((Station) -> Void)?
+    let wasInitialisedWithAStation: Bool
 
     @State private var suggestedLocations: [SuggestedLocation] = []
     @State private var showingSuggestedLocations = false
@@ -57,25 +57,27 @@ private struct StationSelectionViewContent: View {
 
     // Local state for temporary changes
     @State private var temporarySelectedStation: Station?
-    @StateObject private var temporarySettings: TemporarySettings
+
+    private var hPadding: CGFloat = 20
+    private var vPadding: CGFloat = 20
 
     init(
-        settings: Settings,
-        selectedStation: Station?,
-        onApply: @escaping (_ station: Station?, _ temporarySettings: TemporarySettings) -> Void,
-        onCancel: @escaping () -> Void
+        station: Station?,
+        onApply: @escaping (_ station: Station?) -> Void,
+        onCancel: @escaping () -> Void,
+        onDelete: ((Station) -> Void)? = nil,
     ) {
         self.onApply = onApply
         self.onCancel = onCancel
-
-        self.temporarySelectedStation = selectedStation
-        _temporarySettings = StateObject(wrappedValue: TemporarySettings(from: settings))
+        self.onDelete = onDelete
+        _temporarySelectedStation = State(initialValue: station)
+        self.wasInitialisedWithAStation = station != nil
     }
 
     var body: some View {
         NavigationStack {
             ZStack {
-                Color.yellow
+                Color.dBackground
                     .ignoresSafeArea()
 
                 ScrollView {
@@ -95,8 +97,8 @@ private struct StationSelectionViewContent: View {
                                         .foregroundColor(Color.dLight)
                                     Spacer()
                                 }
-                                .padding(.horizontal, 20)
-                                .padding(.vertical, 20)
+                                .padding(.horizontal, hPadding)
+                                .padding(.vertical, vPadding)
                                 .background(Color.white)
                             }
 
@@ -118,6 +120,11 @@ private struct StationSelectionViewContent: View {
                         // Show Cancelled Departures Toggle
                         showCancelledSection
 
+                        // Delete button
+                        if wasInitialisedWithAStation {
+                            deleteButton
+                        }
+
                         DefaultDivider()
                     }
                 }
@@ -132,15 +139,14 @@ private struct StationSelectionViewContent: View {
                 }
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button("Apply") {
-                        onApply(temporarySelectedStation, temporarySettings)
+                        onApply(temporarySelectedStation)
                     }
                     .foregroundColor(Color.dDefault)
                 }
             }
-            .toolbarBackground(Color.yellow, for: .navigationBar)
+            .toolbarBackground(Color.dBackground, for: .navigationBar)
             .toolbarBackground(.visible, for: .navigationBar)
         }
-        .presentationBackground(Color.black)
     }
 
     private var transportFiltersSection: some View {
@@ -159,21 +165,15 @@ private struct StationSelectionViewContent: View {
                     }
                 }
             }
-            .padding(.horizontal, 20)
-            .padding(.vertical, 20)
+            .padding(.horizontal, hPadding)
+            .padding(.vertical, vPadding)
         }
     }
 
     private func transportToggle(product: Product, label: String, forceEnable: Bool = false)
         -> some View
     {
-        if forceEnable {
-            Task {
-                temporarySettings.setProduct(product, enabled: true)
-            }
-        }
-
-        return HStack {
+        HStack {
             Text(label)
                 .font(Font.dNormal)
                 .foregroundColor(Color.dDefault)
@@ -181,13 +181,18 @@ private struct StationSelectionViewContent: View {
             Toggle(
                 "",
                 isOn: Binding(
-                    get: { temporarySettings.isProductEnabled(product) },
-                    set: { _ in temporarySettings.toggleProduct(product) }
+                    get: { temporarySelectedStation?.isProductEnabled(product) ?? false },
+                    set: { _ in temporarySelectedStation?.toggleProduct(product) }
                 )
             )
             .labelsHidden()
             .tint(Color.dDefault)
             .disabled(forceEnable)
+        }
+        .onAppear {
+            if forceEnable {
+                temporarySelectedStation?.setProduct(product, enabled: true)
+            }
         }
     }
 
@@ -199,12 +204,46 @@ private struct StationSelectionViewContent: View {
                     .font(Font.dNormal)
                     .foregroundColor(Color.dDefault)
                 Spacer()
-                Toggle("", isOn: $temporarySettings.showCancelledDepartures)
-                    .labelsHidden()
-                    .tint(Color.dDefault)
+                Toggle(
+                    "",
+                    isOn: Binding(
+                        get: { temporarySelectedStation?.showCancelledDepartures ?? true },
+                        set: { newValue in
+                            temporarySelectedStation?.showCancelledDepartures = newValue
+                        }
+                    )
+                )
+                .labelsHidden()
+                .tint(Color.dDefault)
             }
-            .padding(.horizontal, 20)
-            .padding(.vertical, 20)
+            .padding(.horizontal, hPadding)
+            .padding(.vertical, vPadding)
+        }
+    }
+
+    private var deleteButton: some View {
+        VStack(spacing: 0) {
+            DefaultDivider()
+            Button(action: {
+                if let station = temporarySelectedStation {
+                    onDelete?(station)
+                }
+            }) {
+                HStack {
+                    Ph.trash.regular
+                        .frame(width: 24, height: 24)
+                        .foregroundColor(.red)
+
+                    Text("Delete")
+                        .font(Font.dNormal)
+                        .foregroundColor(.red)
+
+                    Spacer()
+                }
+                .padding(.horizontal, hPadding)
+                .padding(.vertical, vPadding)
+            }
+            .buttonStyle(.plain)
         }
     }
 

@@ -1,10 +1,3 @@
-//
-//  Station.swift
-//  Departures
-//
-//  Created on 24.05.25.
-//
-
 import Foundation
 import SwiftData
 import TripKit
@@ -16,7 +9,33 @@ final class Station {
     var latitude: Double?
     var longitude: Double?
     var selectedAt: Date
-    var productStrings: [String] = []
+
+    // Store arrays as comma-separated strings to avoid CoreData array issues
+    var productStringsData: String = ""
+
+    // Per-station settings
+    var showCancelledDepartures: Bool = true
+    var enabledProductStringsData: String = ""  // Store enabled product names
+
+    // Computed properties to provide array interface
+    var productStrings: [String] {
+        get {
+            productStringsData.isEmpty ? [] : productStringsData.components(separatedBy: ",")
+        }
+        set {
+            productStringsData = newValue.joined(separator: ",")
+        }
+    }
+
+    var enabledProductStrings: [String] {
+        get {
+            enabledProductStringsData.isEmpty
+                ? [] : enabledProductStringsData.components(separatedBy: ",")
+        }
+        set {
+            enabledProductStringsData = newValue.joined(separator: ",")
+        }
+    }
 
     init(
         id: String, name: String, latitude: Double? = nil, longitude: Double? = nil,
@@ -28,6 +47,36 @@ final class Station {
         self.longitude = longitude
         self.selectedAt = Date()
         self.productStrings = products.map { $0.name }
+
+        // Initialize settings with defaults - enable all products available at this station
+        self.showCancelledDepartures = true
+        self.enabledProductStrings = products.map { $0.name }
+    }
+
+    init(from: Station) {
+        self.id = ""
+        self.name = ""
+        self.latitude = nil
+        self.longitude = nil
+        self.selectedAt = Date()
+
+        applyProps(from: from)
+    }
+
+    func applyProps(from: Station, setSelectedAtToNow: Bool = true) {
+        self.id = from.id
+        self.name = from.name
+        self.latitude = from.latitude
+        self.longitude = from.longitude
+
+        self.showCancelledDepartures = from.showCancelledDepartures
+        self.enabledProductStrings = from.enabledProductStrings
+
+        if setSelectedAtToNow {
+            self.selectedAt = Date()
+        } else {
+            self.selectedAt = from.selectedAt
+        }
     }
 
     // Helper computed property to convert stored strings back to Product enums
@@ -38,5 +87,34 @@ final class Station {
     // Helper method to check if a specific product is available at this station
     func hasProduct(_ product: Product) -> Bool {
         productStrings.contains(product.name)
+    }
+
+    // Helper computed property for enabled products
+    var enabledProducts: Set<Product> {
+        Set(enabledProductStrings.compactMap { Product.fromName($0) })
+    }
+
+    // Helper methods for settings management
+    func isProductEnabled(_ product: Product) -> Bool {
+        enabledProductStrings.contains(product.name)
+    }
+
+    func toggleProduct(_ product: Product) {
+        if enabledProductStrings.contains(product.name) {
+            enabledProductStrings.removeAll { $0 == product.name }
+        } else {
+            enabledProductStrings.append(product.name)
+        }
+    }
+
+    func setProduct(_ product: Product, enabled: Bool) {
+        let productName = product.name
+        let isCurrentlyEnabled = enabledProductStrings.contains(productName)
+
+        if enabled && !isCurrentlyEnabled {
+            enabledProductStrings.append(productName)
+        } else if !enabled && isCurrentlyEnabled {
+            enabledProductStrings.removeAll { $0 == productName }
+        }
     }
 }

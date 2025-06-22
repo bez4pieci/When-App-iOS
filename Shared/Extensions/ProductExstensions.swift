@@ -13,7 +13,6 @@ extension Product {
         case .highSpeedTrain: return "ICE/IC"
         case .onDemand: return "On Demand"
         case .cablecar: return "Cable Car"
-        default: return "Other"  // For future products
         }
     }
 
@@ -28,7 +27,6 @@ extension Product {
         case .highSpeedTrain: return "IC/ICE"
         case .onDemand: return "On Demand"
         case .cablecar: return "Cable Car"
-        default: return "?"  // For future products
         }
     }
 

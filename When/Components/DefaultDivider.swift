@@ -4,7 +4,7 @@ struct DefaultDivider: View {
     var body: some View {
         Rectangle()
             .frame(height: 1)
-            .foregroundColor(.black.opacity(0.5))
+            .foregroundColor(.black.opacity(0.25))
     }
 }
 

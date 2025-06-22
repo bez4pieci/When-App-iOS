@@ -4,9 +4,6 @@ import SwiftUI
 import TripKit
 
 struct StationSearchField: View {
-    @Environment(\.modelContext) private var modelContext
-    @Query(sort: \Station.selectedAt, order: .reverse) private var stations: [Station]
-
     let selectedStation: Station?
     let onSearch: (String) async -> Void
 
@@ -54,6 +51,9 @@ struct StationSearchField: View {
                     Ph.x.regular
                         .frame(width: 24, height: 24)
                         .foregroundColor(Color.dLight)
+
+                        // To make the button easier to tap
+                        .contentShape(Rectangle())
                 }
                 .fixedSize()
             }

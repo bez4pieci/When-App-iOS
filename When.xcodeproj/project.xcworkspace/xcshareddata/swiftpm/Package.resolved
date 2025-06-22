@@ -1,5 +1,5 @@
 {
-  "originHash" : "d9c6095d9d5ad9b1d876c7dca2cb937ab043584989a0372fc890b3a00d06085e",
+  "originHash" : "00321c344390149566446b1f6e7129a0fe40b62c197dd5d336ad1881dd632594",
   "pins" : [
     {
       "identity" : "abseil-cpp-binary",
@@ -101,6 +101,33 @@
       }
     },
     {
+      "identity" : "mapbox-common-ios",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/mapbox/mapbox-common-ios.git",
+      "state" : {
+        "revision" : "5ec5e82d86fb69e02c67d30ad6eccc56e7f8c84b",
+        "version" : "24.12.3"
+      }
+    },
+    {
+      "identity" : "mapbox-core-maps-ios",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/mapbox/mapbox-core-maps-ios.git",
+      "state" : {
+        "revision" : "743ee6ce06bae1c2161ddf61d2c34f9fb9764ef5",
+        "version" : "11.12.3"
+      }
+    },
+    {
+      "identity" : "mapbox-maps-ios",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/mapbox/mapbox-maps-ios.git",
+      "state" : {
+        "revision" : "36a32cf45a700d46e39d733dcfba297f4a9eb102",
+        "version" : "11.12.3"
+      }
+    },
+    {
       "identity" : "nanopb",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/firebase/nanopb.git",
@@ -137,6 +164,33 @@
       }
     },
     {
+      "identity" : "swiftui-introspect",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/siteline/SwiftUI-Introspect.git",
+      "state" : {
+        "revision" : "807f73ce09a9b9723f12385e592b4e0aaebd3336",
+        "version" : "1.3.0"
+      }
+    },
+    {
+      "identity" : "swiftui-refresher",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/gh123man/SwiftUI-Refresher",
+      "state" : {
+        "revision" : "5a24079e69e5ca62974ea0dbf4d8ef13ceedaad3",
+        "version" : "1.1.9"
+      }
+    },
+    {
+      "identity" : "swiftui-renderlock",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/gh123man/SwiftUI-RenderLock",
+      "state" : {
+        "revision" : "11ca0d472dad0053cb8b29701ea3f108b9aa2304",
+        "version" : "1.0.2"
+      }
+    },
+    {
       "identity" : "swiftyjson",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/SwiftyJSON/SwiftyJSON",
@@ -161,6 +215,15 @@
       "state" : {
         "branch" : "main",
         "revision" : "dbf3f46120f1c4dc2003f1dd38311f1cd5631c76"
+      }
+    },
+    {
+      "identity" : "turf-swift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/mapbox/turf-swift.git",
+      "state" : {
+        "revision" : "bf840e6b9529d105687840fe2c9dcd74197d46d1",
+        "version" : "4.0.0"
       }
     }
   ],
