@@ -13,8 +13,7 @@ struct HeaderMap: UIViewRepresentable {
     private var defaultLatitude = 52.521508
     private var defaultLongitude = 13.411267
 
-    private var styleURI = StyleURI(
-        rawValue: "mapbox://styles/bez4pieci/cmbwsv0y5019f01smb3fo9rvr?cachebust=1612137633444")!
+    private var styleURI: StyleURI
 
     private var latitude: Double {
         station?.latitude ?? defaultLatitude
@@ -32,6 +31,27 @@ struct HeaderMap: UIViewRepresentable {
         self.station = station
         self.headerHeight = headerHeight
         self.offset = offset
+
+        var mapBoxPlist: [String: Any]?
+        if let url = Bundle.main.url(forResource: "MapBox", withExtension: "plist") {
+            do {
+                let data = try Data(contentsOf: url)
+                mapBoxPlist =
+                    try PropertyListSerialization.propertyList(from: data, options: [], format: nil)
+                    as? [String: Any]
+            } catch {
+                fatalError("Error reading MapBox.plist: \(error)")
+            }
+        }
+        let accessToken = mapBoxPlist?["MBXAccessToken"] as? String
+        let styleURI = mapBoxPlist?["StyleURI"] as? String
+
+        guard let accessToken = accessToken else {
+            fatalError("MapBox.plist is missing MBXAccessToken value")
+        }
+
+        MapboxOptions.accessToken = accessToken
+        self.styleURI = StyleURI(rawValue: styleURI ?? "")!
     }
 
     func makeUIView(context: Context) -> MapView {
