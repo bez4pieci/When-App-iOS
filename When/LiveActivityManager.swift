@@ -26,7 +26,7 @@ class LiveActivityManager: ObservableObject {
 
     func stopLiveActivity(for stationId: String) async {
         guard let activity = getActivityByStationId(stationId: stationId) else {
-            print("Live Activity: No activity found for station ID: \(stationId)")
+            print("Live Activity: No activity to stop for station ID: \(stationId)")
             return
         }
 

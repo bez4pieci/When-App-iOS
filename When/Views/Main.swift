@@ -6,6 +6,7 @@ struct MainView: View {
     @Environment(\.safeAreaInsets) private var safeAreaInsets
     @Environment(\.modelContext) private var modelContext
     @Query() private var stations: [Station]
+    @EnvironmentObject private var liveActivityManager: LiveActivityManager
 
     @State private var showStationSelection = false
     @State private var currentTabIndex = 0
@@ -62,21 +63,14 @@ struct MainView: View {
             .sheet(isPresented: $showStationSelection) {
                 StationSettingsView(
                     station: currentStation,
-                    onDelete: deleteStation
+                    onStationDelete: onStationDeleted,
+                    onStationChange: onStationChanged
                 )
             }
         }
     }
 
-    private func deleteStation(_ station: Station) {
-        modelContext.delete(station)
-
-        do {
-            try modelContext.save()
-        } catch {
-            print("Error deleting station: \(error)")
-        }
-
+    private func onStationDeleted(_ station: Station) {
         // Clean up data for deleted station
         scrollOffsets.removeValue(forKey: station.id)
         departuresViewModel.delete(for: station)
@@ -84,6 +78,18 @@ struct MainView: View {
         // Adjust currentTabIndex if necessary
         if currentTabIndex >= stations.count && !stations.isEmpty {
             currentTabIndex = stations.count - 1
+        }
+
+        // Stop live activity for the deleted station
+        Task {
+            await liveActivityManager.stopLiveActivity(for: station.id)
+        }
+    }
+
+    private func onStationChanged(oldStation: Station, newStation: Station) {
+        // Stop live activity for the old station
+        Task {
+            await liveActivityManager.stopLiveActivity(for: oldStation.id)
         }
     }
 

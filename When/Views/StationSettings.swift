@@ -9,45 +9,35 @@ struct StationSettingsView: View {
     @Query(sort: \Station.selectedAt, order: .reverse) private var stations: [Station]
 
     let station: Station?
-    let onDelete: ((Station) -> Void)
+    let onStationDelete: ((Station) -> Void)
+    let onStationChange: ((Station, Station) -> Void)
 
     var body: some View {
         StationSettingsContentView(
             station: station,
-            onApply: saveChanges,
+            onApply: save,
             onCancel: { dismiss() },
-            onDelete: { station in
-                onDelete(station)
-                dismiss()
-            }
+            onDelete: delete
         )
     }
 
-    private func saveChanges(changedStation: Station?) {
+    private func delete(station: Station) {
+        modelContext.delete(station)
+        onStationDelete(station)
+        dismiss()
+    }
+
+    private func save(changedStation: Station?) {
         guard let changedStation = changedStation else { return }
 
         if let existingStation = station {
-            // Update existing station with values from changed station
-            existingStation.id = changedStation.id
-            existingStation.name = changedStation.name
-            existingStation.latitude = changedStation.latitude
-            existingStation.longitude = changedStation.longitude
-            existingStation.productStrings = changedStation.productStrings
-            existingStation.showCancelledDepartures = changedStation.showCancelledDepartures
-            existingStation.selectedAt = Date()
+            let oldStation = Station(from: existingStation)
+            existingStation.applyProps(from: changedStation)
+            onStationChange(oldStation, existingStation)
 
-            // Copy enabled products settings
-            existingStation.enabledProductStrings = changedStation.enabledProductStrings
         } else {
-            // Insert new station
             changedStation.selectedAt = Date()
             modelContext.insert(changedStation)
-        }
-
-        do {
-            try modelContext.save()
-        } catch {
-            print("Error saving station: \(error)")
         }
 
         dismiss()
