@@ -53,6 +53,32 @@ final class Station {
         self.enabledProductStrings = products.map { $0.name }
     }
 
+    init(from: Station) {
+        self.id = ""
+        self.name = ""
+        self.latitude = nil
+        self.longitude = nil
+        self.selectedAt = Date()
+
+        applyProps(from: from)
+    }
+
+    func applyProps(from: Station, setSelectedAtToNow: Bool = true) {
+        self.id = from.id
+        self.name = from.name
+        self.latitude = from.latitude
+        self.longitude = from.longitude
+
+        self.showCancelledDepartures = from.showCancelledDepartures
+        self.enabledProductStrings = from.enabledProductStrings
+
+        if setSelectedAtToNow {
+            self.selectedAt = Date()
+        } else {
+            self.selectedAt = from.selectedAt
+        }
+    }
+
     // Helper computed property to convert stored strings back to Product enums
     var products: [Product] {
         productStrings.compactMap { Product.fromName($0) }
