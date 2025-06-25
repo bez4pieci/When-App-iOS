@@ -28,6 +28,7 @@
 		13B486C32E01B4E300ECBA4F /* Binding+StringDouble.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13B486C12E01B4E300ECBA4F /* Binding+StringDouble.swift */; };
 		13B486C62E05B91400ECBA4F /* Refresher in Frameworks */ = {isa = PBXBuildFile; productRef = 13B486C52E05B91400ECBA4F /* Refresher */; };
 		13B547362E0C4DCE003EDB02 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 13B547352E0C4DCE003EDB02 /* FirebaseAnalytics */; };
+		13B547382E0C645F003EDB02 /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = 13B547372E0C645F003EDB02 /* FirebaseCrashlytics */; };
 		13BC3D442DE794E4009B1B7F /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = 13BC3D432DE794E4009B1B7F /* FirebaseCore */; };
 		13BC3D462DE794E4009B1B7F /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 13BC3D452DE794E4009B1B7F /* FirebaseFirestore */; };
 		13BC3D4F2DE7959F009B1B7F /* FirebaseAnalyticsWithoutAdIdSupport in Frameworks */ = {isa = PBXBuildFile; productRef = 13BC3D4E2DE7959F009B1B7F /* FirebaseAnalyticsWithoutAdIdSupport */; };
@@ -138,6 +139,7 @@
 				13BC3D462DE794E4009B1B7F /* FirebaseFirestore in Frameworks */,
 				13BC3D442DE794E4009B1B7F /* FirebaseCore in Frameworks */,
 				13ADDF0F2DE5A903000F9376 /* PhosphorSwift in Frameworks */,
+				13B547382E0C645F003EDB02 /* FirebaseCrashlytics in Frameworks */,
 				1325BE0A2DE9AC6E005151AC /* TripKit in Frameworks */,
 				13B486C62E05B91400ECBA4F /* Refresher in Frameworks */,
 			);
@@ -231,6 +233,7 @@
 				1307F7752DE1F376009F0C4C /* Frameworks */,
 				1307F7762DE1F376009F0C4C /* Resources */,
 				1346932E2DE4EDAA00617A4D /* Embed Foundation Extensions */,
+				13B547392E0C64AB003EDB02 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -251,6 +254,7 @@
 				13B486AA2DFE279A00ECBA4F /* MapboxMaps */,
 				13B486C52E05B91400ECBA4F /* Refresher */,
 				13B547352E0C4DCE003EDB02 /* FirebaseAnalytics */,
+				13B547372E0C645F003EDB02 /* FirebaseCrashlytics */,
 			);
 			productName = Departures;
 			productReference = 1307F7782DE1F376009F0C4C /* When App.app */;
@@ -344,6 +348,33 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		13B547392E0C64AB003EDB02 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}",
+				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Resources/DWARF/${PRODUCT_NAME}",
+				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Info.plist",
+				"$(TARGET_BUILD_DIR)/$(UNLOCALIZED_RESOURCES_FOLDER_PATH)/GoogleService-Info.plist",
+				"$(TARGET_BUILD_DIR)/$(EXECUTABLE_PATH)",
+				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Resources/DWARF/${PRODUCT_NAME}.debug.dylib",
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${BUILD_DIR%/Build/*}/SourcePackages/checkouts/firebase-ios-sdk/Crashlytics/run\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		1307F7742DE1F376009F0C4C /* Sources */ = {
@@ -507,11 +538,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_MODULE_DEBUGGING = YES;
 				CODE_SIGN_ENTITLEMENTS = When/When.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 9EPXPY3668;
 				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = When/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "When? Berlin";
@@ -549,11 +583,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_MODULE_DEBUGGING = YES;
 				CODE_SIGN_ENTITLEMENTS = When/When.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 9EPXPY3668;
 				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = When/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "When? Berlin";
@@ -722,7 +759,7 @@
 			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 11.13.0;
+				minimumVersion = 11.15.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
@@ -757,6 +794,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 13BC3D422DE794E4009B1B7F /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseAnalytics;
+		};
+		13B547372E0C645F003EDB02 /* FirebaseCrashlytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 13BC3D422DE794E4009B1B7F /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCrashlytics;
 		};
 		13BC3D432DE794E4009B1B7F /* FirebaseCore */ = {
 			isa = XCSwiftPackageProductDependency;
