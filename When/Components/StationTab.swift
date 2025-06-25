@@ -29,7 +29,7 @@ struct StationTab: View {
     var body: some View {
         ScrollView {
             Color.clear
-                .frame(height: headerHeight + 20)
+                .frame(height: headerHeight)
 
             VStack(spacing: 0) {
                 VStack(spacing: 20) {

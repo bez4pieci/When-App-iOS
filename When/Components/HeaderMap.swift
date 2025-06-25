@@ -12,7 +12,7 @@ struct HeaderMap: UIViewRepresentable {
     // Default coordinates for Berlin Alexanderplatz
     private var defaultLatitude = 52.521508
     private var defaultLongitude = 13.411267
-
+    private var topPadding = 60.0
     private var styleURI: StyleURI
 
     private var latitude: Double {
@@ -52,6 +52,10 @@ struct HeaderMap: UIViewRepresentable {
 
         MapboxOptions.accessToken = accessToken
         self.styleURI = StyleURI(rawValue: styleURI ?? "")!
+    }
+
+    func makeCoordinator() -> Coordinator {
+        Coordinator(self)
     }
 
     func makeUIView(context: Context) -> MapView {
@@ -105,7 +109,7 @@ struct HeaderMap: UIViewRepresentable {
         let cameraOptions = CameraOptions(
             center: adjustedCenter,
             padding: UIEdgeInsets(
-                top: safeAreaInsets.top,
+                top: safeAreaInsets.top + topPadding,
                 left: 0,
                 bottom: UIScreen.main.bounds.height - headerHeight,
                 right: 0
@@ -116,40 +120,64 @@ struct HeaderMap: UIViewRepresentable {
         )
 
         if hasStationChanged {
-            // Use custom easeOutQuint curve with Mapbox native animation
-            let animator = coordinator.mapView.camera.makeAnimator(
-                duration: 1,
-                controlPoint1: CGPoint(x: 0.23, y: 1),
-                controlPoint2: CGPoint(x: 0.32, y: 1),
-            ) { transition in
-                if let center = cameraOptions.center {
-                    transition.center.toValue = center
-                }
-                if let zoom = cameraOptions.zoom {
-                    transition.zoom.toValue = zoom
-                }
-                if let bearing = cameraOptions.bearing {
-                    transition.bearing.toValue = bearing
-                }
-                if let pitch = cameraOptions.pitch {
-                    transition.pitch.toValue = pitch
-                }
-                if let padding = cameraOptions.padding {
-                    transition.padding.toValue = padding
-                }
-            }
-            animator.startAnimation()
-
-            coordinator.updateAnnotation(
-                for: station, latitude: latitude, longitude: longitude)
+            animateCameraFromIntermediatePoint(
+                coordinator: coordinator,
+                cameraOptions: cameraOptions,
+                targetCenter: adjustedCenter,
+                latitude: latitude,
+                longitude: longitude
+            )
         } else {
-            // Just set camera position for offset changes
             coordinator.mapView.mapboxMap.setCamera(to: cameraOptions)
         }
     }
 
-    func makeCoordinator() -> Coordinator {
-        Coordinator(self)
+    // Extracted method for animation logic
+    private func animateCameraFromIntermediatePoint(
+        coordinator: Coordinator,
+        cameraOptions: CameraOptions,
+        targetCenter: CLLocationCoordinate2D,
+        latitude: Double,
+        longitude: Double
+    ) {
+        let currentCenter = coordinator.mapView.mapboxMap.cameraState.center
+        // Interpolate: intermediate = target * 0.9 + current * 0.1
+        let intermediateLat = targetCenter.latitude * 0.9 + currentCenter.latitude * 0.1
+        let intermediateLon = targetCenter.longitude * 0.9 + currentCenter.longitude * 0.1
+        let intermediateCenter = CLLocationCoordinate2D(
+            latitude: intermediateLat, longitude: intermediateLon)
+
+        // Set camera immediately to the intermediate point (no animation)
+        var intermediateCameraOptions = cameraOptions
+        intermediateCameraOptions.center = intermediateCenter
+        coordinator.mapView.mapboxMap.setCamera(to: intermediateCameraOptions)
+
+        // Animate from intermediate to target
+        let animator = coordinator.mapView.camera.makeAnimator(
+            duration: 1,
+            controlPoint1: CGPoint(x: 0.23, y: 1),
+            controlPoint2: CGPoint(x: 0.32, y: 1),
+        ) { transition in
+            if let center = cameraOptions.center {
+                transition.center.toValue = center
+            }
+            if let zoom = cameraOptions.zoom {
+                transition.zoom.toValue = zoom
+            }
+            if let bearing = cameraOptions.bearing {
+                transition.bearing.toValue = bearing
+            }
+            if let pitch = cameraOptions.pitch {
+                transition.pitch.toValue = pitch
+            }
+            if let padding = cameraOptions.padding {
+                transition.padding.toValue = padding
+            }
+        }
+        animator.startAnimation()
+
+        coordinator.updateAnnotation(
+            for: station, latitude: latitude, longitude: longitude)
     }
 
     private func adjustedCenter(latitude: Double, longitude: Double) -> CLLocationCoordinate2D {
@@ -158,12 +186,14 @@ struct HeaderMap: UIViewRepresentable {
         let positiveScrollDamper = 1 / 140000.0
         let negativeScrollDamper = 1 / 120000.0
 
+        let positiveThreshold = (headerHeight - topPadding) / 2
+
         if offset < 0 {
             latitudeOffset += offset * negativeScrollDamper
-        } else if offset < 120 {
+        } else if offset < positiveThreshold {
             latitudeOffset += offset * positiveScrollDamper
-        } else if offset >= 120 {
-            latitudeOffset += 120 * positiveScrollDamper
+        } else if offset >= positiveThreshold {
+            latitudeOffset += positiveThreshold * positiveScrollDamper
         }
 
         // Adjust the center coordinate (subtract to move the visible center up)
