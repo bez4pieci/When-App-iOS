@@ -27,6 +27,7 @@
 		13B486C22E01B4E300ECBA4F /* Binding+StringDouble.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13B486C12E01B4E300ECBA4F /* Binding+StringDouble.swift */; };
 		13B486C32E01B4E300ECBA4F /* Binding+StringDouble.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13B486C12E01B4E300ECBA4F /* Binding+StringDouble.swift */; };
 		13B486C62E05B91400ECBA4F /* Refresher in Frameworks */ = {isa = PBXBuildFile; productRef = 13B486C52E05B91400ECBA4F /* Refresher */; };
+		13B547362E0C4DCE003EDB02 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 13B547352E0C4DCE003EDB02 /* FirebaseAnalytics */; };
 		13BC3D442DE794E4009B1B7F /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = 13BC3D432DE794E4009B1B7F /* FirebaseCore */; };
 		13BC3D462DE794E4009B1B7F /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 13BC3D452DE794E4009B1B7F /* FirebaseFirestore */; };
 		13BC3D4F2DE7959F009B1B7F /* FirebaseAnalyticsWithoutAdIdSupport in Frameworks */ = {isa = PBXBuildFile; productRef = 13BC3D4E2DE7959F009B1B7F /* FirebaseAnalyticsWithoutAdIdSupport */; };
@@ -133,6 +134,7 @@
 			files = (
 				13B486AB2DFE279A00ECBA4F /* MapboxMaps in Frameworks */,
 				13BC3D4F2DE7959F009B1B7F /* FirebaseAnalyticsWithoutAdIdSupport in Frameworks */,
+				13B547362E0C4DCE003EDB02 /* FirebaseAnalytics in Frameworks */,
 				13BC3D462DE794E4009B1B7F /* FirebaseFirestore in Frameworks */,
 				13BC3D442DE794E4009B1B7F /* FirebaseCore in Frameworks */,
 				13ADDF0F2DE5A903000F9376 /* PhosphorSwift in Frameworks */,
@@ -248,6 +250,7 @@
 				1325BE092DE9AC6E005151AC /* TripKit */,
 				13B486AA2DFE279A00ECBA4F /* MapboxMaps */,
 				13B486C52E05B91400ECBA4F /* Refresher */,
+				13B547352E0C4DCE003EDB02 /* FirebaseAnalytics */,
 			);
 			productName = Departures;
 			productReference = 1307F7782DE1F376009F0C4C /* When App.app */;
@@ -527,7 +530,8 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.1;
+				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.bez4pieci.When;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -568,7 +572,8 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.1;
+				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.bez4pieci.When;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -601,7 +606,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.bez4pieci.When.WhenWidget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -634,7 +639,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.bez4pieci.When.WhenWidget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -747,6 +752,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 13B486C42E05B91400ECBA4F /* XCRemoteSwiftPackageReference "SwiftUI-Refresher" */;
 			productName = Refresher;
+		};
+		13B547352E0C4DCE003EDB02 /* FirebaseAnalytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 13BC3D422DE794E4009B1B7F /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAnalytics;
 		};
 		13BC3D432DE794E4009B1B7F /* FirebaseCore */ = {
 			isa = XCSwiftPackageProductDependency;

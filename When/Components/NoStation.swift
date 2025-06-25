@@ -30,9 +30,8 @@ struct NoStation: View {
                                 width: cornerRadius, height: cornerRadius),
                             style: .continuous)
                     )
-                    
             }
-            
+
             Spacer()
         }
         .frame(maxHeight: .infinity)

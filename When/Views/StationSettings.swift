@@ -1,3 +1,4 @@
+import FirebaseAnalytics
 import PhosphorSwift
 import SwiftData
 import SwiftUI
@@ -16,13 +17,41 @@ struct StationSettingsView: View {
         StationSettingsContentView(
             station: station,
             onApply: save,
-            onCancel: { dismiss() },
+            onCancel: cancel,
             onDelete: delete
         )
+        .onAppear {
+            Analytics.logEvent(
+                AnalyticsEventScreenView,
+                parameters: [
+                    AnalyticsParameterScreenName: "station_settings",
+                    "station_name": station?.name ?? "none",
+                ])
+        }
+    }
+
+    private func cancel() {
+        Analytics.logEvent(
+            "cancel_station_settings",
+            parameters: [
+                "station_name": station?.name ?? "none"
+            ])
+
+        dismiss()
     }
 
     private func delete(station: Station) {
         modelContext.delete(station)
+
+        Analytics.logEvent(
+            "delete_station",
+            parameters: [
+                "station_name": station.name,
+                "products": station.productStringsData,
+                "show_cancelled_departures": station.showCancelledDepartures,
+                "enabled_products": station.enabledProductStringsData,
+            ])
+
         onStationDelete(station)
         dismiss()
     }
@@ -33,11 +62,34 @@ struct StationSettingsView: View {
         if let existingStation = station {
             let oldStation = Station(from: existingStation)
             existingStation.applyProps(from: changedStation)
+
+            Analytics.logEvent(
+                "update_station",
+                parameters: [
+                    "old_station_name": oldStation.name,
+                    "old_show_cancelled_departures": oldStation.showCancelledDepartures,
+                    "old_products": oldStation.productStringsData,
+                    "old_enabled_products": oldStation.enabledProductStringsData,
+                    "station_name": changedStation.name,
+                    "show_cancelled_departures": changedStation.showCancelledDepartures,
+                    "products": changedStation.productStringsData,
+                    "enabled_products": changedStation.enabledProductStringsData,
+                ])
+
             onStationChange(oldStation, existingStation)
 
         } else {
             changedStation.selectedAt = Date()
             modelContext.insert(changedStation)
+
+            Analytics.logEvent(
+                "add_station",
+                parameters: [
+                    "station_name": changedStation.name,
+                    "show_cancelled_departures": changedStation.showCancelledDepartures,
+                    "products": changedStation.productStringsData,
+                    "enabled_products": changedStation.enabledProductStringsData,
+                ])
         }
 
         dismiss()
