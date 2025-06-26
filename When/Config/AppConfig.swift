@@ -7,4 +7,6 @@ enum AppConfig {
     ]
 
     static let cornerRadius: CGFloat = 12.0
+
+    static let noStationId = "NO_STATION"
 }

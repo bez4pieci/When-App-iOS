@@ -23,7 +23,9 @@ struct MainView: View {
     }
 
     private var currentScrollOffset: Double {
-        guard let station = currentStation else { return 0.0 }
+        guard let station = currentStation else {
+            return scrollOffsets[AppConfig.noStationId] ?? 0.0
+        }
         return scrollOffsets[station.id] ?? 0.0
     }
 
@@ -70,16 +72,19 @@ struct MainView: View {
                         }
                     }
 
-                    NoStation(onSelectStation: { showStationSelection = true })
-                        .tag(stations.count)
-                        .onAppear {
-                            Analytics.logEvent(
-                                AnalyticsEventScreenView,
-                                parameters: [
-                                    AnalyticsParameterScreenName: "no_station_tab",
-                                    AnalyticsParameterScreenClass: "NoStationTab",
-                                ])
-                        }
+                    NoStation(
+                        offset: $scrollOffsets[AppConfig.noStationId],
+                        onSelectStation: { showStationSelection = true }
+                    )
+                    .tag(stations.count)
+                    .onAppear {
+                        Analytics.logEvent(
+                            AnalyticsEventScreenView,
+                            parameters: [
+                                AnalyticsParameterScreenName: "no_station_tab",
+                                AnalyticsParameterScreenClass: "NoStationTab",
+                            ])
+                    }
                 }
                 .tabViewStyle(.page(indexDisplayMode: .never))
                 .zIndex(2)
