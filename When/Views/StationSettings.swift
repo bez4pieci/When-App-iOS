@@ -89,6 +89,10 @@ struct StationSettingsView: View {
             changedStation.selectedAt = Date()
             modelContext.insert(changedStation)
 
+            // Important to save, otherwise station is first added to the beginning of the list,
+            // but then, after a few seconds, when the autosave triggers, the order is changed.
+            try? modelContext.save()
+
             Analytics.logEvent(
                 "add_station",
                 parameters: [
