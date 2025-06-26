@@ -51,19 +51,31 @@ struct MainView: View {
                             offset: $scrollOffsets[station.id]
                         )
                         .tag(index)
-                        .analyticsScreen(
-                            name: "station_tab",
-                            extraParameters: [
-                                "station_name": station.name,
-                                "show_cancelled_departures": station.showCancelledDepartures,
-                                "products": station.productStringsData,
-                                "enabled_products": station.enabledProductStringsData,
-                            ])
+                        .onAppear {
+                            Analytics.logEvent(
+                                AnalyticsEventScreenView,
+                                parameters: [
+                                    AnalyticsParameterScreenName: "station_tab",
+                                    AnalyticsParameterScreenClass: "StationTab",
+                                    "station_name": station.name,
+                                    "show_cancelled_departures": station.showCancelledDepartures
+                                        .description,
+                                    "products": station.productStringsData,
+                                    "enabled_products": station.enabledProductStringsData,
+                                ])
+                        }
                     }
 
                     NoStation(onSelectStation: { showStationSelection = true })
                         .tag(stations.count)
-                        .analyticsScreen(name: "no_station_tab")
+                        .onAppear {
+                            Analytics.logEvent(
+                                AnalyticsEventScreenView,
+                                parameters: [
+                                    AnalyticsParameterScreenName: "no_station_tab",
+                                    AnalyticsParameterScreenClass: "NoStationTab",
+                                ])
+                        }
                 }
                 .tabViewStyle(.page(indexDisplayMode: .never))
                 .zIndex(2)

@@ -25,6 +25,7 @@ struct StationSettingsView: View {
                 AnalyticsEventScreenView,
                 parameters: [
                     AnalyticsParameterScreenName: "station_settings",
+                    AnalyticsParameterScreenClass: "StationSettings",
                     "station_name": station?.name ?? "none",
                 ])
         }
@@ -34,7 +35,9 @@ struct StationSettingsView: View {
         Analytics.logEvent(
             "cancel_station_settings",
             parameters: [
-                "station_name": station?.name ?? "none"
+                AnalyticsParameterScreenName: "station_settings",
+                AnalyticsParameterScreenClass: "StationSettings",
+                "station_name": station?.name ?? "none",
             ])
 
         dismiss()
@@ -46,9 +49,11 @@ struct StationSettingsView: View {
         Analytics.logEvent(
             "delete_station",
             parameters: [
+                AnalyticsParameterScreenName: "station_settings",
+                AnalyticsParameterScreenClass: "StationSettings",
                 "station_name": station.name,
+                "show_cancelled_departures": station.showCancelledDepartures.description,
                 "products": station.productStringsData,
-                "show_cancelled_departures": station.showCancelledDepartures,
                 "enabled_products": station.enabledProductStringsData,
             ])
 
@@ -66,12 +71,14 @@ struct StationSettingsView: View {
             Analytics.logEvent(
                 "update_station",
                 parameters: [
+                    AnalyticsParameterScreenName: "station_settings",
+                    AnalyticsParameterScreenClass: "StationSettings",
                     "old_station_name": oldStation.name,
                     "old_show_cancelled_departures": oldStation.showCancelledDepartures,
                     "old_products": oldStation.productStringsData,
                     "old_enabled_products": oldStation.enabledProductStringsData,
                     "station_name": changedStation.name,
-                    "show_cancelled_departures": changedStation.showCancelledDepartures,
+                    "show_cancelled_departures": changedStation.showCancelledDepartures.description,
                     "products": changedStation.productStringsData,
                     "enabled_products": changedStation.enabledProductStringsData,
                 ])
@@ -85,6 +92,8 @@ struct StationSettingsView: View {
             Analytics.logEvent(
                 "add_station",
                 parameters: [
+                    AnalyticsParameterScreenName: "station_settings",
+                    AnalyticsParameterScreenClass: "StationSettings",
                     "station_name": changedStation.name,
                     "show_cancelled_departures": changedStation.showCancelledDepartures,
                     "products": changedStation.productStringsData,
