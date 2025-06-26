@@ -4,11 +4,21 @@ import Foundation
 import TripKit
 
 class LiveActivityManager: ObservableObject {
-    @Published var activeStationIDs: Set<String> = []
+    enum LiveActivityStatus {
+        case inactive
+        case loading
+        case active
+    }
+
+    @Published var stationStatuses: [String: LiveActivityStatus] = [:]
     private lazy var db = Firestore.firestore()
 
+    func liveActivityStatus(for stationId: String) -> LiveActivityStatus {
+        stationStatuses[stationId] ?? .inactive
+    }
+
     func isLiveActivityActive(for stationId: String) -> Bool {
-        activeStationIDs.contains(stationId)
+        liveActivityStatus(for: stationId) == .active
     }
 
     func stopAllActivities() {
@@ -39,11 +49,32 @@ class LiveActivityManager: ObservableObject {
 
     }
 
-    func startLiveActivity(station: Station, departures: [Departure]) async {
+    func startLiveActivity(
+        station: Station,
+        fetchDepartures: @escaping () async -> [Departure]
+    ) async {
         guard ActivityAuthorizationInfo().areActivitiesEnabled else {
             print("Live Activity: Activities are not enabled")
             return
         }
+
+        await setStationStatus(station.id, status: .loading)
+
+        let departures = await fetchDepartures()
+
+        await startLiveActivity(station: station, departures: departures)
+    }
+
+    func startLiveActivity(
+        station: Station,
+        departures: [Departure]
+    ) async {
+        guard ActivityAuthorizationInfo().areActivitiesEnabled else {
+            print("Live Activity: Activities are not enabled")
+            return
+        }
+
+        await setStationStatus(station.id, status: .loading)
 
         for activity in Activity<DeparturesActivityAttributes>.activities {
             print("Listing Live Activity \(activity.id)")
@@ -73,6 +104,8 @@ class LiveActivityManager: ObservableObject {
             )
         } catch {
             print("Live Activity: Error starting: \(error)")
+            // Set status to inactive if failed
+            await setStationStatus(station.id, status: .inactive)
             return
         }
 
@@ -104,11 +137,11 @@ class LiveActivityManager: ObservableObject {
             for await state in activity.activityStateUpdates {
                 if state == .active {
                     print("Live Activity: State changed to active for \(stationName)")
-                    await addActiveStation(stationId)
+                    await setStationStatus(stationId, status: .active)
                 } else {
                     print("Live Activity: State changed to inactive for \(stationName)")
                     await deleteLiveActivityFromFirestore(activityId: activity.id)
-                    await removeActiveStation(stationId)
+                    await setStationStatus(stationId, status: .inactive)
                 }
             }
         }
@@ -126,16 +159,6 @@ class LiveActivityManager: ObservableObject {
                 )
             }
         }
-    }
-
-    @MainActor
-    private func addActiveStation(_ id: String) {
-        activeStationIDs.insert(id)
-    }
-
-    @MainActor
-    private func removeActiveStation(_ id: String) {
-        activeStationIDs.remove(id)
     }
 
     private func createContentState(from departures: [Departure])
@@ -195,5 +218,10 @@ class LiveActivityManager: ObservableObject {
         } catch {
             print("Live Activity: Error deleting from Firestore: \(error)")
         }
+    }
+
+    @MainActor
+    private func setStationStatus(_ id: String, status: LiveActivityStatus) {
+        stationStatuses[id] = status
     }
 }

@@ -6,10 +6,11 @@ struct MainHeader: View {
     @EnvironmentObject private var liveActivityManager: LiveActivityManager
     let station: Station?
     let departuresViewModel: DeparturesViewModel
-    let onGearButtonTap: () -> Void
+    let onSettingsButtonTap: () -> Void
 
     private let buttonSize = 48.0
     private let sideMargin = 16.0
+    private let iconSize = 24.0
     private let cornerRadius = 24.0
 
     // Animation state for live icon
@@ -21,35 +22,32 @@ struct MainHeader: View {
         // { color in AnyView(Ph.circle.regular.color(color)) },
         // { color in AnyView(Ph.dotOutline.regular.color(color)) },
     ]
-    private let liveIconAnimationDuration: Double = 1.5  // seconds
+    private let liveIconAnimationDuration: Double = 2.0  // seconds
 
-    private func isLiveActive(for station: Station) -> Bool {
-        liveActivityManager.isLiveActivityActive(for: station.id)
+    private var isLiveActivityActive: Bool {
+        if let station = station {
+            return liveActivityManager.liveActivityStatus(for: station.id) == .loading
+                || liveActivityManager.liveActivityStatus(for: station.id) == .active
+        }
+        return false
     }
 
     var body: some View {
         HStack(spacing: 12) {
             liveToggleButton
             Spacer()
-            gearButton
+            settingsButton
         }
-        .onChange(of: isLiveActiveForCurrentStation) { _, isActive in
+        .onChange(of: isLiveActivityActive) { _, isActive in
             handleLiveIconAnimation(isActive: isActive)
         }
         .onAppear {
-            handleLiveIconAnimation(isActive: isLiveActiveForCurrentStation)
+            handleLiveIconAnimation(isActive: isLiveActivityActive)
         }
         .onDisappear {
             liveIconTimer?.invalidate()
             liveIconTimer = nil
         }
-    }
-
-    private var isLiveActiveForCurrentStation: Bool {
-        if let station = station {
-            return self.isLiveActive(for: station)
-        }
-        return false
     }
 
     private func handleLiveIconAnimation(isActive: Bool) {
@@ -70,10 +68,10 @@ struct MainHeader: View {
         }
     }
 
-    private var gearButton: some View {
-        Button(action: onGearButtonTap) {
+    private var settingsButton: some View {
+        Button(action: onSettingsButtonTap) {
             Ph.faders.regular.color(Color.dDefault)
-                .frame(width: 24, height: 24)
+                .frame(width: iconSize, height: iconSize)
                 .padding(12)
                 .contentShape(Rectangle())
         }
@@ -87,56 +85,57 @@ struct MainHeader: View {
 
     private var liveToggleButton: some View {
         Group {
-            if let station = station {
-                Button(action: {
-                    toggleLiveActivity(for: station)
-                }) {
-                    HStack(spacing: 8) {
-                        Text("Live")
-                            .font(Font.dSmall)
-                            .foregroundColor(Color.dDefault)
-                        if isLiveActiveForCurrentStation {
-                            ZStack {
-                                ForEach(0..<liveIcons.count, id: \.self) { idx in
-                                    liveIcons[idx](Color.dDefault)
-                                        .frame(width: 24, height: 24)
-                                        .opacity(liveIconIndex == idx ? 1.0 : 0.0)
-                                        .animation(
-                                            .easeInOut(
-                                                duration: liveIconAnimationDuration
-                                                    / Double(liveIcons.count)), value: liveIconIndex
-                                        )
-                                }
+            Button(action: {
+                toggleLiveActivity()
+            }) {
+                HStack(spacing: 8) {
+                    Text("Live")
+                        .font(Font.dSmall)
+                        .foregroundColor(Color.dDefault)
+
+                    if isLiveActivityActive {
+                        ZStack {
+                            ForEach(0..<liveIcons.count, id: \.self) { idx in
+                                liveIcons[idx](Color.dDefault)
+                                    .frame(width: iconSize, height: iconSize)
+                                    .opacity(liveIconIndex == idx ? 1.0 : 0.0)
+                                    .animation(
+                                        .easeInOut(
+                                            duration: liveIconAnimationDuration
+                                                / Double(liveIcons.count)), value: liveIconIndex
+                                    )
                             }
                         }
                     }
-                    .frame(height: buttonSize)
-                    .padding(.trailing, 16)
-                    .padding(.leading, 16)
                 }
-                .buttonStyle(.plain)
-                .background(Color.dBackground)
-                .clipShape(RoundedRectangle(cornerRadius: cornerRadius))
-                .contentShape(RoundedRectangle(cornerRadius: cornerRadius))
-                .padding(.top, safeAreaInsets.top)
-                .padding(.leading, sideMargin)
+                .frame(height: buttonSize)
+                .padding(.leading, 16)
+                .padding(.trailing, isLiveActivityActive ? 12 : 16)
             }
+            .buttonStyle(.plain)
+            .background(Color.dBackground)
+            .clipShape(RoundedRectangle(cornerRadius: cornerRadius))
+            .contentShape(RoundedRectangle(cornerRadius: cornerRadius))
+            .padding(.top, safeAreaInsets.top)
+            .padding(.leading, sideMargin)
         }
     }
 
-    private func toggleLiveActivity(for station: Station) {
-        let isActive = isLiveActive(for: station)
-        if isActive {
+    private func toggleLiveActivity() {
+        guard let station = station else {
+            return
+        }
+
+        if isLiveActivityActive {
             Task {
                 await liveActivityManager.stopLiveActivity(for: station.id)
             }
         } else {
             Task {
-                await departuresViewModel.loadDepartures(for: station)
-                await liveActivityManager.startLiveActivity(
-                    station: station,
-                    departures: departuresViewModel.filteredDepartures(for: station)
-                )
+                await liveActivityManager.startLiveActivity(station: station) {
+                    await departuresViewModel.loadDepartures(for: station)
+                    return departuresViewModel.filteredDepartures(for: station)
+                }
             }
         }
     }
@@ -152,7 +151,7 @@ struct MainHeader: View {
             products: [.suburbanTrain, .bus, .regionalTrain, .highSpeedTrain],
         ),
         departuresViewModel: DeparturesViewModel(),
-        onGearButtonTap: {}
+        onSettingsButtonTap: {}
     )
     .environmentObject(LiveActivityManager())
 }

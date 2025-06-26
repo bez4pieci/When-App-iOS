@@ -40,7 +40,7 @@ struct MainView: View {
                 MainHeader(
                     station: currentStation,
                     departuresViewModel: departuresViewModel,
-                    onGearButtonTap: {
+                    onSettingsButtonTap: {
                         showStationSelection = true
                     }
                 )
