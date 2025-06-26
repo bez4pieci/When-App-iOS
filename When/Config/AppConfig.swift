@@ -6,7 +6,7 @@ enum AppConfig {
         "aid": "dVg4TZbW8anjx9ztPwe2uk4LVRi9wO",
     ]
 
-    static let cornerRadius: CGFloat = 12.0
+    static let cornerRadius: CGFloat = 24.0
 
     static let noStationId = "NO_STATION"
 }

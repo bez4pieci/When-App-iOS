@@ -7,7 +7,7 @@ struct NoStation: View {
     let onSelectStation: () -> Void
 
     private var headerHeight = 240.0
-    private var cornerRadius = 24.0
+    private var cornerRadius = AppConfig.cornerRadius
 
     init(
         offset: Binding<Double>,

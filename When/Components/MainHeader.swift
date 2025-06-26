@@ -11,7 +11,7 @@ struct MainHeader: View {
     private let buttonSize = 48.0
     private let sideMargin = 16.0
     private let iconSize = 24.0
-    private let cornerRadius = 24.0
+    private let cornerRadius = AppConfig.cornerRadius
 
     // Animation state for live icon
     @State private var liveIconIndex: Int = 0
