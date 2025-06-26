@@ -11,7 +11,6 @@ struct MainHeader: View {
     private let buttonSize = 48.0
     private let sideMargin = 16.0
     private let iconSize = 24.0
-    private let cornerRadius = AppConfig.cornerRadius
 
     // Animation state for live icon
     @State private var liveIconIndex: Int = 0
@@ -116,8 +115,8 @@ struct MainHeader: View {
             }
             .buttonStyle(.plain)
             .background(Color.dBackground)
-            .clipShape(RoundedRectangle(cornerRadius: cornerRadius))
-            .contentShape(RoundedRectangle(cornerRadius: cornerRadius))
+            .clipShape(RoundedRectangle(cornerRadius: AppConfig.cornerRadius))
+            .contentShape(RoundedRectangle(cornerRadius: AppConfig.cornerRadius))
             .padding(.top, safeAreaInsets.top)
             .padding(.leading, sideMargin)
         }

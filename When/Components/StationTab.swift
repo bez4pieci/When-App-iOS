@@ -8,27 +8,22 @@ struct StationTab: View {
 
     let station: Station
     let departuresViewModel: DeparturesViewModel
-    let headerHeight: Double
     let offset: Binding<Double>
-
-    private var cornerRadius = AppConfig.cornerRadius
 
     init(
         station: Station,
         departuresViewModel: DeparturesViewModel,
-        headerHeight: Double,
         offset: Binding<Double>
     ) {
         self.station = station
         self.departuresViewModel = departuresViewModel
-        self.headerHeight = headerHeight
         self.offset = offset
     }
 
     var body: some View {
         ScrollView {
             Color.clear
-                .frame(height: headerHeight)
+                .frame(height: AppConfig.headerHeight)
 
             VStack(spacing: 0) {
                 VStack(spacing: 20) {
@@ -43,7 +38,7 @@ struct StationTab: View {
                         .clipShape(
                             .rect(
                                 cornerSize: .init(
-                                    width: cornerRadius, height: cornerRadius),
+                                    width: AppConfig.cornerRadius, height: AppConfig.cornerRadius),
                                 style: .continuous)
                         )
                         .offset(y: offset.wrappedValue >= 120 ? -(offset.wrappedValue - 120) : 0)
@@ -51,7 +46,7 @@ struct StationTab: View {
                     .clipShape(
                         .rect(
                             cornerSize: .init(
-                                width: cornerRadius, height: cornerRadius),
+                                width: AppConfig.cornerRadius, height: AppConfig.cornerRadius),
                             style: .continuous)
                     )
                 }

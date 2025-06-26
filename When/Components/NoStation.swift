@@ -6,9 +6,6 @@ struct NoStation: View {
     let offset: Binding<Double>
     let onSelectStation: () -> Void
 
-    private var headerHeight = 240.0
-    private var cornerRadius = AppConfig.cornerRadius
-
     init(
         offset: Binding<Double>,
         onSelectStation: @escaping () -> Void
@@ -20,7 +17,7 @@ struct NoStation: View {
     var body: some View {
         ScrollView {
             Color.clear
-                .frame(height: headerHeight)
+                .frame(height: AppConfig.headerHeight)
 
             Button(action: onSelectStation) {
                 HStack(spacing: 8) {
@@ -37,8 +34,8 @@ struct NoStation: View {
             .padding(.trailing, 16)
             .buttonStyle(.plain)
             .background(Color.dBackground)
-            .clipShape(RoundedRectangle(cornerRadius: cornerRadius))
-            .contentShape(RoundedRectangle(cornerRadius: cornerRadius))
+            .clipShape(RoundedRectangle(cornerRadius: AppConfig.cornerRadius))
+            .contentShape(RoundedRectangle(cornerRadius: AppConfig.cornerRadius))
 
             Spacer()
         }

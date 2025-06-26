@@ -14,9 +14,6 @@ struct MainView: View {
     @State private var scrollOffsets: [String: Double] = [:]
     @State private var departuresViewModel = DeparturesViewModel()
 
-    private var headerHeight = 240.0
-    private var cornerRadius = AppConfig.cornerRadius
-
     private var currentStation: Station? {
         guard !stations.isEmpty && currentTabIndex < stations.count else { return nil }
         return stations[currentTabIndex]
@@ -34,7 +31,6 @@ struct MainView: View {
             ZStack(alignment: .top) {
                 HeaderMap(
                     station: currentStation,
-                    headerHeight: headerHeight,
                     offset: currentScrollOffset
                 )
                 .zIndex(1)
@@ -53,7 +49,6 @@ struct MainView: View {
                         StationTab(
                             station: station,
                             departuresViewModel: departuresViewModel,
-                            headerHeight: headerHeight,
                             offset: $scrollOffsets[station.id]
                         )
                         .tag(index)
