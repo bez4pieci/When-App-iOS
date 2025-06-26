@@ -34,9 +34,11 @@ struct MainHeader: View {
 
     var body: some View {
         HStack(spacing: 12) {
-            liveToggleButton
-            Spacer()
-            settingsButton
+            if station != nil {
+                liveToggleButton
+                Spacer()
+                settingsButton
+            }
         }
         .onChange(of: isLiveActivityActive) { _, isActive in
             handleLiveIconAnimation(isActive: isActive)
