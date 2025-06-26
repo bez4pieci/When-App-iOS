@@ -37,9 +37,13 @@ struct MainView: View {
                 )
                 .zIndex(1)
 
-                MainHeader(onGearButtonTap: {
-                    showStationSelection = true
-                })
+                MainHeader(
+                    station: currentStation,
+                    departuresViewModel: departuresViewModel,
+                    onGearButtonTap: {
+                        showStationSelection = true
+                    }
+                )
                 .zIndex(5)
 
                 TabView(selection: $currentTabIndex) {

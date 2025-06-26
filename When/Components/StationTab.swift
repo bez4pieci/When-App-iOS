@@ -5,7 +5,6 @@ import TripKit
 
 struct StationTab: View {
     @Environment(\.safeAreaInsets) private var safeAreaInsets
-    @EnvironmentObject private var liveActivityManager: LiveActivityManager
 
     let station: Station
     let departuresViewModel: DeparturesViewModel
@@ -33,8 +32,6 @@ struct StationTab: View {
 
             VStack(spacing: 0) {
                 VStack(spacing: 20) {
-                    liveToggle
-
                     VStack(spacing: 0) {
                         VStack(spacing: 0) {
                             DepartureBoard(
@@ -82,53 +79,6 @@ struct StationTab: View {
             return geometry.contentOffset.y + geometry.contentInsets.top
         } action: { _, new in
             offset.wrappedValue = new
-        }
-    }
-
-    var liveToggle: some View {
-        HStack {
-            Text("Show Live")
-                .font(Font.dNormal)
-                .foregroundColor(Color.dDefault)
-            Spacer()
-            Toggle("", isOn: liveActivityBinding)
-                .labelsHidden()
-                .tint(Color.dDefault)
-        }
-        .padding(.horizontal, 20)
-        .padding(.vertical, 12)
-        .background(Color.dBackground)
-        .clipShape(
-            .rect(
-                cornerSize: .init(
-                    width: cornerRadius, height: cornerRadius),
-                style: .continuous)
-        )
-    }
-
-    private var liveActivityBinding: Binding<Bool> {
-        Binding(
-            get: { liveActivityManager.isLiveActivityActive(for: station.id) },
-            set: { isActive in
-                handleLiveActivityToggle(isActive: isActive, station: station)
-            }
-        )
-    }
-
-    func handleLiveActivityToggle(isActive: Bool, station: Station) {
-        if isActive {
-            Task {
-                // For live activity, always refresh regardless of throttling
-                await departuresViewModel.loadDepartures(for: station)
-                await liveActivityManager.startLiveActivity(
-                    station: station,
-                    departures: departuresViewModel.filteredDepartures(for: station)
-                )
-            }
-        } else {
-            Task {
-                await liveActivityManager.stopLiveActivity(for: station.id)
-            }
         }
     }
 }
