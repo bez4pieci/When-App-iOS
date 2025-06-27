@@ -31,7 +31,6 @@
 		13B547382E0C645F003EDB02 /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = 13B547372E0C645F003EDB02 /* FirebaseCrashlytics */; };
 		13BC3D442DE794E4009B1B7F /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = 13BC3D432DE794E4009B1B7F /* FirebaseCore */; };
 		13BC3D462DE794E4009B1B7F /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 13BC3D452DE794E4009B1B7F /* FirebaseFirestore */; };
-		13BC3D4F2DE7959F009B1B7F /* FirebaseAnalyticsWithoutAdIdSupport in Frameworks */ = {isa = PBXBuildFile; productRef = 13BC3D4E2DE7959F009B1B7F /* FirebaseAnalyticsWithoutAdIdSupport */; };
 		13BC3D512DE795A9009B1B7F /* FirebaseAnalyticsWithoutAdIdSupport in Frameworks */ = {isa = PBXBuildFile; productRef = 13BC3D502DE795A9009B1B7F /* FirebaseAnalyticsWithoutAdIdSupport */; };
 		13BC3D522DE7987A009B1B7F /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 13BC3D472DE79519009B1B7F /* GoogleService-Info.plist */; };
 		13BC3D532DE7987A009B1B7F /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 13BC3D472DE79519009B1B7F /* GoogleService-Info.plist */; };
@@ -134,7 +133,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				13B486AB2DFE279A00ECBA4F /* MapboxMaps in Frameworks */,
-				13BC3D4F2DE7959F009B1B7F /* FirebaseAnalyticsWithoutAdIdSupport in Frameworks */,
 				13B547362E0C4DCE003EDB02 /* FirebaseAnalytics in Frameworks */,
 				13BC3D462DE794E4009B1B7F /* FirebaseFirestore in Frameworks */,
 				13BC3D442DE794E4009B1B7F /* FirebaseCore in Frameworks */,
@@ -249,7 +247,6 @@
 				13ADDF0E2DE5A903000F9376 /* PhosphorSwift */,
 				13BC3D432DE794E4009B1B7F /* FirebaseCore */,
 				13BC3D452DE794E4009B1B7F /* FirebaseFirestore */,
-				13BC3D4E2DE7959F009B1B7F /* FirebaseAnalyticsWithoutAdIdSupport */,
 				1325BE092DE9AC6E005151AC /* TripKit */,
 				13B486AA2DFE279A00ECBA4F /* MapboxMaps */,
 				13B486C52E05B91400ECBA4F /* Refresher */,
@@ -353,7 +350,7 @@
 		13B547392E0C64AB003EDB02 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			alwaysOutOfDate = 1;
-			buildActionMask = 2147483647;
+			buildActionMask = 12;
 			files = (
 			);
 			inputFileListPaths = (
@@ -550,6 +547,7 @@
 				INFOPLIST_FILE = When/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "When? Berlin";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.navigation";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Your location allows to find public transport stations near you";
 				INFOPLIST_KEY_NSSupportsLiveActivities = YES;
 				INFOPLIST_KEY_NSSupportsLiveActivitiesFrequentUpdates = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -595,6 +593,7 @@
 				INFOPLIST_FILE = When/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "When? Berlin";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.navigation";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Your location allows to find public transport stations near you";
 				INFOPLIST_KEY_NSSupportsLiveActivities = YES;
 				INFOPLIST_KEY_NSSupportsLiveActivitiesFrequentUpdates = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -809,11 +808,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 13BC3D422DE794E4009B1B7F /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseFirestore;
-		};
-		13BC3D4E2DE7959F009B1B7F /* FirebaseAnalyticsWithoutAdIdSupport */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 13BC3D422DE794E4009B1B7F /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
-			productName = FirebaseAnalyticsWithoutAdIdSupport;
 		};
 		13BC3D502DE795A9009B1B7F /* FirebaseAnalyticsWithoutAdIdSupport */ = {
 			isa = XCSwiftPackageProductDependency;
