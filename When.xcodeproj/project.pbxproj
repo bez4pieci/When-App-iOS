@@ -546,6 +546,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = When/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "When? Berlin";
+				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.navigation";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Your location allows to find public transport stations near you";
 				INFOPLIST_KEY_NSSupportsLiveActivities = YES;
@@ -592,6 +593,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = When/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "When? Berlin";
+				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.navigation";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Your location allows to find public transport stations near you";
 				INFOPLIST_KEY_NSSupportsLiveActivities = YES;
