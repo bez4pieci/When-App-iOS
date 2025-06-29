@@ -1,7 +1,6 @@
 import Foundation
 import SwiftData
 import SwiftUI
-import TripKit
 
 @Observable
 class DeparturesViewModel {
@@ -31,8 +30,7 @@ class DeparturesViewModel {
 
             // Filter by transport type
             if let transportType = departure.line.transportType {
-                let product = Product.fromName(transportType.name)
-                return station.isProductEnabled(product)
+                return station.isProductEnabled(transportType)
             }
 
             // If no product info, show by default

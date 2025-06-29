@@ -4,15 +4,73 @@ import TripKit
 // MARK: - Custom Types (TripKit-free)
 
 /// Transport type information for UI display
-struct TransportType {
+struct TransportType: Hashable, Equatable {
     let name: String
     let shortLabel: String
     let label: String
 
-    init(from product: Product) {
-        self.name = product.name
-        self.shortLabel = product.shortLabel
-        self.label = product.label
+    // Private initializer to prevent external creation of invalid types
+    private init(name: String, shortLabel: String, label: String) {
+        self.name = name
+        self.shortLabel = shortLabel
+        self.label = label
+    }
+
+    // MARK: - Predefined Transport Types
+
+    static let suburbanTrain = TransportType(
+        name: "suburbanTrain", shortLabel: "S", label: "S-Bahn")
+    static let subway = TransportType(name: "subway", shortLabel: "U", label: "U-Bahn")
+    static let tram = TransportType(name: "tram", shortLabel: "Tram", label: "Tram")
+    static let bus = TransportType(name: "bus", shortLabel: "Bus", label: "Bus")
+    static let regionalTrain = TransportType(
+        name: "regionalTrain", shortLabel: "RE", label: "Regional Train")
+    static let ferry = TransportType(name: "ferry", shortLabel: "F", label: "Ferry")
+    static let highSpeedTrain = TransportType(
+        name: "highSpeedTrain", shortLabel: "IC/ICE", label: "ICE/IC")
+    static let onDemand = TransportType(
+        name: "onDemand", shortLabel: "On Demand", label: "On Demand")
+    static let cablecar = TransportType(
+        name: "cablecar", shortLabel: "Cable Car", label: "Cable Car")
+
+    // MARK: - Static Properties and Methods
+
+    /// All available transport types (equivalent to Product.allCases)
+    static let allCases: [TransportType] = [
+        .suburbanTrain, .subway, .tram, .bus, .regionalTrain,
+        .ferry, .highSpeedTrain, .onDemand, .cablecar,
+    ]
+
+    /// Convert string name to TransportType (returns static instance)
+    static func from(_ name: String) -> TransportType {
+        switch name {
+        case "suburbanTrain": return .suburbanTrain
+        case "subway": return .subway
+        case "tram": return .tram
+        case "bus": return .bus
+        case "regionalTrain": return .regionalTrain
+        case "ferry": return .ferry
+        case "highSpeedTrain": return .highSpeedTrain
+        case "onDemand": return .onDemand
+        case "cablecar": return .cablecar
+        default: return .subway  // Default fallback
+        }
+    }
+
+    /// Convert from TripKit Product to TransportType (returns static instance)
+    static func from(_ product: Product) -> TransportType {
+        switch product {
+        case .suburbanTrain: return .suburbanTrain
+        case .subway: return .subway
+        case .tram: return .tram
+        case .bus: return .bus
+        case .regionalTrain: return .regionalTrain
+        case .ferry: return .ferry
+        case .highSpeedTrain: return .highSpeedTrain
+        case .onDemand: return .onDemand
+        case .cablecar: return .cablecar
+        @unknown default: return .subway  // Default fallback
+        }
     }
 }
 
@@ -32,7 +90,7 @@ struct SearchResult {
         self.name = location.name ?? self.displayName
         self.latitude = location.coord?.lat != nil ? Double(location.coord!.lat) / 1000000.0 : nil
         self.longitude = location.coord?.lon != nil ? Double(location.coord!.lon) / 1000000.0 : nil
-        self.products = (location.products ?? []).map { TransportType(from: $0) }
+        self.products = (location.products ?? []).map { TransportType.from($0) }
     }
 }
 
@@ -45,7 +103,7 @@ struct LineInfo {
     init(from line: Line) {
         self.name = line.name
         self.label = line.label
-        self.transportType = line.product != nil ? TransportType(from: line.product!) : nil
+        self.transportType = line.product != nil ? TransportType.from(line.product!) : nil
     }
 }
 

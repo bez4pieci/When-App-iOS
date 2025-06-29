@@ -1,6 +1,5 @@
 import Foundation
 import SwiftData
-import TripKit
 
 @Model
 final class Station {
@@ -39,7 +38,7 @@ final class Station {
 
     init(
         id: String, name: String, latitude: Double? = nil, longitude: Double? = nil,
-        products: [Product] = []
+        products: [TransportType] = []
     ) {
         self.id = id
         self.name = name
@@ -79,36 +78,36 @@ final class Station {
         }
     }
 
-    // Helper computed property to convert stored strings back to Product enums
-    var products: [Product] {
-        productStrings.compactMap { Product.fromName($0) }
+    // Helper computed property to convert stored strings back to TransportType
+    var products: [TransportType] {
+        productStrings.compactMap { TransportType.from($0) }
     }
 
-    // Helper method to check if a specific product is available at this station
-    func hasProduct(_ product: Product) -> Bool {
-        productStrings.contains(product.name)
+    // Helper method to check if a specific transport type is available at this station
+    func hasProduct(_ transportType: TransportType) -> Bool {
+        productStrings.contains(transportType.name)
     }
 
-    // Helper computed property for enabled products
-    var enabledProducts: Set<Product> {
-        Set(enabledProductStrings.compactMap { Product.fromName($0) })
+    // Helper computed property for enabled transport types
+    var enabledProducts: Set<TransportType> {
+        Set(enabledProductStrings.compactMap { TransportType.from($0) })
     }
 
     // Helper methods for settings management
-    func isProductEnabled(_ product: Product) -> Bool {
-        enabledProductStrings.contains(product.name)
+    func isProductEnabled(_ transportType: TransportType) -> Bool {
+        enabledProductStrings.contains(transportType.name)
     }
 
-    func toggleProduct(_ product: Product) {
-        if enabledProductStrings.contains(product.name) {
-            enabledProductStrings.removeAll { $0 == product.name }
+    func toggleProduct(_ transportType: TransportType) {
+        if enabledProductStrings.contains(transportType.name) {
+            enabledProductStrings.removeAll { $0 == transportType.name }
         } else {
-            enabledProductStrings.append(product.name)
+            enabledProductStrings.append(transportType.name)
         }
     }
 
-    func setProduct(_ product: Product, enabled: Bool) {
-        let productName = product.name
+    func setProduct(_ transportType: TransportType, enabled: Bool) {
+        let productName = transportType.name
         let isCurrentlyEnabled = enabledProductStrings.contains(productName)
 
         if enabled && !isCurrentlyEnabled {

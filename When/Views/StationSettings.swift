@@ -2,7 +2,6 @@ import FirebaseAnalytics
 import PhosphorSwift
 import SwiftData
 import SwiftUI
-import TripKit
 
 struct StationSettingsView: View {
     @Environment(\.dismiss) private var dismiss
@@ -218,13 +217,11 @@ private struct StationSettingsContentView: View {
         VStack(spacing: 0) {
             DefaultDivider()
             VStack(spacing: 12) {
-                // TODO: use allCases for Settings, so that we don't depend here on TripKit.
-                //       TripKit might change products, and our settings will break.
-                ForEach(Product.allCases, id: \.self) { product in
-                    if temporarySelectedStation?.hasProduct(product) ?? true {
+                ForEach(TransportType.allCases, id: \.self) { transportType in
+                    if temporarySelectedStation?.hasProduct(transportType) ?? true {
                         transportToggle(
-                            product: product,
-                            label: product.label,
+                            transportType: transportType,
+                            label: transportType.label,
                             forceEnable: temporarySelectedStation?.products.count ?? 0 < 2
                         )
                     }
@@ -235,7 +232,9 @@ private struct StationSettingsContentView: View {
         }
     }
 
-    private func transportToggle(product: Product, label: String, forceEnable: Bool = false)
+    private func transportToggle(
+        transportType: TransportType, label: String, forceEnable: Bool = false
+    )
         -> some View
     {
         HStack {
@@ -246,8 +245,8 @@ private struct StationSettingsContentView: View {
             Toggle(
                 "",
                 isOn: Binding(
-                    get: { temporarySelectedStation?.isProductEnabled(product) ?? false },
-                    set: { _ in temporarySelectedStation?.toggleProduct(product) }
+                    get: { temporarySelectedStation?.isProductEnabled(transportType) ?? false },
+                    set: { _ in temporarySelectedStation?.toggleProduct(transportType) }
                 )
             )
             .labelsHidden()
@@ -256,7 +255,7 @@ private struct StationSettingsContentView: View {
         }
         .onAppear {
             if forceEnable {
-                temporarySelectedStation?.setProduct(product, enabled: true)
+                temporarySelectedStation?.setProduct(transportType, enabled: true)
             }
         }
     }
@@ -316,12 +315,10 @@ private struct StationSettingsContentView: View {
         // Store the selection temporarily
         temporarySelectedStation = Station(
             id: searchResult.id,
-            name: searchResult.name,
+            name: !searchResult.name.isEmpty ? searchResult.name : searchResult.displayName,
             latitude: searchResult.latitude,
             longitude: searchResult.longitude,
-            products: searchResult.products.map { transportType in
-                Product.fromName(transportType.name)
-            }
+            products: searchResult.products
         )
 
         // Clear search results
