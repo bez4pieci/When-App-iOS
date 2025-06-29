@@ -1,7 +1,6 @@
 import FirebaseAnalytics
 import SwiftData
 import SwiftUI
-import TripKit
 
 struct MainView: View {
     @Environment(\.safeAreaInsets) private var safeAreaInsets

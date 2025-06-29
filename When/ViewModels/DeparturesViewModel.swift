@@ -5,7 +5,7 @@ import TripKit
 
 @Observable
 class DeparturesViewModel {
-    private var stationDepartures: [String: [Departure]] = [:]
+    private var stationDepartures: [String: [DepartureInfo]] = [:]
     private var loadingStations: Set<String> = []
     private var lastUpdates: [String: Date] = [:]
 
@@ -15,12 +15,12 @@ class DeparturesViewModel {
     init() {}
 
     // Get departures for a specific station
-    func departures(for station: Station) -> [Departure] {
+    func departures(for station: Station) -> [DepartureInfo] {
         return stationDepartures[station.id] ?? []
     }
 
     // Get filtered departures for a specific station
-    func filteredDepartures(for station: Station) -> [Departure] {
+    func filteredDepartures(for station: Station) -> [DepartureInfo] {
         let departures = self.departures(for: station)
 
         return departures.filter { departure in
@@ -30,7 +30,8 @@ class DeparturesViewModel {
             }
 
             // Filter by transport type
-            if let product = departure.line.product {
+            if let transportType = departure.line.transportType {
+                let product = Product.fromName(transportType.name)
                 return station.isProductEnabled(product)
             }
 
@@ -92,31 +93,22 @@ class DeparturesViewModel {
 
         // Create a task to ensure minimum loading time
         async let minimumLoadingTime = Task {
-            try? await Task.sleep(nanoseconds: 2_000_000_000)  // 1 second
+            try? await Task.sleep(nanoseconds: 2_000_000_000)  // 2 seconds
         }
 
-        let provider = BvgProvider(apiAuthorization: AppConfig.bvgApiAuthorization)
-        let (_, result) = await provider.queryDepartures(
+        // Create TransportService instance as needed
+        let transportService = TransportService()
+        async let departuresTask = transportService.queryDepartures(
             stationId: station.id,
             maxDepartures: 40  // Larger number to allow for filtering
         )
 
         // Wait for both the API call and minimum loading time to complete
-        _ = await (minimumLoadingTime, result)
+        let (_, departures) = await (minimumLoadingTime, departuresTask)
 
-        switch result {
-        case .success(let stationDepartures):
-            let departures = stationDepartures.flatMap { $0.departures }
-            self.stationDepartures[station.id] = departures
-            self.lastUpdates[station.id] = Date()
-            print("Departures: Fetched \(departures.count) departures for \(station.name)")
-
-        case .invalidStation:
-            print("Departures: Invalid station id for \(station.name)")
-
-        case .failure(let error):
-            print("Departures: Error loading departures for \(station.name): \(error)")
-        }
+        self.stationDepartures[station.id] = departures
+        self.lastUpdates[station.id] = Date()
+        print("Departures: Fetched \(departures.count) departures for \(station.name)")
     }
 
     func delete(for station: Station) {

@@ -1,6 +1,5 @@
 import ActivityKit
 import SwiftUI
-import TripKit
 import WidgetKit
 
 struct DeparturesLiveActivity: Widget {

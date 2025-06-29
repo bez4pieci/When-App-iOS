@@ -1,7 +1,6 @@
 import ActivityKit
 import FirebaseFirestore
 import Foundation
-import TripKit
 
 class LiveActivityManager: ObservableObject {
     enum LiveActivityStatus {
@@ -51,7 +50,7 @@ class LiveActivityManager: ObservableObject {
 
     func startLiveActivity(
         station: Station,
-        fetchDepartures: @escaping () async -> [Departure]
+        fetchDepartures: @escaping () async -> [DepartureInfo]
     ) async {
         guard ActivityAuthorizationInfo().areActivitiesEnabled else {
             print("Live Activity: Activities are not enabled")
@@ -67,7 +66,7 @@ class LiveActivityManager: ObservableObject {
 
     func startLiveActivity(
         station: Station,
-        departures: [Departure]
+        departures: [DepartureInfo]
     ) async {
         guard ActivityAuthorizationInfo().areActivitiesEnabled else {
             print("Live Activity: Activities are not enabled")
@@ -161,13 +160,13 @@ class LiveActivityManager: ObservableObject {
         }
     }
 
-    private func createContentState(from departures: [Departure])
+    private func createContentState(from departures: [DepartureInfo])
         -> DeparturesActivityAttributes.ContentState
     {
         let departureInfos = departures.prefix(4).map { departure in
             DeparturesActivityAttributes.ContentState.DepartureInfo(
                 lineLabel: departure.line.label ?? "",
-                destination: departure.destination?.name ?? "",
+                destination: departure.destination.name ?? "",
                 plannedTime: departure.plannedTime,
                 predictedTime: departure.predictedTime,
                 isCancelled: departure.cancelled,

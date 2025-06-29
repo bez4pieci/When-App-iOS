@@ -1,7 +1,6 @@
 import PhosphorSwift
 import SwiftData
 import SwiftUI
-import TripKit
 
 struct StationSearchField: View {
     let selectedStation: Station?

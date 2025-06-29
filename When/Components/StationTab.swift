@@ -1,7 +1,6 @@
 import Refresher
 import SwiftData
 import SwiftUI
-import TripKit
 
 struct StationTab: View {
     @Environment(\.safeAreaInsets) private var safeAreaInsets

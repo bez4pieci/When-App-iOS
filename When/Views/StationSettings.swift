@@ -115,7 +115,7 @@ private struct StationSettingsContentView: View {
     let onDelete: ((Station) -> Void)?
     let wasInitialisedWithAStation: Bool
 
-    @State private var suggestedLocations: [SuggestedLocation] = []
+    @State private var searchResults: [SearchResult] = []
     @State private var showingSuggestedLocations = false
     @State private var isSearching = false
     @FocusState private var isSearchFieldFocused
@@ -167,13 +167,13 @@ private struct StationSettingsContentView: View {
                                 .background(Color.white)
                             }
 
-                            if suggestedLocations.count > 0 {
+                            if searchResults.count > 0 {
                                 DefaultDivider()
                                 StationsList(
-                                    searchResults: suggestedLocations,
+                                    searchResults: searchResults,
                                     maxResults: 5,
-                                    onSelect: { location in
-                                        setStation(location)
+                                    onSelect: { searchResult in
+                                        setStation(searchResult)
                                     }
                                 )
                             }
@@ -312,48 +312,36 @@ private struct StationSettingsContentView: View {
         }
     }
 
-    private func setStation(_ location: Location) {
+    private func setStation(_ searchResult: SearchResult) {
         // Store the selection temporarily
         temporarySelectedStation = Station(
-            id: location.id ?? UUID().uuidString,
-            name: location.name ?? location.getUniqueShortName(),
-            latitude: location.coord?.lat != nil
-                ? Double(location.coord!.lat) / 1000000.0 : nil,
-            longitude: location.coord?.lon != nil
-                ? Double(location.coord!.lon) / 1000000.0 : nil,
-            products: location.products ?? []
+            id: searchResult.id,
+            name: searchResult.name,
+            latitude: searchResult.latitude,
+            longitude: searchResult.longitude,
+            products: searchResult.products.map { transportType in
+                Product.fromName(transportType.name)
+            }
         )
 
         // Clear search results
-        suggestedLocations = []
+        searchResults = []
         showingSuggestedLocations = false
         isSearchFieldFocused = false
     }
 
     private func performSearch(query: String) async {
         if query.isEmpty {
-            suggestedLocations = []
+            searchResults = []
             isSearching = false
             return
         }
 
         isSearching = true
-        suggestedLocations = []
+        searchResults = []
 
-        let provider = BvgProvider(apiAuthorization: AppConfig.bvgApiAuthorization)
-        let (_, result) = await provider.suggestLocations(
-            constraint: query,
-            types: [.station]
-        )
-
-        switch result {
-        case .success(let locations):
-            suggestedLocations = locations
-        case .failure(let error):
-            print("Search error: \(error)")
-            suggestedLocations = []
-        }
-
+        let transportService = TransportService()
+        searchResults = await transportService.searchLocations(query: query)
         isSearching = false
     }
 }

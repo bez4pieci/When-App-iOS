@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		1325BE0A2DE9AC6E005151AC /* TripKit in Frameworks */ = {isa = PBXBuildFile; productRef = 1325BE092DE9AC6E005151AC /* TripKit */; };
-		1325BE0C2DE9AC77005151AC /* TripKit in Frameworks */ = {isa = PBXBuildFile; productRef = 1325BE0B2DE9AC77005151AC /* TripKit */; };
 		1325C0B52DEA613D005151AC /* ProductExstensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1325C0B42DEA613D005151AC /* ProductExstensions.swift */; };
 		1325C0B62DEA613D005151AC /* ProductExstensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1325C0B42DEA613D005151AC /* ProductExstensions.swift */; };
 		134693162DE4EDA900617A4D /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 134693152DE4EDA900617A4D /* WidgetKit.framework */; };
@@ -151,7 +150,6 @@
 				13BC3D512DE795A9009B1B7F /* FirebaseAnalyticsWithoutAdIdSupport in Frameworks */,
 				134693182DE4EDA900617A4D /* SwiftUI.framework in Frameworks */,
 				134693162DE4EDA900617A4D /* WidgetKit.framework in Frameworks */,
-				1325BE0C2DE9AC77005151AC /* TripKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -275,7 +273,6 @@
 			name = "When Widgets";
 			packageProductDependencies = (
 				13BC3D502DE795A9009B1B7F /* FirebaseAnalyticsWithoutAdIdSupport */,
-				1325BE0B2DE9AC77005151AC /* TripKit */,
 			);
 			productName = WhenWidgetExtension;
 			productReference = 134693132DE4EDA900617A4D /* When Widgets.appex */;
@@ -767,11 +764,6 @@
 
 /* Begin XCSwiftPackageProductDependency section */
 		1325BE092DE9AC6E005151AC /* TripKit */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 1325BE082DE9AC6E005151AC /* XCRemoteSwiftPackageReference "tripkit" */;
-			productName = TripKit;
-		};
-		1325BE0B2DE9AC77005151AC /* TripKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 1325BE082DE9AC6E005151AC /* XCRemoteSwiftPackageReference "tripkit" */;
 			productName = TripKit;

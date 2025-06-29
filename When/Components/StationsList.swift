@@ -1,18 +1,17 @@
 import SwiftData
 import SwiftUI
-import TripKit
 
 struct StationsList: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
 
-    let searchResults: [SuggestedLocation]
+    let searchResults: [SearchResult]
     let maxResults: Int?
-    let onSelect: ((Location) -> Void)?
+    let onSelect: ((SearchResult) -> Void)?
 
     init(
-        searchResults: [SuggestedLocation], maxResults: Int? = nil,
-        onSelect: ((Location) -> Void)? = nil
+        searchResults: [SearchResult], maxResults: Int? = nil,
+        onSelect: ((SearchResult) -> Void)? = nil
     ) {
         self.searchResults = searchResults
         self.maxResults = maxResults
@@ -24,8 +23,8 @@ struct StationsList: View {
             let results =
                 maxResults != nil ? Array(searchResults.prefix(maxResults!)) : searchResults
             ForEach(Array(results.enumerated()), id: \.offset) {
-                index, suggestedLocation in
-                stationRow(suggestedLocation.location)
+                index, searchResult in
+                stationRow(searchResult)
                 if index < results.count - 1 {
                     DefaultDivider()
                 }
@@ -33,24 +32,25 @@ struct StationsList: View {
         }
     }
 
-    private func stationRow(_ location: Location) -> some View {
+    private func stationRow(_ searchResult: SearchResult) -> some View {
         Button(action: {
             if let onSelect = onSelect {
-                onSelect(location)
+                onSelect(searchResult)
             }
         }) {
             HStack {
                 VStack(alignment: .leading, spacing: 4) {
-                    Text(location.getUniqueShortName())
+                    Text(searchResult.displayName)
                         .font(Font.dNormal)
                         .foregroundColor(Color.dDefault)
 
-                    if let products = location.products, !products.isEmpty {
+                    if !searchResult.products.isEmpty {
                         HStack(spacing: 4) {
-                            ForEach(Array(products.enumerated()), id: \.element) { index, product in
+                            ForEach(Array(searchResult.products.enumerated()), id: \.offset) {
+                                index, transportType in
                                 HStack(spacing: 0) {
-                                    Text(product.shortLabel)
-                                    if index < products.count - 1 {
+                                    Text(transportType.shortLabel)
+                                    if index < searchResult.products.count - 1 {
                                         Text(",")
                                     }
                                 }
