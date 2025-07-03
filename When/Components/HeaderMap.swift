@@ -281,7 +281,7 @@ extension HeaderMap {
             name: "S Südkreuz Bhf (Berlin)",
             latitude: 52.475501,
             longitude: 13.365548,
-            products: [.suburbanTrain, .bus, .regionalTrain, .highSpeedTrain],
+            products: [.suburban, .bus, .regional, .express],
         ),
         offset: 0
     )

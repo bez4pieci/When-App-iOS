@@ -7,9 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		1325BE0A2DE9AC6E005151AC /* TripKit in Frameworks */ = {isa = PBXBuildFile; productRef = 1325BE092DE9AC6E005151AC /* TripKit */; };
-		1325C0B52DEA613D005151AC /* ProductExstensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1325C0B42DEA613D005151AC /* ProductExstensions.swift */; };
-		1325C0B62DEA613D005151AC /* ProductExstensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1325C0B42DEA613D005151AC /* ProductExstensions.swift */; };
 		134693162DE4EDA900617A4D /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 134693152DE4EDA900617A4D /* WidgetKit.framework */; };
 		134693182DE4EDA900617A4D /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 134693172DE4EDA900617A4D /* SwiftUI.framework */; };
 		134693292DE4EDAA00617A4D /* When Widgets.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 134693132DE4EDA900617A4D /* When Widgets.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -20,6 +17,7 @@
 		134693D52DE5017B00617A4D /* DateExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 134693D32DE5017B00617A4D /* DateExtensions.swift */; };
 		134693D82DE502FB00617A4D /* DeparturesActivityAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 134693D62DE502FB00617A4D /* DeparturesActivityAttributes.swift */; };
 		134693D92DE502FB00617A4D /* DeparturesActivityAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 134693D62DE502FB00617A4D /* DeparturesActivityAttributes.swift */; };
+		139DBBC72E11BD94003207A0 /* FirebaseFunctions in Frameworks */ = {isa = PBXBuildFile; productRef = 139DBBC62E11BD94003207A0 /* FirebaseFunctions */; };
 		13ADDF0F2DE5A903000F9376 /* PhosphorSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 13ADDF0E2DE5A903000F9376 /* PhosphorSwift */; };
 		13B0FFDD2E080C5B00A358B3 /* MapBox.plist in Resources */ = {isa = PBXBuildFile; fileRef = 13B0FFDC2E080C5B00A358B3 /* MapBox.plist */; };
 		13B486AB2DFE279A00ECBA4F /* MapboxMaps in Frameworks */ = {isa = PBXBuildFile; productRef = 13B486AA2DFE279A00ECBA4F /* MapboxMaps */; };
@@ -62,7 +60,6 @@
 /* Begin PBXFileReference section */
 		1307F7782DE1F376009F0C4C /* When App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "When App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1325C01C2DE9D231005151AC /* WhenWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = WhenWidgetExtension.entitlements; sourceTree = "<group>"; };
-		1325C0B42DEA613D005151AC /* ProductExstensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductExstensions.swift; sourceTree = "<group>"; };
 		134693132DE4EDA900617A4D /* When Widgets.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "When Widgets.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
 		134693152DE4EDA900617A4D /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		134693172DE4EDA900617A4D /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
@@ -134,10 +131,10 @@
 				13B486AB2DFE279A00ECBA4F /* MapboxMaps in Frameworks */,
 				13B547362E0C4DCE003EDB02 /* FirebaseAnalytics in Frameworks */,
 				13BC3D462DE794E4009B1B7F /* FirebaseFirestore in Frameworks */,
+				139DBBC72E11BD94003207A0 /* FirebaseFunctions in Frameworks */,
 				13BC3D442DE794E4009B1B7F /* FirebaseCore in Frameworks */,
 				13ADDF0F2DE5A903000F9376 /* PhosphorSwift in Frameworks */,
 				13B547382E0C645F003EDB02 /* FirebaseCrashlytics in Frameworks */,
-				1325BE0A2DE9AC6E005151AC /* TripKit in Frameworks */,
 				13B486C62E05B91400ECBA4F /* Refresher in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -194,7 +191,6 @@
 			isa = PBXGroup;
 			children = (
 				13B486C12E01B4E300ECBA4F /* Binding+StringDouble.swift */,
-				1325C0B42DEA613D005151AC /* ProductExstensions.swift */,
 				134693D32DE5017B00617A4D /* DateExtensions.swift */,
 				134693CE2DE500DC00617A4D /* ViewExtensions.swift */,
 			);
@@ -245,11 +241,11 @@
 				13ADDF0E2DE5A903000F9376 /* PhosphorSwift */,
 				13BC3D432DE794E4009B1B7F /* FirebaseCore */,
 				13BC3D452DE794E4009B1B7F /* FirebaseFirestore */,
-				1325BE092DE9AC6E005151AC /* TripKit */,
 				13B486AA2DFE279A00ECBA4F /* MapboxMaps */,
 				13B486C52E05B91400ECBA4F /* Refresher */,
 				13B547352E0C4DCE003EDB02 /* FirebaseAnalytics */,
 				13B547372E0C645F003EDB02 /* FirebaseCrashlytics */,
+				139DBBC62E11BD94003207A0 /* FirebaseFunctions */,
 			);
 			productName = Departures;
 			productReference = 1307F7782DE1F376009F0C4C /* When App.app */;
@@ -308,7 +304,6 @@
 			packageReferences = (
 				13ADDF0D2DE5A903000F9376 /* XCRemoteSwiftPackageReference "swift" */,
 				13BC3D422DE794E4009B1B7F /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
-				1325BE082DE9AC6E005151AC /* XCRemoteSwiftPackageReference "tripkit" */,
 				13B486A92DFE279A00ECBA4F /* XCRemoteSwiftPackageReference "mapbox-maps-ios" */,
 				13B486C42E05B91400ECBA4F /* XCRemoteSwiftPackageReference "SwiftUI-Refresher" */,
 			);
@@ -378,7 +373,6 @@
 				134693D92DE502FB00617A4D /* DeparturesActivityAttributes.swift in Sources */,
 				134693D12DE500DC00617A4D /* ViewExtensions.swift in Sources */,
 				13B486C22E01B4E300ECBA4F /* Binding+StringDouble.swift in Sources */,
-				1325C0B52DEA613D005151AC /* ProductExstensions.swift in Sources */,
 				134693D42DE5017B00617A4D /* DateExtensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -391,7 +385,6 @@
 				134693D52DE5017B00617A4D /* DateExtensions.swift in Sources */,
 				134693D22DE500DC00617A4D /* ViewExtensions.swift in Sources */,
 				13B486C32E01B4E300ECBA4F /* Binding+StringDouble.swift in Sources */,
-				1325C0B62DEA613D005151AC /* ProductExstensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -720,14 +713,6 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		1325BE082DE9AC6E005151AC /* XCRemoteSwiftPackageReference "tripkit" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/alexander-albers/tripkit.git";
-			requirement = {
-				branch = main;
-				kind = branch;
-			};
-		};
 		13ADDF0D2DE5A903000F9376 /* XCRemoteSwiftPackageReference "swift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/phosphor-icons/swift";
@@ -763,10 +748,10 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		1325BE092DE9AC6E005151AC /* TripKit */ = {
+		139DBBC62E11BD94003207A0 /* FirebaseFunctions */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 1325BE082DE9AC6E005151AC /* XCRemoteSwiftPackageReference "tripkit" */;
-			productName = TripKit;
+			package = 13BC3D422DE794E4009B1B7F /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFunctions;
 		};
 		13ADDF0E2DE5A903000F9376 /* PhosphorSwift */ = {
 			isa = XCSwiftPackageProductDependency;

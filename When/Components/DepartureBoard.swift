@@ -4,7 +4,7 @@ import SwiftUI
 struct DepartureBoard: View {
     @EnvironmentObject private var liveActivityManager: LiveActivityManager
     let station: Station
-    let departures: [DepartureInfo]
+    let departures: [Departure]
 
     var body: some View {
         // Use VStack instead of LazyVStack for better performance
@@ -21,21 +21,21 @@ struct DepartureBoard: View {
 }
 
 private struct DepartureRow: View {
-    let departure: DepartureInfo
+    let departure: Departure
 
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
             HStack {
-                Text(departure.line.name ?? departure.line.label ?? "")
+                Text(departure.line.name)
                 Spacer()
                 Text(timeString)
                     .foregroundColor(timeColor)
             }
             .font(Font.dLarge)
-            .strikethrough(departure.cancelled)
+            .strikethrough(departure.isCancelled)
 
             HStack(spacing: 8) {
-                Text(destination)
+                Text(departure.destination)
                     .lineLimit(1)
                 Spacer()
                 if let predictedTime = departure.predictedTime,
@@ -51,19 +51,19 @@ private struct DepartureRow: View {
         }
         .padding(.horizontal, 20)
         .padding(.vertical, 16)
-        .opacity(departure.cancelled ? 0.25 : 1)
+        .opacity(departure.isCancelled ? 0.25 : 1)
     }
 
-    private var destination: String {
-        if let place = departure.destination.place,
-            let name = departure.destination.name,
-            place != "Berlin"
-        {
-            return "\(place), \(name)"
-        }
+    // private var destination: String {
+    //     if let place = departure.destination.place,
+    //         let name = departure.destination.name,
+    //         place != "Berlin"
+    //     {
+    //         return "\(place), \(name)"
+    //     }
 
-        return departure.destination.name ?? ""
-    }
+    //     return departure.destination.name ?? ""
+    // }
 
     private var timeString: String {
         if let predictedTime = departure.predictedTime {

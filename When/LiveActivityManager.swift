@@ -50,7 +50,7 @@ class LiveActivityManager: ObservableObject {
 
     func startLiveActivity(
         station: Station,
-        fetchDepartures: @escaping () async -> [DepartureInfo]
+        fetchDepartures: @escaping () async -> [Departure]
     ) async {
         guard ActivityAuthorizationInfo().areActivitiesEnabled else {
             print("Live Activity: Activities are not enabled")
@@ -66,7 +66,7 @@ class LiveActivityManager: ObservableObject {
 
     func startLiveActivity(
         station: Station,
-        departures: [DepartureInfo]
+        departures: [Departure]
     ) async {
         guard ActivityAuthorizationInfo().areActivitiesEnabled else {
             print("Live Activity: Activities are not enabled")
@@ -160,16 +160,16 @@ class LiveActivityManager: ObservableObject {
         }
     }
 
-    private func createContentState(from departures: [DepartureInfo])
+    private func createContentState(from departures: [Departure])
         -> DeparturesActivityAttributes.ContentState
     {
         let departureInfos = departures.prefix(4).map { departure in
             DeparturesActivityAttributes.ContentState.DepartureInfo(
-                lineLabel: departure.line.label ?? "",
-                destination: departure.destination.name ?? "",
+                lineLabel: departure.line.name,
+                destination: departure.destination,
                 plannedTime: departure.plannedTime,
                 predictedTime: departure.predictedTime,
-                isCancelled: departure.cancelled,
+                isCancelled: departure.isCancelled,
             )
         }
 

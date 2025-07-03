@@ -40,16 +40,16 @@ struct StationsList: View {
         }) {
             HStack {
                 VStack(alignment: .leading, spacing: 4) {
-                    Text(searchResult.displayName)
+                    Text(searchResult.name)
                         .font(Font.dNormal)
                         .foregroundColor(Color.dDefault)
 
                     if !searchResult.products.isEmpty {
                         HStack(spacing: 4) {
                             ForEach(Array(searchResult.products.enumerated()), id: \.offset) {
-                                index, transportType in
+                                index, product in
                                 HStack(spacing: 0) {
-                                    Text(transportType.shortLabel)
+                                    Text(product.displayName)
                                     if index < searchResult.products.count - 1 {
                                         Text(",")
                                     }

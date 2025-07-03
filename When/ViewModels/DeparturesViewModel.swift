@@ -4,7 +4,7 @@ import SwiftUI
 
 @Observable
 class DeparturesViewModel {
-    private var stationDepartures: [String: [DepartureInfo]] = [:]
+    private var stationDepartures: [String: [Departure]] = [:]
     private var loadingStations: Set<String> = []
     private var lastUpdates: [String: Date] = [:]
 
@@ -14,28 +14,16 @@ class DeparturesViewModel {
     init() {}
 
     // Get departures for a specific station
-    func departures(for station: Station) -> [DepartureInfo] {
+    func departures(for station: Station) -> [Departure] {
         return stationDepartures[station.id] ?? []
     }
 
     // Get filtered departures for a specific station
-    func filteredDepartures(for station: Station) -> [DepartureInfo] {
+    // TODO: REMOVE THIS
+    func filteredDepartures(for station: Station) -> [Departure] {
         let departures = self.departures(for: station)
 
-        return departures.filter { departure in
-            // Filter by cancelled status
-            if !station.showCancelledDepartures && departure.cancelled {
-                return false
-            }
-
-            // Filter by transport type
-            if let transportType = departure.line.transportType {
-                return station.isProductEnabled(transportType)
-            }
-
-            // If no product info, show by default
-            return true
-        }
+        return departures
     }
 
     // Check if a station is loading
@@ -72,8 +60,10 @@ class DeparturesViewModel {
             let lastUpdateTime =
                 lastUpdates[station.id]?.formatted(date: .omitted, time: .shortened) ?? "never"
             print(
-                "Departures: Skipping automatic refresh for \(station.name) - last update \(roundedTimeSinceLastUpdate) seconds ago (\(lastUpdateTime))"
-            )
+                """
+                Departures: Skipping automatic refresh for \(station.name) - \
+                last update \(roundedTimeSinceLastUpdate) seconds ago (\(lastUpdateTime))
+                """)
             return
         }
 
@@ -85,9 +75,12 @@ class DeparturesViewModel {
         loadingStations.insert(station.id)
         defer { loadingStations.remove(station.id) }
 
-        print("Departures: Loading departures for \(station.name)...")
-        print("Departures: Products: \(station.productStrings)")
-        print("Departures: Enabled products: \(station.enabledProductStrings)")
+        print(
+            """
+            Departures: Loading departures for \(station.name), \
+            enabled products: \(station.enabledProductStrings), \
+            showCancelledDepartures: \(station.showCancelledDepartures)
+            """)
 
         // Create a task to ensure minimum loading time
         async let minimumLoadingTime = Task {
@@ -98,7 +91,8 @@ class DeparturesViewModel {
         let transportService = TransportService()
         async let departuresTask = transportService.queryDepartures(
             stationId: station.id,
-            maxDepartures: 40  // Larger number to allow for filtering
+            products: Array(station.enabledProducts),
+            showCancelledDepartures: station.showCancelledDepartures
         )
 
         // Wait for both the API call and minimum loading time to complete

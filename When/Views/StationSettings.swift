@@ -217,11 +217,11 @@ private struct StationSettingsContentView: View {
         VStack(spacing: 0) {
             DefaultDivider()
             VStack(spacing: 12) {
-                ForEach(TransportType.allCases, id: \.self) { transportType in
-                    if temporarySelectedStation?.hasProduct(transportType) ?? true {
+                ForEach(Product.allCases, id: \.self) { product in
+                    if temporarySelectedStation?.hasProduct(product) ?? true {
                         transportToggle(
-                            transportType: transportType,
-                            label: transportType.label,
+                            product: product,
+                            label: product.displayName,
                             forceEnable: temporarySelectedStation?.products.count ?? 0 < 2
                         )
                     }
@@ -233,7 +233,7 @@ private struct StationSettingsContentView: View {
     }
 
     private func transportToggle(
-        transportType: TransportType, label: String, forceEnable: Bool = false
+        product: Product, label: String, forceEnable: Bool = false
     )
         -> some View
     {
@@ -245,8 +245,8 @@ private struct StationSettingsContentView: View {
             Toggle(
                 "",
                 isOn: Binding(
-                    get: { temporarySelectedStation?.isProductEnabled(transportType) ?? false },
-                    set: { _ in temporarySelectedStation?.toggleProduct(transportType) }
+                    get: { temporarySelectedStation?.isProductEnabled(product) ?? false },
+                    set: { _ in temporarySelectedStation?.toggleProduct(product) }
                 )
             )
             .labelsHidden()
@@ -255,7 +255,7 @@ private struct StationSettingsContentView: View {
         }
         .onAppear {
             if forceEnable {
-                temporarySelectedStation?.setProduct(transportType, enabled: true)
+                temporarySelectedStation?.setProduct(product, enabled: true)
             }
         }
     }
@@ -315,7 +315,7 @@ private struct StationSettingsContentView: View {
         // Store the selection temporarily
         temporarySelectedStation = Station(
             id: searchResult.id,
-            name: !searchResult.name.isEmpty ? searchResult.name : searchResult.displayName,
+            name: searchResult.name,
             latitude: searchResult.latitude,
             longitude: searchResult.longitude,
             products: searchResult.products
