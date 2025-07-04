@@ -113,8 +113,15 @@ struct MainView: View {
 
     private func onStationChanged(oldStation: Station, newStation: Station) {
         // Stop live activity for the old station
+        // TODO: Stop activity only if the station is not the current one
+        //       Otherwise, update the activity with new station data
         Task {
             await liveActivityManager.stopLiveActivity(for: oldStation.id)
+        }
+
+        // Load departures for the new station
+        Task {
+            await departuresViewModel.loadDepartures(for: newStation)
         }
     }
 
