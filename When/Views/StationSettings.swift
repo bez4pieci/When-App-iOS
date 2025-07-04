@@ -172,7 +172,7 @@ private struct StationSettingsContentView: View {
 
                             if searchResults.count > 0 {
                                 DefaultDivider()
-                                StationsList(
+                                StationSearchResultsView(
                                     searchResults: searchResults,
                                     maxResults: 5,
                                     onSelect: { searchResult in

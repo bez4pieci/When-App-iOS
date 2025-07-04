@@ -1,7 +1,7 @@
 import SwiftData
 import SwiftUI
 
-struct StationsList: View {
+struct StationSearchResultsView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
 
