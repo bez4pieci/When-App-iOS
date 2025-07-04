@@ -61,7 +61,7 @@ struct StationSearchField: View {
         .padding(.vertical, 32)
         .background(Color.white)
         .onAppear {
-            searchText = selectedStation?.name.name ?? ""
+            searchText = selectedStation?.name.forDisplay ?? ""
         }
         .onChange(of: selectedStation) { _, newStation in
             if let station = newStation {

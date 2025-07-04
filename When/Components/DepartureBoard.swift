@@ -35,9 +35,7 @@ private struct DepartureRow: View {
             .strikethrough(departure.isCancelled)
 
             HStack(spacing: 8) {
-                Text(departure.destination.name).lineLimit(1)
-                Text(departure.destination.extraShortName ?? "")
-                    .foregroundColor(Color.dLight)
+                Text(departure.destination.forDisplay).lineLimit(1)
 
                 Spacer()
 

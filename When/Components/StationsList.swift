@@ -40,13 +40,9 @@ struct StationsList: View {
         }) {
             HStack {
                 VStack(alignment: .leading, spacing: 4) {
-                    HStack(spacing: 8) {
-                        Text(searchResult.stationName.name)
-                            .foregroundColor(Color.dDefault)
-                        Text(searchResult.stationName.extraShortName ?? "")
-                            .foregroundColor(Color.dLight)
-                    }
-                    .font(Font.dNormal)
+                    Text(searchResult.stationName.forDisplay)
+                        .font(Font.dNormal)
+                        .foregroundColor(Color.dDefault)
 
                     if !searchResult.products.isEmpty {
                         HStack(spacing: 16) {

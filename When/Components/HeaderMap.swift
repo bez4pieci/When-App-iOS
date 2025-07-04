@@ -249,7 +249,7 @@ extension HeaderMap {
             let swiftUIView = VStack(spacing: 4) {
                 Ph.mapPinSimple.regular
                     .frame(width: 24, height: 24)
-                Text(station.name.name)
+                Text(station.name.forDisplay)
                     .font(Font.dSmall)
                 Spacer()
             }
