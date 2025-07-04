@@ -35,7 +35,7 @@ class TransportService {
 
     init() {
         // Enable for testing
-        self.functions.useEmulator(withHost: "localhost", port: 5001)
+        //self.functions.useEmulator(withHost: "localhost", port: 5001)
     }
 
     // MARK: - Location Search
