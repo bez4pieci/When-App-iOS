@@ -22,10 +22,9 @@ struct StationSearchResultsView: View {
         LazyVStack(spacing: 0) {
             let results =
                 maxResults != nil ? Array(searchResults.prefix(maxResults!)) : searchResults
-            ForEach(Array(results.enumerated()), id: \.offset) {
-                index, searchResult in
+            ForEach(results, id: \.id) { searchResult in
                 stationRow(searchResult)
-                if index < results.count - 1 {
+                if searchResult.id != results.last?.id {
                     DefaultDivider()
                 }
             }
