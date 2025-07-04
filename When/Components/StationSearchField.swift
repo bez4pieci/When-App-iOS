@@ -67,7 +67,7 @@ struct StationSearchField: View {
             if let station = newStation {
                 isSearchFieldFocused = false
                 Task {
-                    searchText = station.name.name
+                    searchText = station.name.forDisplay
                 }
             }
         }
