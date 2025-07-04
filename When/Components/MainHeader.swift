@@ -135,7 +135,7 @@ struct MainHeader: View {
             Task {
                 await liveActivityManager.startLiveActivity(station: station) {
                     await departuresViewModel.loadDepartures(for: station)
-                    return departuresViewModel.filteredDepartures(for: station)
+                    return departuresViewModel.departures(for: station)
                 }
             }
         }

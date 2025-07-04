@@ -30,7 +30,7 @@ struct StationTab: View {
                         VStack(spacing: 0) {
                             DepartureBoard(
                                 station: station,
-                                departures: departuresViewModel.filteredDepartures(for: station)
+                                departures: departuresViewModel.departures(for: station)
                             )
                         }
                         .background(Color.dBackground)

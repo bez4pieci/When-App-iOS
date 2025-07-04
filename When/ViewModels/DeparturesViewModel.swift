@@ -18,14 +18,6 @@ class DeparturesViewModel {
         return stationDepartures[station.id] ?? []
     }
 
-    // Get filtered departures for a specific station
-    // TODO: REMOVE THIS
-    func filteredDepartures(for station: Station) -> [Departure] {
-        let departures = self.departures(for: station)
-
-        return departures
-    }
-
     // Check if a station is loading
     func isLoading(for station: Station) -> Bool {
         return loadingStations.contains(station.id)
