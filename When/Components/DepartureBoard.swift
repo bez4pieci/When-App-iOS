@@ -9,7 +9,7 @@ struct DepartureBoard: View {
     var body: some View {
         // Use VStack instead of LazyVStack for better performance
         VStack(spacing: 0) {
-            ForEach(departures, id: \.id) { departure in
+            ForEach(departures, id: \.hashValue) { departure in
                 DepartureRow(departure: departure)
 
                 if departure != departures.last {
@@ -35,9 +35,12 @@ private struct DepartureRow: View {
             .strikethrough(departure.isCancelled)
 
             HStack(spacing: 8) {
-                Text(departure.destination)
-                    .lineLimit(1)
+                Text(departure.destination.name).lineLimit(1)
+                Text(departure.destination.extraShortName ?? "")
+                    .foregroundColor(Color.dLight)
+
                 Spacer()
+
                 if let predictedTime = departure.predictedTime,
                     predictedTime > departure.plannedTime
                 {
@@ -53,17 +56,6 @@ private struct DepartureRow: View {
         .padding(.vertical, 16)
         .opacity(departure.isCancelled ? 0.25 : 1)
     }
-
-    // private var destination: String {
-    //     if let place = departure.destination.place,
-    //         let name = departure.destination.name,
-    //         place != "Berlin"
-    //     {
-    //         return "\(place), \(name)"
-    //     }
-
-    //     return departure.destination.name ?? ""
-    // }
 
     private var timeString: String {
         if let predictedTime = departure.predictedTime {

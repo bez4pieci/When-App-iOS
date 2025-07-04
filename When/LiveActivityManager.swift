@@ -95,7 +95,7 @@ class LiveActivityManager: ObservableObject {
         do {
             activity = try Activity<DeparturesActivityAttributes>.request(
                 attributes: DeparturesActivityAttributes(
-                    stationName: station.name,
+                    stationName: station.name.name,
                     stationId: station.id
                 ),
                 content: .init(state: contentState, staleDate: Date().addingTimeInterval(60)),

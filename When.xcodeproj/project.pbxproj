@@ -31,6 +31,10 @@
 		13BC3D512DE795A9009B1B7F /* FirebaseAnalyticsWithoutAdIdSupport in Frameworks */ = {isa = PBXBuildFile; productRef = 13BC3D502DE795A9009B1B7F /* FirebaseAnalyticsWithoutAdIdSupport */; };
 		13BC3D522DE7987A009B1B7F /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 13BC3D472DE79519009B1B7F /* GoogleService-Info.plist */; };
 		13BC3D532DE7987A009B1B7F /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 13BC3D472DE79519009B1B7F /* GoogleService-Info.plist */; };
+		13D229AA2E18047E004EA45A /* Product.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13D229A92E18047E004EA45A /* Product.swift */; };
+		13D229AB2E18047E004EA45A /* Departures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13D229A82E18047E004EA45A /* Departures.swift */; };
+		13D229AC2E18047E004EA45A /* Product.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13D229A92E18047E004EA45A /* Product.swift */; };
+		13D229AD2E18047E004EA45A /* Departures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13D229A82E18047E004EA45A /* Departures.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -70,6 +74,8 @@
 		13B0FFDC2E080C5B00A358B3 /* MapBox.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = MapBox.plist; sourceTree = "<group>"; };
 		13B486C12E01B4E300ECBA4F /* Binding+StringDouble.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Binding+StringDouble.swift"; sourceTree = "<group>"; };
 		13BC3D472DE79519009B1B7F /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		13D229A82E18047E004EA45A /* Departures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Departures.swift; sourceTree = "<group>"; };
+		13D229A92E18047E004EA45A /* Product.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Product.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -209,6 +215,8 @@
 		134693D72DE502FB00617A4D /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				13D229A82E18047E004EA45A /* Departures.swift */,
+				13D229A92E18047E004EA45A /* Product.swift */,
 				134693D62DE502FB00617A4D /* DeparturesActivityAttributes.swift */,
 			);
 			path = Models;
@@ -371,6 +379,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				134693D92DE502FB00617A4D /* DeparturesActivityAttributes.swift in Sources */,
+				13D229AA2E18047E004EA45A /* Product.swift in Sources */,
+				13D229AB2E18047E004EA45A /* Departures.swift in Sources */,
 				134693D12DE500DC00617A4D /* ViewExtensions.swift in Sources */,
 				13B486C22E01B4E300ECBA4F /* Binding+StringDouble.swift in Sources */,
 				134693D42DE5017B00617A4D /* DateExtensions.swift in Sources */,
@@ -384,6 +394,8 @@
 				134693D82DE502FB00617A4D /* DeparturesActivityAttributes.swift in Sources */,
 				134693D52DE5017B00617A4D /* DateExtensions.swift in Sources */,
 				134693D22DE500DC00617A4D /* ViewExtensions.swift in Sources */,
+				13D229AC2E18047E004EA45A /* Product.swift in Sources */,
+				13D229AD2E18047E004EA45A /* Departures.swift in Sources */,
 				13B486C32E01B4E300ECBA4F /* Binding+StringDouble.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -553,7 +565,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1;
+				MARKETING_VERSION = 1.2;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.bez4pieci.When;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -600,7 +612,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1;
+				MARKETING_VERSION = 1.2;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.bez4pieci.When;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -634,7 +646,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.1;
+				MARKETING_VERSION = 1.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.bez4pieci.When.WhenWidget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -667,7 +679,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.1;
+				MARKETING_VERSION = 1.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.bez4pieci.When.WhenWidget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;

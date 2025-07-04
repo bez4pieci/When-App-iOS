@@ -40,24 +40,23 @@ struct StationsList: View {
         }) {
             HStack {
                 VStack(alignment: .leading, spacing: 4) {
-                    Text(searchResult.name)
-                        .font(Font.dNormal)
-                        .foregroundColor(Color.dDefault)
+                    HStack(spacing: 8) {
+                        Text(searchResult.stationName.name)
+                            .foregroundColor(Color.dDefault)
+                        Text(searchResult.stationName.extraShortName ?? "")
+                            .foregroundColor(Color.dLight)
+                    }
+                    .font(Font.dNormal)
 
                     if !searchResult.products.isEmpty {
-                        HStack(spacing: 4) {
+                        HStack(spacing: 16) {
                             ForEach(Array(searchResult.products.enumerated()), id: \.offset) {
                                 index, product in
-                                HStack(spacing: 0) {
-                                    Text(product.displayName)
-                                    if index < searchResult.products.count - 1 {
-                                        Text(",")
-                                    }
-                                }
-                                .font(Font.dSmall)
-                                .foregroundColor(Color.dLight)
+                                Text(product.shortName)
                             }
                         }
+                        .font(Font.dSmall)
+                        .foregroundColor(Color.dLight)
                     }
                 }
                 Spacer()

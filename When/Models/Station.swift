@@ -4,7 +4,7 @@ import SwiftData
 @Model
 final class Station {
     @Attribute(.unique) var id: String
-    var name: String
+    var name: StationName
     var latitude: Double?
     var longitude: Double?
     var selectedAt: Date
@@ -37,7 +37,7 @@ final class Station {
     }
 
     init(
-        id: String, name: String, latitude: Double? = nil, longitude: Double? = nil,
+        id: String, name: StationName, latitude: Double? = nil, longitude: Double? = nil,
         products: [Product] = []
     ) {
         self.id = id
@@ -54,7 +54,7 @@ final class Station {
 
     init(from: Station) {
         self.id = ""
-        self.name = ""
+        self.name = StationName(name: "")
         self.latitude = nil
         self.longitude = nil
         self.selectedAt = Date()

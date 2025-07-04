@@ -23,7 +23,7 @@ struct HeaderMap: UIViewRepresentable {
     }
 
     private var markerLabel: String {
-        station?.name ?? "S+U Alexanderplatz"
+        station?.name.name ?? "S+U Alexanderplatz"
     }
 
     init(station: Station?, offset: Double) {
@@ -249,7 +249,7 @@ extension HeaderMap {
             let swiftUIView = VStack(spacing: 4) {
                 Ph.mapPinSimple.regular
                     .frame(width: 24, height: 24)
-                Text(station.name)
+                Text(station.name.name)
                     .font(Font.dSmall)
                 Spacer()
             }
@@ -278,7 +278,7 @@ extension HeaderMap {
     HeaderMap(
         station: Station(
             id: "900058101",
-            name: "S Südkreuz Bhf (Berlin)",
+            name: StationName(name: "S Südkreuz", extraPlace: "Berlin"),
             latitude: 52.475501,
             longitude: 13.365548,
             products: [.suburban, .bus, .regional, .express],

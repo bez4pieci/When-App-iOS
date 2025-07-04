@@ -90,7 +90,11 @@ struct StationSettingsView: View {
 
             // Important to save, otherwise station is first added to the beginning of the list,
             // but then, after a few seconds, when the autosave triggers, the order is changed.
-            try? modelContext.save()
+            do {
+                try modelContext.save()
+            } catch {
+                print("Error saving modelContext: \(error)")
+            }
 
             Analytics.logEvent(
                 "add_station",
@@ -315,7 +319,7 @@ private struct StationSettingsContentView: View {
         // Store the selection temporarily
         temporarySelectedStation = Station(
             id: searchResult.id,
-            name: searchResult.name,
+            name: searchResult.stationName,
             latitude: searchResult.latitude,
             longitude: searchResult.longitude,
             products: searchResult.products

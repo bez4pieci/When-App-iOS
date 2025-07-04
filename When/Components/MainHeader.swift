@@ -146,7 +146,7 @@ struct MainHeader: View {
     MainHeader(
         station: Station(
             id: "900058101",
-            name: "S Südkreuz Bhf (Berlin)",
+            name: StationName(name: "S Südkreuz", extraPlace: "Berlin"),
             latitude: 52.475501,
             longitude: 13.365548,
             products: [.suburban, .bus, .regional, .express],

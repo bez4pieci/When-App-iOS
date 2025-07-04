@@ -2,57 +2,9 @@ import FirebaseFunctions
 import Foundation
 
 // MARK: - Custom Types
-
-enum Product: String, CaseIterable, Codable {
-    case suburban
-    case subway
-    case tram
-    case bus
-    case ferry
-    case regional
-    case express
-
-    var name: String { self.rawValue }
-
-    var displayName: String {
-        switch self {
-        case .suburban: return "S-Bahn"
-        case .subway: return "U-Bahn"
-        case .tram: return "Tram"
-        case .bus: return "Bus"
-        case .ferry: return "Ferry"
-        case .regional: return "Regional"
-        case .express: return "Express"
-        }
-    }
-}
-
-struct Line: Decodable {
-    let name: String
-    let productName: String
-    let product: Product
-}
-
-struct Departure: Decodable, Hashable {
-    let id: String
-    let plannedTime: Date
-    let predictedTime: Date?
-    let line: Line
-    let destination: String
-    let isCancelled: Bool
-
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(id)
-    }
-
-    static func == (lhs: Departure, rhs: Departure) -> Bool {
-        return lhs.id == rhs.id
-    }
-}
-
 struct SearchResult: Decodable {
     let id: String
-    let name: String
+    let stationName: StationName
     let latitude: Double?
     let longitude: Double?
     let products: [Product]
@@ -83,7 +35,7 @@ class TransportService {
 
     init() {
         // Enable for testing
-        //self.functions.useEmulator(withHost: "localhost", port: 5001)
+        self.functions.useEmulator(withHost: "localhost", port: 5001)
     }
 
     // MARK: - Location Search

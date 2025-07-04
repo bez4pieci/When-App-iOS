@@ -61,13 +61,13 @@ struct StationSearchField: View {
         .padding(.vertical, 32)
         .background(Color.white)
         .onAppear {
-            searchText = selectedStation?.name ?? ""
+            searchText = selectedStation?.name.name ?? ""
         }
         .onChange(of: selectedStation) { _, newStation in
             if let station = newStation {
                 isSearchFieldFocused = false
                 Task {
-                    searchText = station.name
+                    searchText = station.name.name
                 }
             }
         }
