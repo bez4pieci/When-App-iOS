@@ -2,6 +2,7 @@ import ActivityKit
 import FirebaseFirestore
 import Foundation
 
+// TODO: Refactor to @Observable
 class LiveActivityManager: ObservableObject {
     enum LiveActivityStatus {
         case inactive
