@@ -9,10 +9,7 @@ struct DepartureBoard: View {
     var body: some View {
         // Use VStack instead of LazyVStack for better performance
         VStack(spacing: 0) {
-            // Use hashValue, despite the fact that Departure is identifyable,
-            // so that the view is re-rendered when a departure is updated,
-            // e.g., delayed or cancelled.
-            ForEach(departures, id: \.hashValue) { departure in
+            ForEach(departures) { departure in
                 DepartureRow(departure: departure)
 
                 if departure != departures.last {

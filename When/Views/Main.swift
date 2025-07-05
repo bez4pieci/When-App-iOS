@@ -11,7 +11,7 @@ struct MainView: View {
     @State private var showStationSelection = false
     @State private var currentTabIndex = 0
     @State private var scrollOffsets: [String: Double] = [:]
-    @StateObject private var departuresViewModel = DeparturesViewModel()
+    @State private var departuresViewModel = DeparturesViewModel()
 
     private var currentStation: Station? {
         guard !stations.isEmpty && currentTabIndex < stations.count else { return nil }
