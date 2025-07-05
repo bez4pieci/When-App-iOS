@@ -5,22 +5,14 @@ import SwiftUI
 @Observable
 class DeparturesViewModel {
     private var stationDepartures: [String: [Departure]] = [:]
-    private var loadingStations: Set<String> = []
     private var lastUpdates: [String: Date] = [:]
 
     // Throttling configuration
     private let automaticRefreshThrottleInterval: TimeInterval = 30.0  // 30 seconds
 
-    init() {}
-
     // Get departures for a specific station
     func departures(for station: Station) -> [Departure] {
         return stationDepartures[station.id] ?? []
-    }
-
-    // Check if a station is loading
-    func isLoading(for station: Station) -> Bool {
-        return loadingStations.contains(station.id)
     }
 
     // Get last update time for a station
@@ -64,9 +56,6 @@ class DeparturesViewModel {
 
     // Private method that performs the actual loading
     private func load(for station: Station) async {
-        loadingStations.insert(station.id)
-        defer { loadingStations.remove(station.id) }
-
         print(
             """
             Departures: Loading departures for \(station.name), \
@@ -98,6 +87,5 @@ class DeparturesViewModel {
     func delete(for station: Station) {
         stationDepartures.removeValue(forKey: station.id)
         lastUpdates.removeValue(forKey: station.id)
-        loadingStations.remove(station.id)
     }
 }
