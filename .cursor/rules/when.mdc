@@ -10,7 +10,7 @@ You are helping me build a iOS app for showing public transport departures from 
 
 Code structure:
     - `/When` - main application target
-    - `/WhenWiget` - widget target, only for lock screen live activity. 
+    - `/WhenWidget` - widget target, only for lock screen live activity. 
     - `/Shared` - code shared by both main and widget targets
 
 Application guidelines:
