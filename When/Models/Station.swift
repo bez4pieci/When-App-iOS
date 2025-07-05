@@ -1,11 +1,10 @@
 import Foundation
 import SwiftData
-import TripKit
 
 @Model
 final class Station {
     @Attribute(.unique) var id: String
-    var name: String
+    var name: StationName
     var latitude: Double?
     var longitude: Double?
     var selectedAt: Date
@@ -38,7 +37,7 @@ final class Station {
     }
 
     init(
-        id: String, name: String, latitude: Double? = nil, longitude: Double? = nil,
+        id: String, name: StationName, latitude: Double? = nil, longitude: Double? = nil,
         products: [Product] = []
     ) {
         self.id = id
@@ -55,7 +54,7 @@ final class Station {
 
     init(from: Station) {
         self.id = ""
-        self.name = ""
+        self.name = StationName(clean: "")
         self.latitude = nil
         self.longitude = nil
         self.selectedAt = Date()
@@ -68,6 +67,7 @@ final class Station {
         self.name = from.name
         self.latitude = from.latitude
         self.longitude = from.longitude
+        self.productStrings = from.productStrings
 
         self.showCancelledDepartures = from.showCancelledDepartures
         self.enabledProductStrings = from.enabledProductStrings
@@ -79,22 +79,18 @@ final class Station {
         }
     }
 
-    // Helper computed property to convert stored strings back to Product enums
     var products: [Product] {
-        productStrings.compactMap { Product.fromName($0) }
+        productStrings.compactMap { Product(rawValue: $0) }
     }
 
-    // Helper method to check if a specific product is available at this station
     func hasProduct(_ product: Product) -> Bool {
         productStrings.contains(product.name)
     }
 
-    // Helper computed property for enabled products
     var enabledProducts: Set<Product> {
-        Set(enabledProductStrings.compactMap { Product.fromName($0) })
+        Set(enabledProductStrings.compactMap { Product(rawValue: $0) })
     }
 
-    // Helper methods for settings management
     func isProductEnabled(_ product: Product) -> Bool {
         enabledProductStrings.contains(product.name)
     }

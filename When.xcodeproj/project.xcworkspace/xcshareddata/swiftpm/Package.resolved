@@ -1,5 +1,5 @@
 {
-  "originHash" : "af506933282c5b857d3d04a1de41a73cbddbcb9c87f837fc310706a2560d5f88",
+  "originHash" : "c977dd94c8db5dd96890a8e6b6ed88817f06766934413b1594f9b64771a98990",
   "pins" : [
     {
       "identity" : "abseil-cpp-binary",
@@ -80,15 +80,6 @@
       "state" : {
         "revision" : "c756a29784521063b6a1202907e2cc47f41b667c",
         "version" : "4.5.0"
-      }
-    },
-    {
-      "identity" : "gzipswift",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/1024jp/GzipSwift",
-      "state" : {
-        "revision" : "7a7f17761c76a932662ab77028a4329f67d645a4",
-        "version" : "5.2.0"
       }
     },
     {
@@ -197,33 +188,6 @@
       "state" : {
         "revision" : "11ca0d472dad0053cb8b29701ea3f108b9aa2304",
         "version" : "1.0.2"
-      }
-    },
-    {
-      "identity" : "swiftyjson",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/SwiftyJSON/SwiftyJSON",
-      "state" : {
-        "revision" : "af76cf3ef710b6ca5f8c05f3a31307d44a3c5828",
-        "version" : "5.0.2"
-      }
-    },
-    {
-      "identity" : "swxmlhash",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/drmohundro/SWXMLHash",
-      "state" : {
-        "revision" : "a853604c9e9a83ad9954c7e3d2a565273982471f",
-        "version" : "7.0.2"
-      }
-    },
-    {
-      "identity" : "tripkit",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/alexander-albers/tripkit.git",
-      "state" : {
-        "branch" : "main",
-        "revision" : "f650396e6e18774b9078cdfcaebbf0f4dab3c24a"
       }
     },
     {

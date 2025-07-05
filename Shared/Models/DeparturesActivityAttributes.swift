@@ -9,7 +9,7 @@ struct DeparturesActivityAttributes: ActivityAttributes {
 
         struct DepartureInfo: Codable, Hashable {
             let lineLabel: String
-            let destination: String
+            let destination: StationName
             let plannedTime: Date
             let predictedTime: Date?
             let isCancelled: Bool

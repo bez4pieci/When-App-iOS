@@ -6,6 +6,8 @@ enum AppConfig {
         "aid": "dVg4TZbW8anjx9ztPwe2uk4LVRi9wO",
     ]
 
+    static let firebaseFunctionsRegion = "europe-west1"
+
     static let cornerRadius: CGFloat = 24.0
     static let headerHeight: CGFloat = 240.0
 

@@ -19,6 +19,13 @@ struct DeparturesApp: App {
     @StateObject private var liveActivityManager = LiveActivityManager()
     var appSettings = AppSettings()
 
+    // Use a new SQLite file for Station to avoid migration issues
+    let sharedModelContainer: ModelContainer = {
+        let url = URL.documentsDirectory.appending(path: "V3.sqlite")
+        let config = ModelConfiguration(url: url)
+        return try! ModelContainer(for: Station.self, configurations: config)
+    }()
+
     var body: some Scene {
         WindowGroup {
             MainView()
@@ -29,7 +36,7 @@ struct DeparturesApp: App {
                     liveActivityManager.stopAllActivities()
                 }
         }
-        .modelContainer(for: Station.self)
+        .modelContainer(sharedModelContainer)
     }
 }
 
@@ -43,10 +50,10 @@ struct DeparturesApp: App {
     container.mainContext.insert(
         Station(
             id: "900058101",
-            name: "S Südkreuz Bhf (Berlin)",
+            name: StationName(clean: "S Südkreuz", place: "Berlin"),
             latitude: 52.475501,
             longitude: 13.365548,
-            products: [.suburbanTrain, .bus, .regionalTrain, .highSpeedTrain],
+            products: [.suburban, .bus, .regional, .express],
         ))
 
     return MainView()

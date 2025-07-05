@@ -2,7 +2,6 @@ import FirebaseAnalytics
 import PhosphorSwift
 import SwiftData
 import SwiftUI
-import TripKit
 
 struct StationSettingsView: View {
     @Environment(\.dismiss) private var dismiss
@@ -26,7 +25,7 @@ struct StationSettingsView: View {
                 parameters: [
                     AnalyticsParameterScreenName: "station_settings",
                     AnalyticsParameterScreenClass: "StationSettings",
-                    "station_name": station?.name ?? "none",
+                    "station_name": station?.name.forTracking ?? "none",
                 ])
         }
     }
@@ -37,7 +36,7 @@ struct StationSettingsView: View {
             parameters: [
                 AnalyticsParameterScreenName: "station_settings",
                 AnalyticsParameterScreenClass: "StationSettings",
-                "station_name": station?.name ?? "none",
+                "station_name": station?.name.forTracking ?? "none",
             ])
 
         dismiss()
@@ -51,7 +50,7 @@ struct StationSettingsView: View {
             parameters: [
                 AnalyticsParameterScreenName: "station_settings",
                 AnalyticsParameterScreenClass: "StationSettings",
-                "station_name": station.name,
+                "station_name": station.name.forTracking,
                 "show_cancelled_departures": station.showCancelledDepartures.description,
                 "products": station.productStringsData,
                 "enabled_products": station.enabledProductStringsData,
@@ -73,11 +72,11 @@ struct StationSettingsView: View {
                 parameters: [
                     AnalyticsParameterScreenName: "station_settings",
                     AnalyticsParameterScreenClass: "StationSettings",
-                    "old_station_name": oldStation.name,
+                    "old_station_name": oldStation.name.forTracking,
                     "old_show_cancelled_departures": oldStation.showCancelledDepartures,
                     "old_products": oldStation.productStringsData,
                     "old_enabled_products": oldStation.enabledProductStringsData,
-                    "station_name": changedStation.name,
+                    "station_name": changedStation.name.forTracking,
                     "show_cancelled_departures": changedStation.showCancelledDepartures.description,
                     "products": changedStation.productStringsData,
                     "enabled_products": changedStation.enabledProductStringsData,
@@ -91,14 +90,18 @@ struct StationSettingsView: View {
 
             // Important to save, otherwise station is first added to the beginning of the list,
             // but then, after a few seconds, when the autosave triggers, the order is changed.
-            try? modelContext.save()
+            do {
+                try modelContext.save()
+            } catch {
+                print("Error saving modelContext: \(error)")
+            }
 
             Analytics.logEvent(
                 "add_station",
                 parameters: [
                     AnalyticsParameterScreenName: "station_settings",
                     AnalyticsParameterScreenClass: "StationSettings",
-                    "station_name": changedStation.name,
+                    "station_name": changedStation.name.forTracking,
                     "show_cancelled_departures": changedStation.showCancelledDepartures,
                     "products": changedStation.productStringsData,
                     "enabled_products": changedStation.enabledProductStringsData,
@@ -115,7 +118,7 @@ private struct StationSettingsContentView: View {
     let onDelete: ((Station) -> Void)?
     let wasInitialisedWithAStation: Bool
 
-    @State private var suggestedLocations: [SuggestedLocation] = []
+    @State private var searchResults: [SearchResult] = []
     @State private var showingSuggestedLocations = false
     @State private var isSearching = false
     @FocusState private var isSearchFieldFocused
@@ -167,13 +170,13 @@ private struct StationSettingsContentView: View {
                                 .background(Color.white)
                             }
 
-                            if suggestedLocations.count > 0 {
+                            if searchResults.count > 0 {
                                 DefaultDivider()
-                                StationsList(
-                                    searchResults: suggestedLocations,
+                                StationSearchResultsView(
+                                    searchResults: searchResults,
                                     maxResults: 5,
-                                    onSelect: { location in
-                                        setStation(location)
+                                    onSelect: { searchResult in
+                                        setStation(searchResult)
                                     }
                                 )
                             }
@@ -218,13 +221,11 @@ private struct StationSettingsContentView: View {
         VStack(spacing: 0) {
             DefaultDivider()
             VStack(spacing: 12) {
-                // TODO: use allCases for Settings, so that we don't depend here on TripKit.
-                //       TripKit might change products, and our settings will break.
                 ForEach(Product.allCases, id: \.self) { product in
                     if temporarySelectedStation?.hasProduct(product) ?? true {
                         transportToggle(
                             product: product,
-                            label: product.label,
+                            label: product.displayName,
                             forceEnable: temporarySelectedStation?.products.count ?? 0 < 2
                         )
                     }
@@ -235,7 +236,9 @@ private struct StationSettingsContentView: View {
         }
     }
 
-    private func transportToggle(product: Product, label: String, forceEnable: Bool = false)
+    private func transportToggle(
+        product: Product, label: String, forceEnable: Bool = false
+    )
         -> some View
     {
         HStack {
@@ -312,48 +315,34 @@ private struct StationSettingsContentView: View {
         }
     }
 
-    private func setStation(_ location: Location) {
+    private func setStation(_ searchResult: SearchResult) {
         // Store the selection temporarily
         temporarySelectedStation = Station(
-            id: location.id ?? UUID().uuidString,
-            name: location.name ?? location.getUniqueShortName(),
-            latitude: location.coord?.lat != nil
-                ? Double(location.coord!.lat) / 1000000.0 : nil,
-            longitude: location.coord?.lon != nil
-                ? Double(location.coord!.lon) / 1000000.0 : nil,
-            products: location.products ?? []
+            id: searchResult.id,
+            name: searchResult.stationName,
+            latitude: searchResult.latitude,
+            longitude: searchResult.longitude,
+            products: searchResult.products
         )
 
         // Clear search results
-        suggestedLocations = []
+        searchResults = []
         showingSuggestedLocations = false
         isSearchFieldFocused = false
     }
 
     private func performSearch(query: String) async {
         if query.isEmpty {
-            suggestedLocations = []
+            searchResults = []
             isSearching = false
             return
         }
 
         isSearching = true
-        suggestedLocations = []
+        searchResults = []
 
-        let provider = BvgProvider(apiAuthorization: AppConfig.bvgApiAuthorization)
-        let (_, result) = await provider.suggestLocations(
-            constraint: query,
-            types: [.station]
-        )
-
-        switch result {
-        case .success(let locations):
-            suggestedLocations = locations
-        case .failure(let error):
-            print("Search error: \(error)")
-            suggestedLocations = []
-        }
-
+        let transportService = TransportService()
+        searchResults = await transportService.searchLocations(query: query)
         isSearching = false
     }
 }

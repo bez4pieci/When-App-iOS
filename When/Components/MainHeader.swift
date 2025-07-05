@@ -135,7 +135,7 @@ struct MainHeader: View {
             Task {
                 await liveActivityManager.startLiveActivity(station: station) {
                     await departuresViewModel.loadDepartures(for: station)
-                    return departuresViewModel.filteredDepartures(for: station)
+                    return departuresViewModel.departures(for: station)
                 }
             }
         }
@@ -146,10 +146,10 @@ struct MainHeader: View {
     MainHeader(
         station: Station(
             id: "900058101",
-            name: "S Südkreuz Bhf (Berlin)",
+            name: StationName(clean: "S Südkreuz", place: "Berlin"),
             latitude: 52.475501,
             longitude: 13.365548,
-            products: [.suburbanTrain, .bus, .regionalTrain, .highSpeedTrain],
+            products: [.suburban, .bus, .regional, .express],
         ),
         departuresViewModel: DeparturesViewModel(),
         onSettingsButtonTap: {}

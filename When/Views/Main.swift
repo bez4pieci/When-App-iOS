@@ -1,7 +1,6 @@
 import FirebaseAnalytics
 import SwiftData
 import SwiftUI
-import TripKit
 
 struct MainView: View {
     @Environment(\.safeAreaInsets) private var safeAreaInsets
@@ -58,7 +57,7 @@ struct MainView: View {
                                 parameters: [
                                     AnalyticsParameterScreenName: "station_tab",
                                     AnalyticsParameterScreenClass: "StationTab",
-                                    "station_name": station.name,
+                                    "station_name": station.name.forTracking,
                                     "show_cancelled_departures": station.showCancelledDepartures
                                         .description,
                                     "products": station.productStringsData,
@@ -114,8 +113,15 @@ struct MainView: View {
 
     private func onStationChanged(oldStation: Station, newStation: Station) {
         // Stop live activity for the old station
+        // TODO: Stop activity only if the station is not the current one
+        //       Otherwise, update the activity with new station data
         Task {
             await liveActivityManager.stopLiveActivity(for: oldStation.id)
+        }
+
+        // Load departures for the new station
+        Task {
+            await departuresViewModel.loadDepartures(for: newStation)
         }
     }
 
@@ -126,10 +132,10 @@ struct MainView: View {
     let container = try! ModelContainer(for: Station.self, configurations: config)
     let sampleStation = Station(
         id: "900058101",
-        name: "S Südkreuz Bhf (Berlin)",
+        name: StationName(clean: "S Südkreuz", place: "Berlin"),
         latitude: 52.475501,
         longitude: 13.365548,
-        products: [.suburbanTrain, .bus, .regionalTrain, .highSpeedTrain],
+        products: [.suburban, .bus, .regional, .express],
     )
     container.mainContext.insert(sampleStation)
 

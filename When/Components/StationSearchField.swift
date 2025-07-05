@@ -1,7 +1,6 @@
 import PhosphorSwift
 import SwiftData
 import SwiftUI
-import TripKit
 
 struct StationSearchField: View {
     let selectedStation: Station?
@@ -62,13 +61,13 @@ struct StationSearchField: View {
         .padding(.vertical, 32)
         .background(Color.white)
         .onAppear {
-            searchText = selectedStation?.name ?? ""
+            searchText = selectedStation?.name.forDisplay ?? ""
         }
         .onChange(of: selectedStation) { _, newStation in
             if let station = newStation {
                 isSearchFieldFocused = false
                 Task {
-                    searchText = station.name
+                    searchText = station.name.forDisplay
                 }
             }
         }
