@@ -58,6 +58,11 @@ An iOS application for showing public transit departures from a selected stop/st
    - Dependencies
    - Module imports
 
+1. (Optional) Set up hot reloading:
+   - The project includes [Inject](https://github.com/krzysztofzablocki/Inject) as a Swift Package dependency. See the [documentation](https://github.com/krzysztofzablocki/Inject?tab=readme-ov-file#workflow-integration) on what needs to be in the code for the hot reloading to work.
+   - Download and run [InjectionIII](https://github.com/johnno1962/InjectionIII) (a macOS app) to enable live code injection. Follow the instructions in the [InjectionIII README](https://github.com/johnno1962/InjectionIII) for setup (you just need to run it and select the project)
+   - With both Inject and InjectionIII running, you can make changes to your SwiftUI views and see updates in the simulator without rebuilding the entire app.
+
 ### Build Using Command Line
 
 ```bash

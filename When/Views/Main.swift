@@ -1,8 +1,11 @@
 import FirebaseAnalytics
+@_exported import Inject
 import SwiftData
 import SwiftUI
 
 struct MainView: View {
+    @ObserveInjection var redraw
+
     @Environment(\.safeAreaInsets) private var safeAreaInsets
     @Environment(\.modelContext) private var modelContext
     @Query() private var stations: [Station]
@@ -93,6 +96,7 @@ struct MainView: View {
                 )
             }
         }
+        .enableInjection()
     }
 
     private func onStationDeleted(_ station: Station) {

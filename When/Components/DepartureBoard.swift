@@ -2,6 +2,8 @@ import SwiftData
 import SwiftUI
 
 struct DepartureBoard: View {
+    @ObserveInjection var redraw
+
     @EnvironmentObject private var liveActivityManager: LiveActivityManager
     let station: Station
     let departures: [Departure]
@@ -17,6 +19,7 @@ struct DepartureBoard: View {
                 }
             }
         }
+        .enableInjection()
     }
 }
 

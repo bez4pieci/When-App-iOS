@@ -17,6 +17,7 @@
 		134693D52DE5017B00617A4D /* DateExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 134693D32DE5017B00617A4D /* DateExtensions.swift */; };
 		134693D82DE502FB00617A4D /* DeparturesActivityAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 134693D62DE502FB00617A4D /* DeparturesActivityAttributes.swift */; };
 		134693D92DE502FB00617A4D /* DeparturesActivityAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 134693D62DE502FB00617A4D /* DeparturesActivityAttributes.swift */; };
+		139566102E19CA0000329958 /* Inject in Frameworks */ = {isa = PBXBuildFile; productRef = 1395660F2E19CA0000329958 /* Inject */; };
 		139DBBC72E11BD94003207A0 /* FirebaseFunctions in Frameworks */ = {isa = PBXBuildFile; productRef = 139DBBC62E11BD94003207A0 /* FirebaseFunctions */; };
 		13ADDF0F2DE5A903000F9376 /* PhosphorSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 13ADDF0E2DE5A903000F9376 /* PhosphorSwift */; };
 		13B0FFDD2E080C5B00A358B3 /* MapBox.plist in Resources */ = {isa = PBXBuildFile; fileRef = 13B0FFDC2E080C5B00A358B3 /* MapBox.plist */; };
@@ -142,6 +143,7 @@
 				13BC3D462DE794E4009B1B7F /* FirebaseFirestore in Frameworks */,
 				139DBBC72E11BD94003207A0 /* FirebaseFunctions in Frameworks */,
 				13BC3D442DE794E4009B1B7F /* FirebaseCore in Frameworks */,
+				139566102E19CA0000329958 /* Inject in Frameworks */,
 				13ADDF0F2DE5A903000F9376 /* PhosphorSwift in Frameworks */,
 				13B547382E0C645F003EDB02 /* FirebaseCrashlytics in Frameworks */,
 				13B486C62E05B91400ECBA4F /* Refresher in Frameworks */,
@@ -258,6 +260,7 @@
 				13B547352E0C4DCE003EDB02 /* FirebaseAnalytics */,
 				13B547372E0C645F003EDB02 /* FirebaseCrashlytics */,
 				139DBBC62E11BD94003207A0 /* FirebaseFunctions */,
+				1395660F2E19CA0000329958 /* Inject */,
 			);
 			productName = Departures;
 			productReference = 1307F7782DE1F376009F0C4C /* When App.app */;
@@ -318,6 +321,7 @@
 				13BC3D422DE794E4009B1B7F /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				13B486A92DFE279A00ECBA4F /* XCRemoteSwiftPackageReference "mapbox-maps-ios" */,
 				13B486C42E05B91400ECBA4F /* XCRemoteSwiftPackageReference "SwiftUI-Refresher" */,
+				1395660E2E19CA0000329958 /* XCRemoteSwiftPackageReference "Inject" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 1307F7792DE1F376009F0C4C /* Products */;
@@ -549,6 +553,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 9EPXPY3668;
+				EMIT_FRONTEND_COMMAND_LINES = YES;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -572,7 +577,11 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.2;
-				OTHER_LDFLAGS = "-ObjC";
+				OTHER_LDFLAGS = (
+					"-ObjC",
+					"-Xlinker",
+					"-interposable",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.bez4pieci.When;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -596,6 +605,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 9EPXPY3668;
+				EMIT_FRONTEND_COMMAND_LINES = NO;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -641,6 +651,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 9EPXPY3668;
+				EMIT_FRONTEND_COMMAND_LINES = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = WhenWidget/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = WhenWidget;
@@ -653,6 +664,10 @@
 					"@executable_path/../../Frameworks",
 				);
 				MARKETING_VERSION = 1.2;
+				OTHER_LDFLAGS = (
+					"-Xlinker",
+					"-interposable",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.bez4pieci.When.WhenWidget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -674,6 +689,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 9EPXPY3668;
+				EMIT_FRONTEND_COMMAND_LINES = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = WhenWidget/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = WhenWidget;
@@ -731,6 +747,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		1395660E2E19CA0000329958 /* XCRemoteSwiftPackageReference "Inject" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/krzysztofzablocki/Inject.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.5.2;
+			};
+		};
 		13ADDF0D2DE5A903000F9376 /* XCRemoteSwiftPackageReference "swift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/phosphor-icons/swift";
@@ -766,6 +790,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		1395660F2E19CA0000329958 /* Inject */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 1395660E2E19CA0000329958 /* XCRemoteSwiftPackageReference "Inject" */;
+			productName = Inject;
+		};
 		139DBBC62E11BD94003207A0 /* FirebaseFunctions */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 13BC3D422DE794E4009B1B7F /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
