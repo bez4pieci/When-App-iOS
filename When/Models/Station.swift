@@ -54,7 +54,7 @@ final class Station {
 
     init(from: Station) {
         self.id = ""
-        self.name = StationName(name: "")
+        self.name = StationName(clean: "")
         self.latitude = nil
         self.longitude = nil
         self.selectedAt = Date()

@@ -27,7 +27,7 @@ struct DeparturesLiveActivityView: View {
                             .strikethrough(departure.isCancelled)
                             .foregroundColor(Color.dDefault)
 
-                        Text(departure.destination.name)
+                        Text(departure.destination.forDisplay)
                             .lineLimit(1)
                             .strikethrough(departure.isCancelled)
                             .foregroundColor(Color.dDefault)

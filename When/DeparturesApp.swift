@@ -21,7 +21,7 @@ struct DeparturesApp: App {
 
     // Use a new SQLite file for Station to avoid migration issues
     let sharedModelContainer: ModelContainer = {
-        let url = URL.documentsDirectory.appending(path: "V2.sqlite")
+        let url = URL.documentsDirectory.appending(path: "V3.sqlite")
         let config = ModelConfiguration(url: url)
         return try! ModelContainer(for: Station.self, configurations: config)
     }()
@@ -50,7 +50,7 @@ struct DeparturesApp: App {
     container.mainContext.insert(
         Station(
             id: "900058101",
-            name: StationName(name: "S Südkreuz", extraPlace: "Berlin"),
+            name: StationName(clean: "S Südkreuz", place: "Berlin"),
             latitude: 52.475501,
             longitude: 13.365548,
             products: [.suburban, .bus, .regional, .express],

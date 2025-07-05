@@ -25,7 +25,7 @@ struct StationSettingsView: View {
                 parameters: [
                     AnalyticsParameterScreenName: "station_settings",
                     AnalyticsParameterScreenClass: "StationSettings",
-                    "station_name": station?.name ?? "none",
+                    "station_name": station?.name.forTracking ?? "none",
                 ])
         }
     }
@@ -36,7 +36,7 @@ struct StationSettingsView: View {
             parameters: [
                 AnalyticsParameterScreenName: "station_settings",
                 AnalyticsParameterScreenClass: "StationSettings",
-                "station_name": station?.name ?? "none",
+                "station_name": station?.name.forTracking ?? "none",
             ])
 
         dismiss()
@@ -50,7 +50,7 @@ struct StationSettingsView: View {
             parameters: [
                 AnalyticsParameterScreenName: "station_settings",
                 AnalyticsParameterScreenClass: "StationSettings",
-                "station_name": station.name,
+                "station_name": station.name.forTracking,
                 "show_cancelled_departures": station.showCancelledDepartures.description,
                 "products": station.productStringsData,
                 "enabled_products": station.enabledProductStringsData,
@@ -72,11 +72,11 @@ struct StationSettingsView: View {
                 parameters: [
                     AnalyticsParameterScreenName: "station_settings",
                     AnalyticsParameterScreenClass: "StationSettings",
-                    "old_station_name": oldStation.name,
+                    "old_station_name": oldStation.name.forTracking,
                     "old_show_cancelled_departures": oldStation.showCancelledDepartures,
                     "old_products": oldStation.productStringsData,
                     "old_enabled_products": oldStation.enabledProductStringsData,
-                    "station_name": changedStation.name,
+                    "station_name": changedStation.name.forTracking,
                     "show_cancelled_departures": changedStation.showCancelledDepartures.description,
                     "products": changedStation.productStringsData,
                     "enabled_products": changedStation.enabledProductStringsData,
@@ -101,7 +101,7 @@ struct StationSettingsView: View {
                 parameters: [
                     AnalyticsParameterScreenName: "station_settings",
                     AnalyticsParameterScreenClass: "StationSettings",
-                    "station_name": changedStation.name,
+                    "station_name": changedStation.name.forTracking,
                     "show_cancelled_departures": changedStation.showCancelledDepartures,
                     "products": changedStation.productStringsData,
                     "enabled_products": changedStation.enabledProductStringsData,

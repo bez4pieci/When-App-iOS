@@ -11,7 +11,7 @@ struct MainView: View {
     @State private var showStationSelection = false
     @State private var currentTabIndex = 0
     @State private var scrollOffsets: [String: Double] = [:]
-    @State private var departuresViewModel = DeparturesViewModel()
+    @StateObject private var departuresViewModel = DeparturesViewModel()
 
     private var currentStation: Station? {
         guard !stations.isEmpty && currentTabIndex < stations.count else { return nil }
@@ -57,7 +57,7 @@ struct MainView: View {
                                 parameters: [
                                     AnalyticsParameterScreenName: "station_tab",
                                     AnalyticsParameterScreenClass: "StationTab",
-                                    "station_name": station.name,
+                                    "station_name": station.name.forTracking,
                                     "show_cancelled_departures": station.showCancelledDepartures
                                         .description,
                                     "products": station.productStringsData,
@@ -132,7 +132,7 @@ struct MainView: View {
     let container = try! ModelContainer(for: Station.self, configurations: config)
     let sampleStation = Station(
         id: "900058101",
-        name: StationName(name: "S Südkreuz", extraPlace: "Berlin"),
+        name: StationName(clean: "S Südkreuz", place: "Berlin"),
         latitude: 52.475501,
         longitude: 13.365548,
         products: [.suburban, .bus, .regional, .express],

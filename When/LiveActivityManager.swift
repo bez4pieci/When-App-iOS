@@ -82,12 +82,12 @@ class LiveActivityManager: ObservableObject {
 
         if let activity = getActivityByStationId(stationId: station.id) {
             print(
-                "Live Activity: Ending existing activity for station \(station.name) before starting a new one."
+                "Live Activity: Ending existing activity for station \(station.name.forDisplay) before starting a new one."
             )
             await activity.end(nil, dismissalPolicy: .immediate)
         }
 
-        print("Live Activity: Starting for station \(station.name)...")
+        print("Live Activity: Starting for station \(station.name.forDisplay)...")
 
         let contentState = createContentState(from: departures)
         let activity: Activity<DeparturesActivityAttributes>
@@ -95,7 +95,7 @@ class LiveActivityManager: ObservableObject {
         do {
             activity = try Activity<DeparturesActivityAttributes>.request(
                 attributes: DeparturesActivityAttributes(
-                    stationName: station.name.name,
+                    stationName: station.name.forDisplay,
                     stationId: station.id
                 ),
                 content: .init(state: contentState, staleDate: Date().addingTimeInterval(60)),
@@ -108,7 +108,7 @@ class LiveActivityManager: ObservableObject {
             return
         }
 
-        print("Live Activity: Started for station \(station.name)!")
+        print("Live Activity: Started for station \(station.name.forDisplay)!")
 
         observeActivity(activity: activity, station: station)
     }
@@ -130,7 +130,7 @@ class LiveActivityManager: ObservableObject {
         station: Station
     ) {
         let stationId = station.id
-        let stationName = station.name
+        let stationName = station.name.forDisplay
 
         Task {
             for await state in activity.activityStateUpdates {
@@ -191,7 +191,7 @@ class LiveActivityManager: ObservableObject {
             "activityId": activityId,
             "userDeviceId": appSettings.userDeviceId,
             "stationId": station.id,
-            "stationName": station.name,
+            "stationName": station.name.forDisplay,
             "createdAt": FieldValue.serverTimestamp(),
             "enabledProducts": station.enabledProductStrings,
             "showCancelledDepartures": station.showCancelledDepartures,

@@ -22,10 +22,6 @@ struct HeaderMap: UIViewRepresentable {
         station?.longitude ?? defaultLongitude
     }
 
-    private var markerLabel: String {
-        station?.name.name ?? "S+U Alexanderplatz"
-    }
-
     init(station: Station?, offset: Double) {
         self.station = station
         self.offset = offset
@@ -278,7 +274,7 @@ extension HeaderMap {
     HeaderMap(
         station: Station(
             id: "900058101",
-            name: StationName(name: "S Südkreuz", extraPlace: "Berlin"),
+            name: StationName(clean: "S Südkreuz", place: "Berlin"),
             latitude: 52.475501,
             longitude: 13.365548,
             products: [.suburban, .bus, .regional, .express],

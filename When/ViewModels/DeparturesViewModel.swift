@@ -3,7 +3,7 @@ import SwiftData
 import SwiftUI
 
 @Observable
-class DeparturesViewModel {
+class DeparturesViewModel: ObservableObject {
     private var stationDepartures: [String: [Departure]] = [:]
     private var lastUpdates: [String: Date] = [:]
 

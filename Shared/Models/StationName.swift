@@ -1,40 +1,48 @@
 import Foundation
 
 struct StationName: Codable, Hashable {
-    let name: String
-    let extraName: String?  // E.g., Bahnhof, Hauptbahnhof, etc.
-    let extraShortName: String?  // E.g., Hbf
+    let clean: String
+    let raw: String?  // Full name from the API
+    let suffix: String?  // E.g., Bahnhof, Hauptbahnhof, etc.
+    let suffixShort: String?  // E.g., Hbf
     let extraInfo: String?  // E.g., Gleis 1-8
-    let extraPlace: String?  // E.g., Berlin, BAR, etc., the name in brackets after the station name
+    let place: String?  // E.g., Berlin, BAR, etc., the name in brackets after the station name
 
     private enum CodingKeys: String, CodingKey {
-        case name
-        case extraName
-        case extraShortName
+        case clean
+        case raw
+        case suffix
+        case suffixShort
         case extraInfo
-        case extraPlace
+        case place
     }
 
     var forDisplay: String {
-        return (name + " " + (extraShortName ?? "")).trimmingCharacters(in: .whitespacesAndNewlines)
+        return (clean + " " + (suffixShort ?? "")).trimmingCharacters(in: .whitespacesAndNewlines)
+    }
+
+    var forTracking: String {
+        return raw ?? forDisplay
     }
 
     init(
-        name: String, extraName: String? = nil, extraShortName: String? = nil,
-        extraInfo: String? = nil, extraPlace: String? = nil
+        clean: String, raw: String? = nil, suffix: String? = nil, suffixShort: String? = nil,
+        extraInfo: String? = nil, place: String? = nil
     ) {
-        self.name = name
-        self.extraName = extraName
-        self.extraShortName = extraShortName
+        self.clean = clean
+        self.raw = raw
+        self.suffix = suffix
+        self.suffixShort = suffixShort
         self.extraInfo = extraInfo
-        self.extraPlace = extraPlace
+        self.place = place
     }
 
-    init(name: String) {
-        self.name = name
-        self.extraName = nil
-        self.extraShortName = nil
+    init(clean: String) {
+        self.clean = clean
+        self.raw = nil
+        self.suffix = nil
+        self.suffixShort = nil
         self.extraInfo = nil
-        self.extraPlace = nil
+        self.place = nil
     }
 }
