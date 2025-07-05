@@ -45,7 +45,7 @@ class DeparturesViewModel {
                 lastUpdates[station.id]?.formatted(date: .omitted, time: .shortened) ?? "never"
             print(
                 """
-                Departures: Skipping automatic refresh for \(station.name) - \
+                Departures: Skipping automatic refresh for \(station.name.forDisplay) - \
                 last update \(roundedTimeSinceLastUpdate) seconds ago (\(lastUpdateTime))
                 """)
             return
@@ -58,7 +58,7 @@ class DeparturesViewModel {
     private func load(for station: Station) async {
         print(
             """
-            Departures: Loading departures for \(station.name), \
+            Departures: Loading departures for \(station.name.forDisplay), \
             enabled products: \(station.enabledProductStrings), \
             showCancelledDepartures: \(station.showCancelledDepartures)
             """)
@@ -81,7 +81,7 @@ class DeparturesViewModel {
 
         self.stationDepartures[station.id] = departures
         self.lastUpdates[station.id] = Date()
-        print("Departures: Fetched \(departures.count) departures for \(station.name)")
+        print("Departures: Fetched \(departures.count) departures for \(station.name.forDisplay)")
     }
 
     func delete(for station: Station) {
