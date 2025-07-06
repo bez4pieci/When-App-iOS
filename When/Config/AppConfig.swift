@@ -1,9 +1,13 @@
 import Foundation
 
 struct CloudFunctionsEmulatorConfig {
-    var enabled: Bool = false
+    var enabled: Bool
     var host: String = "localhost"
     var port: Int = 5001
+
+    init(enabled: Bool) {
+        self.enabled = enabled
+    }
 }
 
 enum AppConfig {
@@ -18,9 +22,9 @@ enum AppConfig {
     static var cloudFunctionsEmulator: CloudFunctionsEmulatorConfig {
         #if DEBUG
             if ProcessInfo.processInfo.environment["CLOUD_FUNCTIONS_EMULATOR"] == "YES" {
-                return CloudFunctionsEmulatorConfig(enabled: true, host: "localhost", port: 5001)
+                return CloudFunctionsEmulatorConfig(enabled: true)
             }
         #endif
-        return CloudFunctionsEmulatorConfig(enabled: false, host: "", port: 0)
+        return CloudFunctionsEmulatorConfig(enabled: false)
     }
 }
