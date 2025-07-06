@@ -3,6 +3,8 @@ import SwiftData
 import SwiftUI
 
 struct StationSearchField: View {
+    @ObserveInjection var redraw
+
     let selectedStation: Station?
     let onSearch: (String) async -> Void
 
@@ -71,5 +73,6 @@ struct StationSearchField: View {
                 }
             }
         }
+        .enableInjection()
     }
 }

@@ -1,8 +1,8 @@
 import Foundation
 import SwiftUI
 
-// TODO: Refactor to @Observable
-class AppSettings: ObservableObject {
+struct AppSettings {
+    /// Identify the user's device with a random UUID
     @AppStorage("userDeviceId") var userDeviceId: String = ""
 
     init() {

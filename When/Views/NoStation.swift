@@ -2,6 +2,8 @@ import PhosphorSwift
 import SwiftUI
 
 struct NoStation: View {
+    @ObserveInjection var redraw
+
     @Environment(\.safeAreaInsets) private var safeAreaInsets
     let offset: Binding<Double>
     let onSelectStation: () -> Void
@@ -45,5 +47,6 @@ struct NoStation: View {
         } action: { _, new in
             offset.wrappedValue = new
         }
+        .enableInjection()
     }
 }

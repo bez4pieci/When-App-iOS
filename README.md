@@ -12,11 +12,7 @@ An iOS application for showing public transit departures from a selected stop/st
 
 - iOS App: Swift, SwiftData, SwiftUI
 - Firebase Firestore for storing live activities while they're active
-- Firebase Cloud functions ([bez4pieci/When-App-API](https://github.com/bez4pieci/When-App-API)) for updating the live activities via push notifications
-- Public transport API
-   - [alexander-albers/tripkit](https://github.com/alexander-albers/tripkit) for iOS
-   - [public-transport/hafas-client](https://github.com/public-transport/hafas-client) for the Node.js cloud function
-
+- Firebase Cloud Functions ([bez4pieci/When-App-API](https://github.com/bez4pieci/When-App-API)) for querying the public transport API and updating the live activities via push notifications
 
 ## Build From Source
 
@@ -28,6 +24,10 @@ An iOS application for showing public transit departures from a selected stop/st
       - Leave optional fields blank
       - 👉 Download `GoogleService-Info.plist` and put it in the project root
    1. Create a new [Firestore database](https://firebase.google.com/docs/firestore/quickstart). You don't need to do anything beyond just creating it.
+1. Deploy cloud functions from [bez4pieci/When-App-API](https://github.com/bez4pieci/When-App-API). 
+   
+   Alternatively, emulate them locally (see instructions in the [README](https://github.com/bez4pieci/When-App-API)), and set `CLOUD_FUNCTIONS_EMULATOR` to "YES" in the environment variables of the run settings of the "When App" scheme.
+
 1. Set up [MapBox](https://www.mapbox.com/)
    1. Create an account
    1. Make a copy of `MapBox.plist-example` and name it `MapBox.plist`
@@ -56,7 +56,12 @@ An iOS application for showing public transit departures from a selected stop/st
    - Build settings
    - Target configurations
    - Dependencies
-   - Module imports
+   - Module imports  
+
+1. (Optional) Set up hot reloading:
+   - The project includes [Inject](https://github.com/krzysztofzablocki/Inject) as a Swift Package dependency. See the [documentation](https://github.com/krzysztofzablocki/Inject?tab=readme-ov-file#workflow-integration) on what needs to be in the code for the hot reloading to work.
+   - Download and run [InjectionIII](https://github.com/johnno1962/InjectionIII) (a macOS app) to enable live code injection. Follow the instructions in the [InjectionIII README](https://github.com/johnno1962/InjectionIII) for setup (you just need to run it and select the project)
+   - With both Inject and InjectionIII running, you can make changes to your SwiftUI views and see updates in the simulator without rebuilding the entire app.
 
 ### Build Using Command Line
 

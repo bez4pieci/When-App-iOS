@@ -31,11 +31,14 @@ struct QueryDeparturesResponse: Decodable {
 // MARK: - TransportService
 
 class TransportService {
-    lazy var functions = Functions.functions(region: AppConfig.firebaseFunctionsRegion)
+    lazy var functions = Functions.functions(region: AppConfig.cloudFunctionsRegion)
 
     init() {
-        // Enable for testing
-        //self.functions.useEmulator(withHost: "localhost", port: 5001)
+        if AppConfig.cloudFunctionsEmulator.enabled {
+            self.functions.useEmulator(
+                withHost: AppConfig.cloudFunctionsEmulator.host,
+                port: AppConfig.cloudFunctionsEmulator.port)
+        }
     }
 
     // MARK: - Location Search

@@ -17,7 +17,6 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 struct DeparturesApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     @StateObject private var liveActivityManager = LiveActivityManager()
-    var appSettings = AppSettings()
 
     // Use a new SQLite file for Station to avoid migration issues
     let sharedModelContainer: ModelContainer = {
@@ -31,7 +30,6 @@ struct DeparturesApp: App {
             MainView()
                 .environment(\.font, Font.dNormal)
                 .environmentObject(liveActivityManager)
-                .environmentObject(appSettings)
                 .onAppear {
                     liveActivityManager.stopAllActivities()
                 }
@@ -60,5 +58,4 @@ struct DeparturesApp: App {
         .modelContainer(container)
         .environment(\.font, Font.dNormal)
         .environmentObject(LiveActivityManager())
-        .environmentObject(AppSettings())
 }

@@ -52,14 +52,18 @@
       </BuildableProductRunnable>
       <CommandLineArguments>
          <CommandLineArgument
+            argument = "-FIRDebugDisabled"
+            isEnabled = "YES">
+         </CommandLineArgument>
+         <CommandLineArgument
             argument = "-FIRAnalyticsVerboseLoggingEnabled"
             isEnabled = "NO">
          </CommandLineArgument>
       </CommandLineArguments>
       <EnvironmentVariables>
          <EnvironmentVariable
-            key = ""
-            value = ""
+            key = "CLOUD_FUNCTIONS_EMULATOR"
+            value = "YES"
             isEnabled = "NO">
          </EnvironmentVariable>
       </EnvironmentVariables>

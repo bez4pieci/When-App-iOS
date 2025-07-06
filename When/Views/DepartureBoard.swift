@@ -2,6 +2,8 @@ import SwiftData
 import SwiftUI
 
 struct DepartureBoard: View {
+    @ObserveInjection var redraw
+
     @EnvironmentObject private var liveActivityManager: LiveActivityManager
     let station: Station
     let departures: [Departure]
@@ -17,10 +19,13 @@ struct DepartureBoard: View {
                 }
             }
         }
+        .enableInjection()
     }
 }
 
 private struct DepartureRow: View {
+    @ObserveInjection var redraw
+
     let departure: Departure
 
     var body: some View {
@@ -53,6 +58,7 @@ private struct DepartureRow: View {
         .padding(.horizontal, 20)
         .padding(.vertical, 16)
         .opacity(departure.isCancelled ? 0.25 : 1)
+        .enableInjection()
     }
 
     private var timeString: String {
