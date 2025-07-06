@@ -2,6 +2,8 @@ import PhosphorSwift
 import SwiftUI
 
 struct MainHeader: View {
+    @ObserveInjection var redraw
+
     @Environment(\.safeAreaInsets) private var safeAreaInsets
     @EnvironmentObject private var liveActivityManager: LiveActivityManager
     let station: Station?
@@ -49,6 +51,7 @@ struct MainHeader: View {
             liveIconTimer?.invalidate()
             liveIconTimer = nil
         }
+        .enableInjection()
     }
 
     private func handleLiveIconAnimation(isActive: Bool) {

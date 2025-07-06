@@ -24,6 +24,8 @@ struct DepartureBoard: View {
 }
 
 private struct DepartureRow: View {
+    @ObserveInjection var redraw
+
     let departure: Departure
 
     var body: some View {
@@ -56,6 +58,7 @@ private struct DepartureRow: View {
         .padding(.horizontal, 20)
         .padding(.vertical, 16)
         .opacity(departure.isCancelled ? 0.25 : 1)
+        .enableInjection()
     }
 
     private var timeString: String {

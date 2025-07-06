@@ -4,6 +4,8 @@ import SwiftData
 import SwiftUI
 
 struct StationSettingsView: View {
+    @ObserveInjection var redraw
+
     @Environment(\.dismiss) private var dismiss
     @Environment(\.modelContext) private var modelContext
     @Query(sort: \Station.selectedAt, order: .reverse) private var stations: [Station]
@@ -28,6 +30,7 @@ struct StationSettingsView: View {
                     "station_name": station?.name.forTracking ?? "none",
                 ])
         }
+        .enableInjection()
     }
 
     private func cancel() {
@@ -113,6 +116,8 @@ struct StationSettingsView: View {
 }
 
 private struct StationSettingsContentView: View {
+    @ObserveInjection var redraw
+
     let onApply: (_ station: Station?) -> Void
     let onCancel: () -> Void
     let onDelete: ((Station) -> Void)?
@@ -215,6 +220,7 @@ private struct StationSettingsContentView: View {
             .toolbarBackground(Color.dBackground, for: .navigationBar)
             .toolbarBackground(.visible, for: .navigationBar)
         }
+        .enableInjection()
     }
 
     private var transportFiltersSection: some View {

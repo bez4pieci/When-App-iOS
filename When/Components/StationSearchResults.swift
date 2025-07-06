@@ -2,6 +2,8 @@ import SwiftData
 import SwiftUI
 
 struct StationSearchResultsView: View {
+    @ObserveInjection var redraw
+
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
 
@@ -29,6 +31,7 @@ struct StationSearchResultsView: View {
                 }
             }
         }
+        .enableInjection()
     }
 
     private func stationRow(_ searchResult: SearchResult) -> some View {

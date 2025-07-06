@@ -3,6 +3,8 @@ import SwiftData
 import SwiftUI
 
 struct StationTab: View {
+    @ObserveInjection var redraw
+
     @Environment(\.safeAreaInsets) private var safeAreaInsets
 
     let station: Station
@@ -74,5 +76,6 @@ struct StationTab: View {
         } action: { _, new in
             offset.wrappedValue = new
         }
+        .enableInjection()
     }
 }
