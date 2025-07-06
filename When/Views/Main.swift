@@ -147,5 +147,4 @@ struct MainView: View {
         .modelContainer(container)
         .environment(\.font, Font.dNormal)
         .environmentObject(LiveActivityManager())
-        .environmentObject(AppSettings())
 }

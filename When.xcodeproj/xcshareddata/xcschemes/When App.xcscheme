@@ -62,8 +62,8 @@
       </CommandLineArguments>
       <EnvironmentVariables>
          <EnvironmentVariable
-            key = ""
-            value = ""
+            key = "CLOUD_FUNCTIONS_EMULATOR"
+            value = "YES"
             isEnabled = "NO">
          </EnvironmentVariable>
       </EnvironmentVariables>
